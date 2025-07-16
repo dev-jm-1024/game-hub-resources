@@ -22,6 +22,24 @@
     <link rel="stylesheet" href="/main-contents-skin/sidebar/css/sidebar.css">
     <link rel="stylesheet" href="/main-contents-skin/main/css/main.css">
 
+    <!-- Frameworks & Libraries (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.31/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <!-- 전역 Vue 인스턴스 설정 -->
+    <script>
+        // Vue App 인스턴스를 전역적으로 생성하여 여러 컴포넌트에서 공유할 수 있도록 합니다.
+        const GlobalApp = {
+            createApp(options) {
+                const app = Vue.createApp(options);
+                // 여기에 전역 플러그인이나 컴포넌트를 등록할 수 있습니다.
+                // 예: app.use(MyPlugin);
+                return app;
+            }
+        };
+    </script>
+
     <!-- JavaScript Files -->
     <script src="/main-contents-skin/global.js"></script>
     <script src="/main-contents-skin/header/js/header.js"></script>
@@ -32,30 +50,24 @@
 
     <!-- Apple 아이콘 -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 <body>
 <!-- 헤더 영역 -->
-<div class="header-wrapper">
-    <div th:replace="main-contents/header-frag/header :: header"></div>
-</div>
+<header class="header-wrapper" th:replace="main-contents/header-frag/header :: header"></header>
 
 <!-- 메인 콘텐츠 영역 -->
 <div class="page-content-wrapper">
     <!-- 사이드바 -->
-    <aside class="sidebar">
-        <div th:replace="main-contents/sidebar-frag/sidebar :: sidebar"></div>
-    </aside>
+    <aside class="sidebar" th:replace="main-contents/sidebar-frag/sidebar :: sidebar"></aside>
 
     <!-- 메인 콘텐츠 -->
-    <main class="content-main">
-        <div th:replace="main-contents/main-frag/content-main :: main"></div>
-    </main>
+    <main class="content-main" th:replace="main-contents/main-frag/content-main :: main"></main>
 </div>
 
 <!-- 푸터 영역 -->
-<footer class="site-footer">
-    <div th:replace="main-contents/footer-frag/footer :: footer"></div>
-</footer>
+<footer class="site-footer" th:replace="main-contents/footer-frag/footer :: footer"></footer>
 
 <!-- 뒤로가기 버튼 -->
 <button class="back-to-top" aria-label="맨 위로 이동">

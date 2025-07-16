@@ -1,24 +1,14 @@
 /* Apple macOS/iOS 스타일 메인 콘텐츠 CSS */
 
 .content-main {
-    margin-left: 280px;
-    margin-right: 320px;
-    margin-top: 64px;
     padding: 40px;
     min-height: calc(100vh - 64px);
     background-color: var(--background-primary);
     transition: all var(--animation-duration) var(--animation-ease);
 }
 
-@media (max-width: 1024px) {
-    .content-main {
-        margin-right: 0;
-    }
-}
-
 @media (max-width: 768px) {
     .content-main {
-        margin-left: 0;
         padding: 20px;
     }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules>
+   <rule id="1" priority="critical">
+       <description>타임리프의 코드 절대 변경하지 말 것</description>
+       <category>thymeleaf</category>
+       <action>preserve</action>
+       <severity>forbidden</severity>
+   </rule>
+   
+   <rule id="2" priority="critical">
+       <description>HTML 각 요소의 href, id, name 등의 정보 절대 변경하지 말 것</description>
+       <category>html-attributes</category>
+       <action>preserve</action>
+       <severity>forbidden</severity>
+       <target_attributes>
+           <attribute>href</attribute>
+           <attribute>id</attribute>
+           <attribute>name</attribute>
+       </target_attributes>
+   </rule>
+   
+   <rule id="3" priority="critical">
+       <description>API로 요청 보내는 JS 로직 절대 건들지 말 것</description>
+       <category>javascript-api</category>
+       <action>preserve</action>
+       <severity>forbidden</severity>
+   </rule>
+   
+   <rule id="4" priority="high">
+       <description>모바일 반응형을 반드시 고려하여 설계할 것</description>
+       <category>responsive-design</category>
+       <action>enforce</action>
+       <severity>required</severity>
+   </rule>
+   
+   <rule id="5" priority="critical">
+       <description>URI (href) 절대 변경하지 말 것</description>
+       <category>uri</category>
+       <action>preserve</action>
+       <severity>forbidden</severity>
+   </rule>
+</rules>

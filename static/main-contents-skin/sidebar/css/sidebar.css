@@ -42,15 +42,39 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--separator-opaque);
 }
 
 .section-title {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
     color: var(--label-primary);
     margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.title-icon {
+    margin-right: 8px;
+    font-size: 1.2em; /* 아이콘 크기를 텍스트에 비례하여 조정 */
+}
+
+.section-link {
+    color: var(--system-blue);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.section-link:hover,
+.section-link:focus {
+    color: #0056CC; /* 더 어두운 파란색으로 변경하여 명확한 호버 상태 표시 */
+    text-decoration: underline;
 }
 
 /* 인기 게임 순위 */
@@ -94,6 +118,22 @@
 
 .game-link:hover {
     color: var(--system-blue);
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-text {
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--label-secondary);
+    font-weight: 500;
 }
 
 /* 최근 게임 */
@@ -230,7 +270,8 @@
     margin: 0;
 }
 
-.sidebar-widget-title {
+/* 아래의 중복/미사용 클래스 정리 */
+/* .sidebar-widget-title {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 16px;
     font-weight: 600;
@@ -248,9 +289,9 @@
 
 .sidebar-widget-action:hover {
     color: #0056CC;
-}
+} */
 
-/* 최근 ?�동 ?�젯 */
+/* 최근 ?동 ?�젯 */
 .activity-list {
     list-style: none;
     padding: 0;

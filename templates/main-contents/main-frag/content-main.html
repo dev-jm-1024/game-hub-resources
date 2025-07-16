@@ -26,8 +26,8 @@
         </div>
         <div class="games-list" role="region" aria-label="추천 게임 목록">
             <ul class="game-items" th:if="${not #lists.isEmpty(featuredGames)}">
-                <li class="game-item" th:each="game : ${featuredGames}" role="article">
-                    <div class="game-card">
+                <li class="game-item" th:each="game : ${featuredGames}">
+                    <article class="game-card">
                         <div class="game-thumbnail" aria-hidden="true">
                             <img th:src="${game.thumbnailImage}"
                                  alt=""
@@ -49,7 +49,7 @@
                                 <span class="game-category" th:text="${game.category}">카테고리</span>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 </li>
             </ul>
             <!-- 빈 상태 -->
@@ -73,8 +73,8 @@
         </div>
         <div class="games-list" role="region" aria-label="신규 게임 목록">
             <ul class="game-items" th:if="${not #lists.isEmpty(newGames)}">
-                <li class="game-item" th:each="game : ${newGames}" role="article">
-                    <div class="game-card">
+                <li class="game-item" th:each="game : ${newGames}">
+                    <article class="game-card">
                         <div class="game-info">
                             <h3 class="game-title">
                                 <a th:href="@{/games/{id}(id=${game.id})}"
@@ -89,7 +89,7 @@
                                 <span class="new-badge" aria-label="신규">NEW</span>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 </li>
             </ul>
             <!-- 빈 상태 -->
@@ -113,8 +113,8 @@
         </div>
         <div class="posts-list" role="region" aria-label="최신 게시글 목록">
             <ul class="post-items" th:if="${not #lists.isEmpty(communityPosts)}">
-                <li class="post-item" th:each="post : ${communityPosts}" role="article">
-                    <div class="post-card">
+                <li class="post-item" th:each="post : ${communityPosts}">
+                    <article class="post-card">
                         <div class="post-info">
                             <h3 class="post-title">
                                 <a th:href="@{/board/{id}(id=${post.id})}"
@@ -141,7 +141,7 @@
                                 <span th:text="${post.commentCount}">0</span>
                             </span>
                         </div>
-                    </div>
+                    </article>
                 </li>
             </ul>
             <!-- 빈 상태 -->

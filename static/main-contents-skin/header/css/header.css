@@ -408,25 +408,26 @@ header {
     transform: rotate(180deg);
 }
 
-/* 모바??메뉴 */
-.header-mobile-menu {
-    display: none;
+/* 모바일 메뉴 */
+.mobile-menu-btn {
+    display: none; /* 기본적으로 숨김 */
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
+    border: none;
     border-radius: 8px;
     background-color: var(--background-secondary);
     cursor: pointer;
     transition: all var(--animation-duration) var(--animation-ease);
 }
 
-.header-mobile-menu:hover {
+.mobile-menu-btn:hover {
     background-color: var(--system-gray5);
 }
 
-.header-mobile-menu-line {
+.hamburger-line {
     width: 18px;
     height: 2px;
     background-color: var(--label-primary);
@@ -435,19 +436,19 @@ header {
     transition: all var(--animation-duration) var(--animation-ease);
 }
 
-.header-mobile-menu.active .header-mobile-menu-line:nth-child(1) {
+.mobile-menu-btn.active .hamburger-line:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
 
-.header-mobile-menu.active .header-mobile-menu-line:nth-child(2) {
+.mobile-menu-btn.active .hamburger-line:nth-child(2) {
     opacity: 0;
 }
 
-.header-mobile-menu.active .header-mobile-menu-line:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -6px);
+.mobile-menu-btn.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(4px, -5px);
 }
 
-/* ?�롭?�운 메뉴 */
+/* 드롭다운 메뉴 */
 .header-dropdown {
     position: absolute;
     top: 100%;
@@ -500,30 +501,28 @@ header {
     margin: 4px 0;
 }
 
-/* 반응??*/
+/* 반응형 */
 @media (max-width: 768px) {
     .header-container {
         padding: 0 16px;
     }
 
-    .header-nav {
+    .nav-container,
+    .search-container,
+    .lang-select {
         display: none;
     }
 
-    .header-search {
-        display: none;
+    .mobile-menu-btn {
+        display: flex; /* 모바일에서만 표시 */
     }
 
-    .header-mobile-menu {
-        display: flex;
+    .user-nickname {
+        display: none; /* 모바일에서 닉네임 숨김 */
     }
 
-    .header-user {
-        gap: 8px;
-    }
-
-    .header-profile-name {
-        display: none;
+    .logged-user .profile-dropdown-btn {
+        display: none; /* 모바일에서 드롭다운 버튼 숨김 */
     }
 }
 

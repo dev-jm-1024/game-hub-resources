@@ -1,22 +1,21 @@
 <!--footer-frag-->
 <footer class="site-footer" th:fragment="footer" role="contentinfo">
-    <div class="footer-container">
-        <div class="footer-content">
-            <!-- 회사/팀 소개, 연락처 -->
-            <section class="company-info footer-section" aria-labelledby="company-title">
-                <h3 class="footer-title" id="company-title">회사/팀 소개</h3>
-                <div class="company-content">
-                    <p class="company-description" th:text="${companyDescription}">회사/팀 소개 문구가 들어갈 자리입니다.</p>
-                    <div class="contact-info">
-                        <span class="contact-label">연락처:</span>
-                        <a href="mailto:contact@example.com"
-                           class="contact-link"
-                           th:href="'mailto:' + ${contactInfo}"
-                           th:text="${contactInfo}"
-                           aria-label="이메일로 문의하기">contact@example.com</a>
-                    </div>
-                </div>
-            </section>
+    <div class="footer-content">
+        <!-- 회사/팀 소개, 연락처 -->
+        <section class="company-info footer-section" aria-labelledby="company-title">
+            <h3 class="footer-title" id="company-title">회사/팀 소개</h3>
+            <div class="company-content">
+                <p class="company-description" th:text="${companyDescription}">회사/팀 소개 문구가 들어갈 자리입니다.</p>
+                <address class="contact-info">
+                    <span class="contact-label">연락처:</span>
+                    <a href="mailto:contact@example.com"
+                       class="contact-link"
+                       th:href="'mailto:' + ${contactInfo}"
+                       th:text="${contactInfo}"
+                       aria-label="이메일로 문의하기">contact@example.com</a>
+                </address>
+            </div>
+        </section>
 
             <!-- 이용약관, 개인정보처리방침 링크 -->
             <section class="legal-links footer-section" aria-labelledby="legal-title">

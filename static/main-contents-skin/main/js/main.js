@@ -254,164 +254,172 @@ class MainContentManager {
     }
 
     setupAnimations() {
-        // 스크롤 애니메이션
-        const animatedElements = document.querySelectorAll('.scroll-reveal');
+        // 콘텐츠 영역이 없으면 애니메이션 설정 건너뛰기
+        if (!this.content) return;
 
-        const animationObserver = new IntersectionObserver((entries) => {
+        // 예시: 스크롤에 따라 요소 나타나는 효과
+        const animatedElements = this.content.querySelectorAll('.fade-in-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        animatedElements.forEach(el => {
-            animationObserver.observe(el);
-        });
+        animatedElements.forEach(el => observer.observe(el));
 
         // 패럴랙스 효과
         this.setupParallax();
     }
 
     setupParallax() {
-        const parallaxElements = document.querySelectorAll('.parallax');
+        // 콘텐츠 영역이 없으면 시차 효과 설정 건너뛰기
+        if (!this.content) return;
+
+        const parallaxBg = this.content.querySelector('.parallax-background');
+        if (!parallaxBg) return;
 
         const handleScroll = () => {
-            const scrollTop = window.pageYOffset;
-
-            parallaxElements.forEach(element => {
-                const speed = element.dataset.speed || 0.5;
-                const yPos = -(scrollTop * speed);
-                element.style.transform = `translateY(${yPos}px)`;
-            });
+            const scrolled = window.scrollY;
+            parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
         };
 
-        window.addEventListener('scroll', Utils.throttle(handleScroll, 16));
+        window.addEventListener('scroll', handleScroll);
     }
 
     setupSearch() {
-        const searchForm = document.querySelector('.search-form');
-        if (!searchForm) return;
+        const header = document.querySelector('.site-header');
+        if (!header) return;
 
-        const searchInput = searchForm.querySelector('.search-input');
-        const searchResults = document.querySelector('.search-results');
+        const searchForm = header.querySelector('.search-form');
+        const searchInput = header.querySelector('#search-input');
+        const resultsContainer = header.querySelector('.search-results-container'); // 가상의 결과 컨테이너
 
-        searchInput.addEventListener('input', Utils.debounce((e) => {
-            const query = e.target.value.trim();
-            if (query.length > 2) {
-                this.performSearch(query, searchResults);
-            } else {
-                this.clearSearchResults(searchResults);
+        if (!searchForm || !searchInput) return;
+
+        let debounceTimer;
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const query = e.target.value;
+                if (query.length > 1) {
+                    this.performSearch(query, resultsContainer);
+                } else if (resultsContainer) {
+                    this.clearSearchResults(resultsContainer);
+                }
+            }, 300);
+        });
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = searchInput.value;
+            if (query) {
+                // 검색 페이지로 리디렉션 또는 즉시 검색 실행
+                window.location.href = `/search?q=${encodeURIComponent(query)}`;
             }
-        }, 300));
+        });
     }
 
     async performSearch(query, resultsContainer) {
+        if (!resultsContainer) return;
+
+        resultsContainer.innerHTML = '<div class="loading-spinner"></div>'; // 로딩 표시
+
         try {
             const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
             const results = await response.json();
-
             this.displaySearchResults(results, resultsContainer);
         } catch (error) {
-            console.error('Search error:', error);
-            App.notifications.error('검색 중 오류가 발생했습니다.');
+            console.error('Search failed:', error);
+            resultsContainer.innerHTML = '<p class="error-message">검색 중 오류가 발생했습니다.</p>';
         }
     }
 
     displaySearchResults(results, container) {
-        if (!results || results.length === 0) {
-            container.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
+        if (!container) return;
+
+        this.clearSearchResults(container);
+
+        if (results.length === 0) {
+            container.innerHTML = '<p>검색 결과가 없습니다.</p>';
             return;
         }
 
-        const html = results.map(result => `
-            <div class="search-result-item">
-                <h4 class="result-title">${result.title}</h4>
-                <p class="result-excerpt">${result.excerpt}</p>
-                <div class="result-meta">
-                    <span class="result-date">${Utils.formatDate(result.date)}</span>
-                    <span class="result-type">${result.type}</span>
-                </div>
-            </div>
-        `).join('');
+        const list = document.createElement('ul');
+        list.className = 'search-results-list';
 
-        container.innerHTML = html;
+        results.forEach(result => {
+            const item = document.createElement('li');
+            item.className = 'search-result-item';
+            item.innerHTML = `
+                <a href="${result.url}">
+                    <span class="result-title">${result.title}</span>
+                    <span class="result-category">${result.category}</span>
+                </a>
+            `;
+            list.appendChild(item);
+        });
+
+        container.appendChild(list);
     }
 
     clearSearchResults(container) {
-        container.innerHTML = '';
-    }
-
-    setupFilters() {
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const sortSelect = document.querySelector('.sort-select');
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                this.applyFilter(button.dataset.filter);
-            });
-        });
-
-        if (sortSelect) {
-            sortSelect.addEventListener('change', (e) => {
-                this.applySorting(e.target.value);
-            });
+        if (container) {
+            container.innerHTML = '';
         }
     }
 
-    applyFilter(filter) {
-        const items = document.querySelectorAll('.content-item');
+    setupFilters() {
+        if (!this.content) return;
+        
+        const filterContainer = this.content.querySelector('.filter-container');
+        if (!filterContainer) return;
 
-        items.forEach(item => {
-            const itemType = item.dataset.type;
-            const shouldShow = filter === 'all' || itemType === filter;
-
-            if (shouldShow) {
-                item.style.display = '';
-                item.classList.add('fade-in');
-            } else {
-                item.style.display = 'none';
-                item.classList.remove('fade-in');
+        filterContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.filter-btn')) {
+                const filter = e.target.dataset.filter;
+                this.applyFilter(filter);
+            } else if (e.target.matches('.sort-option')) {
+                const sortBy = e.target.dataset.sort;
+                this.applySorting(sortBy);
             }
         });
+    }
+
+    applyFilter(filter) {
+        console.log(`Filtering by: ${filter}`);
+        // 필터링 로직 구현 (예: API 요청 또는 DOM 조작)
     }
 
     applySorting(sortBy) {
-        const container = document.querySelector('.content-container');
-        const items = Array.from(container.querySelectorAll('.content-item'));
-
-        items.sort((a, b) => {
-            switch (sortBy) {
-                case 'date':
-                    return new Date(b.dataset.date) - new Date(a.dataset.date);
-                case 'title':
-                    return a.dataset.title.localeCompare(b.dataset.title);
-                case 'views':
-                    return parseInt(b.dataset.views) - parseInt(a.dataset.views);
-                default:
-                    return 0;
-            }
-        });
-
-        items.forEach(item => container.appendChild(item));
+        console.log(`Sorting by: ${sortBy}`);
+        // 정렬 로직 구현 (예: API 요청 또는 DOM 조작)
     }
 
     setupModals() {
-        // 이미지 모달
+        if (!this.content) return;
+
         this.content.addEventListener('click', (e) => {
-            if (e.target.matches('.zoomable-image')) {
-                this.openImageModal(e.target);
+            const image = e.target.closest('.modal-trigger');
+            if (image) {
+                e.preventDefault();
+                this.openImageModal(image);
             }
         });
     }
 
     openImageModal(image) {
+        const src = image.src || image.href;
+        const alt = image.alt || '이미지';
         const modal = document.createElement('div');
         modal.className = 'image-modal';
         modal.innerHTML = `
             <div class="modal-backdrop"></div>
             <div class="modal-content">
-                <img src="${image.src}" alt="${image.alt}" class="modal-image">
+                <img src="${src}" alt="${alt}" class="modal-image">
                 <button class="modal-close">×</button>
             </div>
         `;
