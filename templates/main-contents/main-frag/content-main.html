@@ -1,0 +1,154 @@
+<!--main-frag-->
+<main class="content-main" th:fragment="main">
+    <!-- 환영 문구 또는 플랫폼 소개 -->
+    <section class="welcome-section" aria-labelledby="welcome-title">
+        <div class="welcome-content">
+            <h1 class="welcome-title" id="welcome-title" th:text="${welcomeTitle}">환영합니다!</h1>
+            <p class="welcome-message" th:text="${welcomeMessage}">플랫폼 소개 문구가 들어갈 자리입니다.</p>
+        </div>
+        <div class="welcome-decoration" aria-hidden="true">
+            <div class="decoration-circle"></div>
+            <div class="decoration-circle"></div>
+            <div class="decoration-circle"></div>
+        </div>
+    </section>
+
+    <!-- 주요 게임 추천 목록 -->
+    <section class="featured-games-section" aria-labelledby="featured-games-title">
+        <div class="section-header">
+            <h2 class="section-title" id="featured-games-title">주요 게임 추천</h2>
+            <a href="/games" class="section-link" aria-label="게임 목록 전체 보기">
+                전체 보기
+                <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M4 2l4 4-4 4"/>
+                </svg>
+            </a>
+        </div>
+        <div class="games-list" role="region" aria-label="추천 게임 목록">
+            <ul class="game-items" th:if="${not #lists.isEmpty(featuredGames)}">
+                <li class="game-item" th:each="game : ${featuredGames}" role="article">
+                    <div class="game-card">
+                        <div class="game-thumbnail" aria-hidden="true">
+                            <img th:src="${game.thumbnailImage}"
+                                 alt=""
+                                 class="game-image"
+                                 onerror="this.src='/static/images/default-game.png'">
+                        </div>
+                        <div class="game-info">
+                            <h3 class="game-title">
+                                <a th:href="@{/games/{id}(id=${game.id})}"
+                                   th:text="${game.title}"
+                                   th:aria-label="${game.title} + ' 게임 상세 보기'">게임 제목</a>
+                            </h3>
+                            <p class="game-description" th:text="${game.description}">게임 설명</p>
+                            <div class="game-meta">
+                                <span class="game-rating" th:if="${game.rating}">
+                                    <span class="rating-stars" aria-hidden="true">★★★★☆</span>
+                                    <span class="rating-text" th:text="${game.rating}">4.5</span>
+                                </span>
+                                <span class="game-category" th:text="${game.category}">카테고리</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!-- 빈 상태 -->
+            <div class="empty-state" th:if="${#lists.isEmpty(featuredGames)}" role="status">
+                <div class="empty-icon" aria-hidden="true">🎮</div>
+                <p class="empty-text">추천 게임이 없습니다</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 신규 등록 게임/업데이트된 게임 -->
+    <section class="new-games-section" aria-labelledby="new-games-title">
+        <div class="section-header">
+            <h2 class="section-title" id="new-games-title">신규 등록 게임</h2>
+            <a href="/games?sort=newest" class="section-link" aria-label="신규 게임 전체 보기">
+                전체 보기
+                <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M4 2l4 4-4 4"/>
+                </svg>
+            </a>
+        </div>
+        <div class="games-list" role="region" aria-label="신규 게임 목록">
+            <ul class="game-items" th:if="${not #lists.isEmpty(newGames)}">
+                <li class="game-item" th:each="game : ${newGames}" role="article">
+                    <div class="game-card">
+                        <div class="game-info">
+                            <h3 class="game-title">
+                                <a th:href="@{/games/{id}(id=${game.id})}"
+                                   th:text="${game.title}"
+                                   th:aria-label="${game.title} + ' 게임 상세 보기'">게임 제목</a>
+                            </h3>
+                            <div class="game-meta">
+                                <span class="upload-date">
+                                    <time th:datetime="${game.uploadDate}"
+                                          th:text="${#temporals.format(game.uploadDate, 'yyyy-MM-dd')}">업로드 날짜</time>
+                                </span>
+                                <span class="new-badge" aria-label="신규">NEW</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!-- 빈 상태 -->
+            <div class="empty-state" th:if="${#lists.isEmpty(newGames)}" role="status">
+                <div class="empty-icon" aria-hidden="true">🆕</div>
+                <p class="empty-text">신규 게임이 없습니다</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 커뮤니티 최신 글 요약 -->
+    <section class="community-posts-section" aria-labelledby="community-posts-title">
+        <div class="section-header">
+            <h2 class="section-title" id="community-posts-title">커뮤니티 최신 글</h2>
+            <a href="/board" class="section-link" aria-label="커뮤니티 전체 보기">
+                전체 보기
+                <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M4 2l4 4-4 4"/>
+                </svg>
+            </a>
+        </div>
+        <div class="posts-list" role="region" aria-label="최신 게시글 목록">
+            <ul class="post-items" th:if="${not #lists.isEmpty(communityPosts)}">
+                <li class="post-item" th:each="post : ${communityPosts}" role="article">
+                    <div class="post-card">
+                        <div class="post-info">
+                            <h3 class="post-title">
+                                <a th:href="@{/board/{id}(id=${post.id})}"
+                                   th:text="${post.title}"
+                                   th:aria-label="${post.title} + ' 게시글 보기'">글 제목</a>
+                            </h3>
+                            <div class="post-meta">
+                                <span class="post-author" th:text="${post.author}">작성자</span>
+                                <span class="meta-separator" aria-hidden="true">·</span>
+                                <time class="post-date"
+                                      th:datetime="${post.createdAt}"
+                                      th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</time>
+                                <span class="meta-separator" aria-hidden="true">·</span>
+                                <span class="post-views" th:if="${post.views}">
+                                    조회 <span th:text="${post.views}">0</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <span class="comment-count" th:if="${post.commentCount > 0}">
+                                <svg class="comment-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                                    <path d="M2 2h10v8H4l-2 2V2z"/>
+                                </svg>
+                                <span th:text="${post.commentCount}">0</span>
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!-- 빈 상태 -->
+            <div class="empty-state" th:if="${#lists.isEmpty(communityPosts)}" role="status">
+                <div class="empty-icon" aria-hidden="true">💬</div>
+                <p class="empty-text">최신 게시글이 없습니다</p>
+            </div>
+        </div>
+    </section>
+</main>

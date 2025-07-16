@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <title>글 작성</title>
+</head>
+<body>
+<h1>게시글 작성</h1>
+
+<form id="postForm">
+    <div>
+        <label for="title">제목</label>
+        <input type="text" id="title" required />
+    </div>
+
+    <div>
+        <label for="content">내용</label>
+        <textarea id="content" rows="10" required></textarea>
+    </div>
+
+    <div>
+        <label for="boardId">카테고리</label>
+        <select id="boardId" required>
+            <option value="free" th:selected="${boardId == 'free'}">자유 게시판</option>
+            <option value="guide" th:selected="${boardId == 'guide'}">공략 게시판</option>
+            <option value="qna" th:selected="${boardId == 'qna'}">Q&A 게시판</option>
+            <option value="suggestion" th:selected="${boardId == 'suggestion'}">건의사항 게시판</option>
+            <option value="report" th:selected="${boardId == 'report'}">신고 게시판</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="files">이미지 첨부</label>
+        <input type="file" id="files" name="files" multiple accept="image/*" />
+    </div>
+
+    <div>
+        <button type="submit">작성 완료</button>
+        <button type="button" onclick="history.back()">취소</button>
+    </div>
+</form>
+
+<script>
+    document.getElementById("postForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        const postData = {
+            postTitle: document.getElementById("title").value,
+            postContent: document.getElementById("content").value
+        };
+
+        formData.append("data", new Blob([JSON.stringify(postData)], { type: "application/json" }));
+
+        const fileInput = document.getElementById("files");
+        for (const file of fileInput.files) {
+            formData.append("files", file);
+        }
+
+        const boardId = document.getElementById("boardId").value;
+        const token = document.querySelector('meta[name="_csrf"]').content;
+        const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+        try {
+            const response = await fetch(`/api/v1/board/${boardId}/posts`, {
+                method: "POST",
+                headers: {
+                    [header]: token
+                },
+                body: formData,
+                credentials: "include"
+            });
+
+            if (response.ok) {
+                location.href = `/board/${boardId}/view`;
+            } else {
+                const msg = await response.text();
+                alert("작성 실패: " + msg);
+            }
+        } catch (err) {
+            console.error("요청 실패", err);
+            alert("네트워크 오류 또는 서버 오류 발생");
+        }
+    });
+</script>
+</body>
+</html>

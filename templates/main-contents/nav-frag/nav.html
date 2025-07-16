@@ -1,0 +1,89 @@
+<!--nav-frag-->
+<nav class="global-nav" th:fragment="nav" role="navigation" aria-label="주요 메뉴">
+    <ul class="nav-menu" role="menubar">
+        <!-- 게임 목록 -->
+        <li class="nav-item" role="none">
+            <a href="/games" class="nav-link" role="menuitem" aria-label="게임 목록 페이지로 이동">
+                <span class="nav-text">게임 목록</span>
+            </a>
+        </li>
+
+        <!-- 게시판 -->
+        <li class="nav-item has-dropdown" role="none">
+            <a href="/board"
+               class="nav-link dropdown-trigger"
+               role="menuitem"
+               aria-expanded="false"
+               aria-haspopup="true"
+               aria-label="게시판 메뉴">
+                <span class="nav-text">게시판</span>
+                <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M6 8l-3-3h6l-3 3z"/>
+                </svg>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-label="게시판 하위 메뉴">
+                <li class="dropdown-item" role="none" th:each="board : ${boardList}">
+                    <a class="dropdown-link"
+                       role="menuitem"
+                       th:href="@{'/board/' + ${board.boardId} + '/view'}"
+                       th:text="${board.boardName}"
+                       th:aria-label="${board.boardName} + ' 게시판으로 이동'">
+                    </a>
+                </li>
+                <!-- 빈 상태 처리 -->
+                <li class="dropdown-item empty-state" role="none" th:if="${#lists.isEmpty(boardList)}">
+                    <span class="empty-text">게시판이 없습니다</span>
+                </li>
+            </ul>
+        </li>
+
+        <!-- 게임 업로드 -->
+        <li class="nav-item" role="none">
+            <a href="/upload" class="nav-link" role="menuitem" aria-label="게임 업로드 페이지로 이동">
+                <span class="nav-text">게임 업로드</span>
+            </a>
+        </li>
+
+        <!-- 마이페이지 -->
+        <li class="nav-item has-dropdown" role="none">
+            <a href="/mypage"
+               class="nav-link dropdown-trigger"
+               role="menuitem"
+               aria-expanded="false"
+               aria-haspopup="true"
+               aria-label="마이페이지 메뉴">
+                <span class="nav-text">마이페이지</span>
+                <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M6 8l-3-3h6l-3 3z"/>
+                </svg>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-label="마이페이지 하위 메뉴">
+                <!-- <li class="dropdown-item" role="none">
+                    <a href="/mypage/games" class="dropdown-link" role="menuitem">내 게임</a>
+                </li>
+                <li class="dropdown-item" role="none">
+                    <a href="/mypage/favorites" class="dropdown-link" role="menuitem">즐겨찾기</a>
+                </li> -->
+                <li class="dropdown-item" role="none">
+                    <a href="/my-page/edit-profile"
+                       class="dropdown-link"
+                       role="menuitem"
+                       aria-label="프로필 수정 페이지로 이동">
+                        <span class="dropdown-text">프로필 수정하기</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- 관리자 메뉴 -->
+        <li class="nav-item admin-only" role="none" th:if="${isAdmin}">
+            <a href="/admin" class="nav-link admin-link" role="menuitem" aria-label="관리자 메뉴로 이동">
+                <span class="nav-text">관리자 메뉴</span>
+                <span class="admin-badge" aria-hidden="true">Admin</span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- 네비게이션 인디케이터 (현재 페이지 표시) -->
+    <div class="nav-indicator" aria-hidden="true"></div>
+</nav>

@@ -1,0 +1,782 @@
+/* Apple macOS/iOS 스타일 사이드바 CSS */
+
+.sidebar {
+    position: fixed;
+    top: 64px;
+    right: 0;
+    width: 320px;
+    height: calc(100vh - 64px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid var(--separator-non-opaque);
+    overflow-y: auto;
+    z-index: 800;
+    transition: all var(--animation-duration) var(--animation-ease);
+    padding: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .sidebar {
+        background: rgba(28, 28, 30, 0.8);
+    }
+}
+
+/* 사이드바 섹션 */
+.sidebar section {
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--separator-non-opaque);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.sidebar section:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--label-primary);
+    margin: 0;
+}
+
+/* 인기 게임 순위 */
+.games-ranking {
+    margin: 0;
+}
+
+.ranking-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.ranking-item:last-child {
+    border-bottom: none;
+}
+
+.ranking-item:hover {
+    background-color: var(--system-gray6);
+    border-radius: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.game-link {
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.game-link:hover {
+    color: var(--system-blue);
+}
+
+/* 최근 게임 */
+.recent-games-list {
+    margin: 0;
+}
+
+.game-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.game-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.game-item:last-child {
+    border-bottom: none;
+}
+
+.game-item:hover {
+    background-color: var(--system-gray6);
+    border-radius: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.game-info {
+    flex: 1;
+}
+
+.game-meta {
+    font-size: 12px;
+    color: var(--system-gray);
+}
+
+.upload-date {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 공지사항 */
+.notice-list {
+    margin: 0;
+}
+
+.notice-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notice-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.notice-item:last-child {
+    border-bottom: none;
+}
+
+.notice-item:hover {
+    background-color: var(--system-gray6);
+    border-radius: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.notice-link {
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.notice-link:hover {
+    color: var(--system-blue);
+}
+
+/* 이벤트 */
+.event-list {
+    margin: 0;
+}
+
+.event-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.event-item:last-child {
+    border-bottom: none;
+}
+
+.event-item:hover {
+    background-color: var(--system-gray6);
+    border-radius: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.event-content {
+    margin: 0;
+}
+
+.event-title {
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.event-title:hover {
+    color: var(--system-blue);
+}
+
+.event-description {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--system-gray);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.sidebar-widget-title {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--label-primary);
+}
+
+.sidebar-widget-action {
+    color: var(--system-blue);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.sidebar-widget-action:hover {
+    color: #0056CC;
+}
+
+/* 최근 ?�동 ?�젯 */
+.activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-item:hover {
+    background-color: var(--system-gray6);
+    margin: 0 -12px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.activity-icon.comment {
+    background-color: rgba(0, 122, 255, 0.1);
+    color: var(--system-blue);
+}
+
+.activity-icon.like {
+    background-color: rgba(255, 45, 146, 0.1);
+    color: var(--system-pink);
+}
+
+.activity-icon.share {
+    background-color: rgba(52, 199, 89, 0.1);
+    color: var(--system-green);
+}
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-text {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    color: var(--label-primary);
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.activity-time {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--system-gray);
+}
+
+/* ?�렌???�젯 */
+.trending-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.trending-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.trending-item:last-child {
+    border-bottom: none;
+}
+
+.trending-item:hover {
+    background-color: var(--system-gray6);
+    margin: 0 -12px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.trending-rank {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--system-gray5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--label-primary);
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.trending-rank.top {
+    background: linear-gradient(135deg, var(--system-orange), var(--system-red));
+    color: white;
+}
+
+.trending-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.trending-title {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--label-primary);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.trending-stats {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--system-gray);
+}
+
+/* 추천 ?�용???�젯 */
+.users-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.user-item:last-child {
+    border-bottom: none;
+}
+
+.user-item:hover {
+    background-color: var(--system-gray6);
+    margin: 0 -12px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--system-blue), var(--system-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-name {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--label-primary);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-role {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--system-gray);
+}
+
+.user-follow {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 16px;
+    background-color: var(--system-blue);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+    flex-shrink: 0;
+}
+
+.user-follow:hover {
+    background-color: #0056CC;
+    transform: scale(1.05);
+}
+
+.user-follow.following {
+    background-color: var(--system-gray5);
+    color: var(--label-primary);
+}
+
+.user-follow.following:hover {
+    background-color: var(--system-gray4);
+}
+
+/* ?�계 ?�젯 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-item {
+    background-color: var(--background-secondary);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.stat-number {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--label-primary);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--system-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 캘린???�젯 */
+.calendar {
+    width: 100%;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.calendar-month {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--label-primary);
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.calendar-nav-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--system-gray6);
+    color: var(--label-primary);
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-nav-btn:hover {
+    background-color: var(--system-gray5);
+    transform: scale(1.1);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.calendar-day.header {
+    color: var(--system-gray);
+    font-weight: 600;
+    cursor: default;
+}
+
+.calendar-day.today {
+    background-color: var(--system-blue);
+    color: white;
+}
+
+.calendar-day.other-month {
+    color: var(--system-gray3);
+}
+
+.calendar-day:hover:not(.header) {
+    background-color: var(--system-gray6);
+}
+
+.calendar-day.event {
+    position: relative;
+}
+
+.calendar-day.event::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background-color: var(--system-orange);
+    border-radius: 50%;
+}
+
+/* 모바???�이?�바 */
+@media (max-width: 1024px) {
+    .sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        right: -320px;
+        width: 320px;
+        height: 100vh;
+        z-index: 1100;
+        background: var(--background-primary);
+        border-left: none;
+        box-shadow: var(--shadow-heavy);
+    }
+
+    .sidebar.active {
+        right: 0;
+    }
+
+    .sidebar-container {
+        padding-top: 80px;
+    }
+}
+
+/* ?�이?�바 ?�버?�이 */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ?�크�??�과 */
+.sidebar-widget {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.sidebar-widget:nth-child(1) { animation-delay: 0.1s; }
+.sidebar-widget:nth-child(2) { animation-delay: 0.2s; }
+.sidebar-widget:nth-child(3) { animation-delay: 0.3s; }
+.sidebar-widget:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 로딩 ?�켈?�톤 */
+.sidebar-skeleton {
+    background-color: var(--system-gray5);
+    border-radius: 8px;
+    animation: pulse 1.5s infinite;
+}
+
+.sidebar-skeleton-title {
+    height: 20px;
+    width: 60%;
+    margin-bottom: 16px;
+}
+
+.sidebar-skeleton-item {
+    height: 48px;
+    margin-bottom: 12px;
+}
+
+.sidebar-skeleton-text {
+    height: 14px;
+    width: 80%;
+    margin-bottom: 8px;
+}
+
+/* ?�근??*/
+.sidebar-widget:focus-within {
+    outline: 2px solid var(--system-blue);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar-widget {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ?�크 모드 ?�별 ?��???*/
+@media (prefers-color-scheme: dark) {
+    .stat-item {
+        background-color: var(--background-tertiary);
+    }
+
+    .calendar-day.today {
+        background-color: var(--system-blue);
+    }
+
+    .calendar-day:hover:not(.header) {
+        background-color: var(--system-gray4);
+    }
+}
+
+/* 맞춤???�크롤바 */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--system-gray4);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--system-gray3);
+}
+
+/* ?�젯 ?�장/축소 */
+.sidebar-widget.collapsed .sidebar-widget-content {
+    display: none;
+}
+
+.sidebar-widget-toggle {
+    background: none;
+    border: none;
+    color: var(--system-gray);
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform var(--animation-duration) var(--animation-ease);
+}
+
+.sidebar-widget.collapsed .sidebar-widget-toggle {
+    transform: rotate(-90deg);
+}
+
+/* ?�젯 ?�래�????�롭 */
+.sidebar-widget.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+}
+
+.sidebar-widget.drop-target {
+    border: 2px dashed var(--system-blue);
+    background-color: rgba(0, 122, 255, 0.05);
+}

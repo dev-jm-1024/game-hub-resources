@@ -1,0 +1,336 @@
+/* Apple macOS/iOS ?��????�역 CSS */
+/* SF Pro ?�트???�스???�트�??��?*/
+
+/* CSS 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 루트 변??- Apple 컬러 ?�스??*/
+:root {
+    /* ?�스??컬러 */
+    --system-blue: #007AFF;
+    --system-green: #34C759;
+    --system-indigo: #5856D6;
+    --system-orange: #FF9500;
+    --system-pink: #FF2D92;
+    --system-purple: #AF52DE;
+    --system-red: #FF3B30;
+    --system-teal: #5AC8FA;
+    --system-yellow: #FFCC00;
+
+    /* 그레??컬러 */
+    --system-gray: #8E8E93;
+    --system-gray2: #AEAEB2;
+    --system-gray3: #C7C7CC;
+    --system-gray4: #D1D1D6;
+    --system-gray5: #E5E5EA;
+    --system-gray6: #F2F2F7;
+
+    /* ?�벨 컬러 */
+    --label-primary: #000000;
+    --label-secondary: #3C3C43;
+    --label-tertiary: #3C3C43;
+    --label-quaternary: #3C3C43;
+
+    /* 배경 컬러 */
+    --background-primary: #FFFFFF;
+    --background-secondary: #F2F2F7;
+    --background-tertiary: #FFFFFF;
+
+    /* 구분??*/
+    --separator-opaque: #C6C6C8;
+    --separator-non-opaque: rgba(60, 60, 67, 0.36);
+
+    /* 그림??*/
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    /* 블러 ?�과 */
+    --blur-light: blur(20px);
+    --blur-medium: blur(40px);
+    --blur-heavy: blur(60px);
+
+    /* ?�니메이??*/
+    --animation-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --animation-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --animation-duration: 0.3s;
+}
+
+/* ?�크 모드 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --label-primary: #FFFFFF;
+        --label-secondary: #EBEBF5;
+        --label-tertiary: #EBEBF5;
+        --label-quaternary: #EBEBF5;
+
+        --background-primary: #000000;
+        --background-secondary: #1C1C1E;
+        --background-tertiary: #2C2C2E;
+
+        --separator-opaque: #38383A;
+        --separator-non-opaque: rgba(84, 84, 88, 0.65);
+
+        --system-gray: #8E8E93;
+        --system-gray2: #636366;
+        --system-gray3: #48484A;
+        --system-gray4: #3A3A3C;
+        --system-gray5: #2C2C2E;
+        --system-gray6: #1C1C1E;
+    }
+}
+
+/* 기본 ?��???*/
+html {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    line-height: 1.47;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    background-color: var(--background-primary);
+    color: var(--label-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    transition: background-color var(--animation-duration) var(--animation-ease),
+    color var(--animation-duration) var(--animation-ease);
+}
+
+/* 페이지 레이아웃 */
+.page-content-wrapper {
+    display: flex;
+    min-height: calc(100vh - 64px);
+    margin-top: 64px;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background-color: var(--system-blue);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-medium);
+    transition: all var(--animation-duration) var(--animation-ease);
+    z-index: 1000;
+}
+
+.back-to-top:hover {
+    background-color: #0056CC;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.user-status-info {
+    display: none;
+}
+
+/* 글?�스모피�??�과 */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: var(--blur-light);
+    -webkit-backdrop-filter: var(--blur-light);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .glass {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* 버튼 ?��???*/
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+    user-select: none;
+    -webkit-user-select: none;
+    text-decoration: none;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: var(--system-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056CC;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary {
+    background-color: var(--system-gray6);
+    color: var(--label-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--system-gray5);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+/* 카드 ?��???*/
+.card {
+    background-color: var(--background-tertiary);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* ?�력 ?�드 */
+.input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--separator-opaque);
+    border-radius: 8px;
+    background-color: var(--background-tertiary);
+    color: var(--label-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    transition: all var(--animation-duration) var(--animation-ease);
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--system-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* ?�크롤바 커스?�마?�징 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--system-gray3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--system-gray2);
+}
+
+/* ?�니메이??*/
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ?�틸리티 ?�래??*/
+.fade-in {
+    animation: fadeIn var(--animation-duration) var(--animation-ease);
+}
+
+.slide-in {
+    animation: slideIn var(--animation-duration) var(--animation-ease);
+}
+
+.scale-in {
+    animation: scaleIn var(--animation-duration) var(--animation-ease);
+}
+
+/* 반응??*/
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        font-size: 16px;
+    }
+}
+
+/* ?�근??*/
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ?�커???��???*/
+*:focus {
+    outline: 2px solid var(--system-blue);
+    outline-offset: 2px;
+}
+
+/* ?�택 ?��???*/
+::selection {
+    background-color: var(--system-blue);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--system-blue);
+    color: white;
+}

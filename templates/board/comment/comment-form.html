@@ -1,0 +1,9 @@
+<!-- templates/fragments/comment-form.html -->
+<div th:fragment="commentFormFragment">
+    <form id="commentForm" method="post">
+        <input type="text" name="commentContent">
+        <input type="hidden" name="postId" th:value="${postsData.getPostId}">
+        <input type="hidden" name="boardId" th:value="${postsData.getBoard().boardId}">
+        <button type="submit">등록</button>
+    </form>
+</div>

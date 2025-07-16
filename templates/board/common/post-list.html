@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${board.boardName} + ' - 게시글 목록'">게시판 이름 - 게시글 목록</title>
+</head>
+<body>
+<main>
+    <h1 th:text="${board.boardName}">게시판 이름</h1>
+
+    <!-- 게시글 목록 -->
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th><!-- title -->
+            <th>작성자</th><!-- author -->
+            <th>작성일</th><!-- createdAt -->
+            <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 게시글이 없을 경우 -->
+        <tr th:if="${#lists.isEmpty(summaryPosts)}">
+            <td colspan="5">게시글이 없습니다.</td>
+        </tr>
+
+        <!-- 게시글이 있을 경우 -->
+        <tr th:each="post, stat : ${summaryPosts}">
+            <td th:text="${stat.count}">1</td>
+            <td th:text="${post.title}">글 제목</td>
+            <td th:text="${post.author}">작성자</td>
+            <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</td>
+            <td>0</td> <!-- 조회수는 SummaryPostDto에 없으므로 일단 0으로 표시 -->
+        </tr>
+        </tbody>
+
+    </table>
+
+    <!-- 글쓰기 버튼 -->
+    <div>
+        <form action="/board/new" method="get">
+            <input type="hidden" name="boardId" th:value="${board.boardId}" />
+            <button type="submit" value="글쓰기"
+                    style="background-color: rgb(54,54,52); color: #fbf8fb; font-weight: 900;
+                    border-radius: 16px; width: 200px; height: 100px; font-size: 13px;">
+                글쓰기
+            </button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .board-section {
+            margin-bottom: 50px;
+        }
+        .board-section h2 {
+            width: 100%;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>게시판 홈</h1>
+
+    <div class="board-section" th:each="entry : ${postsByBoard}">
+        <h2>
+            <a th:href="@{'/board/' + ${entry.key.boardId} + '/view'}"
+               th:text="${entry.key.boardName}">게시판 이름</a>
+        </h2>
+
+        <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+            <table>
+                <thead>
+                <tr><th>제목</th><th>작성일</th><th>조회수</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="post : ${entry.value}">
+                    <td>
+                        <a th:href="@{'/board/' + ${entry.key.boardId} + '/' + ${post.postId} + '/view'}"
+                           th:text="${post.postTitle}">제목</a>
+                    </td>
+                    <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">날짜</td>
+                    <td th:text="${post.viewCount}">0</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${entry.value == null or entry.value.isEmpty()}">
+            <p><em>게시물이 없습니다.</em></p>
+        </div>
+
+        <form th:action="@{'/board/new'}" method="get">
+            <input type="hidden" name="boardId" th:value="${entry.key.boardId}">
+            <button type="submit">글쓰기</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

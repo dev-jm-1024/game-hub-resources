@@ -1,0 +1,110 @@
+<!--header-frag-->
+<header th:fragment="header" class="site-header">
+    <div class="header-container">
+        <!-- 사이트 로고 -->
+        <div class="site-logo">
+            <h1>
+                <a href="/" title="홈으로" aria-label="사이트 홈으로 이동">
+                    <!-- <img src="/static/logo.png" alt="사이트 로고"> -->
+                    <span class="logo-text">사이트명</span>
+                </a>
+            </h1>
+        </div>
+
+        <!-- 글로벌 내비게이션 -->
+        <div class="nav-container">
+            <nav th:replace="main-contents/nav-frag/nav :: nav"></nav>
+        </div>
+
+        <!-- 검색창 -->
+        <div class="search-container">
+            <form class="search-form" action="/search" method="get" role="search">
+                <label for="search-input" class="sr-only">검색</label>
+                <div class="search-input-wrapper">
+                    <input type="text"
+                           id="search-input"
+                           name="q"
+                           placeholder="검색어를 입력하세요"
+                           aria-label="검색어 입력"
+                           autocomplete="off">
+                    <button type="submit" class="search-btn" aria-label="검색 실행">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 사용자 영역 -->
+        <div class="user-area">
+            <!-- 로그인 상태가 아닐 때 -->
+            <div class="guest-user" th:if="${not isLoggedIn}">
+                <a href="/game-hub/login" class="login-btn btn-secondary">로그인</a>
+                <a href="/game-hub/join" class="signup-btn btn-primary">회원가입</a>
+                <a href="/game-hub/join-prod" class="team-signup-btn btn-outline">팀 회원가입</a>
+            </div>
+
+            <!-- 로그인 상태일 때 -->
+            <div class="logged-user" th:if="${isLoggedIn}">
+                <div class="user-profile">
+                    <img th:src="${profileImage}"
+                         alt="프로필 이미지"
+                         class="profile-img"
+                         onerror="this.src='/static/images/default-profile.png'">
+                    <span class="user-nickname" th:text="${nickname}">닉네임</span>
+                    <button class="profile-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                            <path d="M6 8l-3-3h6l-3 3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="user-actions dropdown-menu" role="menu">
+                    <form class="logout-form" th:action="@{/logout}" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <button type="submit" class="logout-btn" role="menuitem">로그아웃</button>
+                    </form>
+
+                    <!-- 숨겨진 계정 비활성화 폼 -->
+                    <form class="deactivate-form" th:action="@{${deactivatePath}}" method="patch"
+                          style="background-color: #EBF4F6; color: rgb(54,54,52); font-weight: 900;">
+                        <input type="text" name="authUserId" id="authUserId" aria-label="사용자 ID">
+                        <input type="password" name="authUserPassword" id="authUserPassword" aria-label="사용자 비밀번호">
+                        <button type="submit" aria-label="계정 비활성화"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 다국어 선택 -->
+        <div class="lang-select">
+            <label for="lang-selector" id="lang-selector" class="sr-only">언어 선택</label>
+            <div class="lang-options" role="group" aria-label="언어 선택">
+                <a href="?lang=ko" class="lang-option" aria-label="한국어로 변경">
+                    <span class="lang-flag" aria-hidden="true">🇰🇷</span>
+                    <span class="lang-text">한국어</span>
+                </a>
+                <span class="lang-separator" aria-hidden="true">|</span>
+                <a href="?lang=en" class="lang-option" aria-label="English로 변경">
+                    <span class="lang-flag" aria-hidden="true">🇺🇸</span>
+                    <span class="lang-text">English</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 모바일 메뉴 버튼 -->
+        <button class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-nav" aria-label="모바일 메뉴 열기">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- 모바일 네비게이션 -->
+    <div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="모바일 메뉴">
+        <div class="mobile-nav-content">
+            <!-- 모바일에서 네비게이션 내용이 복사될 영역 -->
+        </div>
+    </div>
+</header>

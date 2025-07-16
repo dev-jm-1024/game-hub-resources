@@ -1,0 +1,604 @@
+/* Apple macOS/iOS ?��????�더 CSS */
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--separator-non-opaque);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+@media (prefers-color-scheme: dark) {
+    header {
+        background: rgba(28, 28, 30, 0.8);
+    }
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+/* 사이트 로고 */
+.site-logo {
+    display: flex;
+    align-items: center;
+}
+
+.site-logo h1 {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.site-logo a {
+    text-decoration: none;
+    color: var(--label-primary);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.site-logo a:hover {
+    color: var(--system-blue);
+    transform: scale(1.05);
+}
+
+/* 네비게이션 */
+.nav-container {
+    display: flex;
+    align-items: center;
+}
+
+.global-nav .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--label-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--animation-duration) var(--animation-ease);
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    background-color: var(--system-gray6);
+    color: var(--system-blue);
+}
+
+.nav-item.active .nav-link {
+    background-color: var(--system-blue);
+    color: white;
+}
+
+/* 드롭다운 메뉴 */
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--separator-non-opaque);
+    border-radius: 12px;
+    box-shadow: var(--shadow-heavy);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all var(--animation-duration) var(--animation-ease);
+    z-index: 1000;
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+    margin-top: 8px;
+}
+
+.nav-item.has-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    margin: 0;
+}
+
+.dropdown-link {
+    display: block;
+    padding: 12px 16px;
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.dropdown-link:hover {
+    background-color: var(--system-gray6);
+    color: var(--system-blue);
+}
+
+.header-nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background-color: var(--system-blue);
+    border-radius: 50%;
+}
+
+/* 사용자 영역 */
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.guest-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login-btn, .signup-btn, .team-signup-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--separator-opaque);
+    border-radius: 8px;
+    background-color: var(--background-secondary);
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.login-btn:hover, .signup-btn:hover, .team-signup-btn:hover {
+    background-color: var(--system-gray6);
+    color: var(--system-blue);
+    border-color: var(--system-blue);
+}
+
+.logged-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-nickname {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--label-primary);
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.logout-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--separator-opaque);
+    border-radius: 6px;
+    background-color: var(--background-secondary);
+    color: var(--label-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.logout-btn:hover {
+    background-color: var(--system-red);
+    color: white;
+    border-color: var(--system-red);
+}
+
+.deactivate-form {
+    display: none;
+}
+
+/* 언어 선택 */
+.lang-select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 16px;
+}
+
+.lang-option {
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.lang-option:hover {
+    background-color: var(--system-gray6);
+    color: var(--system-blue);
+}
+
+.lang-separator {
+    color: var(--system-gray);
+    font-size: 12px;
+}
+
+/* 검색 영역 */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    width: 200px;
+    padding: 8px 40px 8px 16px;
+    border: 1px solid var(--separator-opaque);
+    border-radius: 20px;
+    background-color: var(--background-secondary);
+    color: var(--label-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.search-form input[type="text"]:focus {
+    width: 280px;
+    border-color: var(--system-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.search-form button {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--system-gray);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all var(--animation-duration) var(--animation-ease);
+    font-size: 16px;
+}
+
+.search-form button:hover {
+    background-color: var(--system-gray6);
+    color: var(--system-blue);
+}
+
+.header-notifications {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--background-secondary);
+    color: var(--label-primary);
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.header-notifications:hover {
+    background-color: var(--system-gray5);
+    transform: scale(1.1);
+}
+
+.header-notifications-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--system-red);
+    border-radius: 50%;
+    border: 2px solid var(--background-primary);
+}
+
+.header-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background-color: var(--background-secondary);
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.header-profile:hover {
+    background-color: var(--system-gray5);
+    transform: scale(1.05);
+}
+
+.header-profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--system-green), var(--system-teal));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.header-profile-name {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--label-primary);
+}
+
+.header-profile-arrow {
+    color: var(--system-gray);
+    font-size: 12px;
+    transition: transform var(--animation-duration) var(--animation-ease);
+}
+
+.header-profile:hover .header-profile-arrow {
+    transform: rotate(180deg);
+}
+
+/* 모바??메뉴 */
+.header-mobile-menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: var(--background-secondary);
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.header-mobile-menu:hover {
+    background-color: var(--system-gray5);
+}
+
+.header-mobile-menu-line {
+    width: 18px;
+    height: 2px;
+    background-color: var(--label-primary);
+    margin: 2px 0;
+    border-radius: 1px;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.header-mobile-menu.active .header-mobile-menu-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.header-mobile-menu.active .header-mobile-menu-line:nth-child(2) {
+    opacity: 0;
+}
+
+.header-mobile-menu.active .header-mobile-menu-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* ?�롭?�운 메뉴 */
+.header-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    min-width: 200px;
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--separator-non-opaque);
+    border-radius: 12px;
+    box-shadow: var(--shadow-heavy);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.header-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.header-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.header-dropdown-item:hover {
+    background-color: var(--system-gray6);
+}
+
+.header-dropdown-item:first-child {
+    border-radius: 12px 12px 0 0;
+}
+
+.header-dropdown-item:last-child {
+    border-radius: 0 0 12px 12px;
+}
+
+.header-dropdown-separator {
+    height: 1px;
+    background-color: var(--separator-non-opaque);
+    margin: 4px 0;
+}
+
+/* 반응??*/
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 16px;
+    }
+
+    .header-nav {
+        display: none;
+    }
+
+    .header-search {
+        display: none;
+    }
+
+    .header-mobile-menu {
+        display: flex;
+    }
+
+    .header-user {
+        gap: 8px;
+    }
+
+    .header-profile-name {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        height: 56px;
+    }
+
+    .header-logo {
+        font-size: 18px;
+    }
+
+    .header-logo-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .header-notifications {
+        width: 36px;
+        height: 36px;
+    }
+
+    .header-profile-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+}
+
+/* ?�크�????�더 ?��???*/
+.header.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: var(--blur-medium);
+    -webkit-backdrop-filter: var(--blur-medium);
+    box-shadow: var(--shadow-light);
+}
+
+@media (prefers-color-scheme: dark) {
+    .header.scrolled {
+        background: rgba(28, 28, 30, 0.95);
+    }
+}
+
+/* ?�니메이??*/
+.header-nav-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.header-nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.header-nav-item:hover::before {
+    left: 100%;
+}
+
+/* 로딩 ?�니메이??*/
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.header-loading {
+    animation: pulse 2s infinite;
+}

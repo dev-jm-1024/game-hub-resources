@@ -1,0 +1,705 @@
+/* Apple macOS/iOS 스타일 푸터 CSS */
+
+.site-footer {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--separator-non-opaque);
+    margin-top: auto;
+    padding: 48px 0 24px;
+    position: relative;
+    z-index: 100;
+}
+
+@media (prefers-color-scheme: dark) {
+    .site-footer {
+        background: rgba(28, 28, 30, 0.8);
+    }
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 32px;
+}
+
+/* 푸터 섹션들 */
+.footer-container section {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-container h3 {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--label-primary);
+    margin: 0 0 16px 0;
+}
+
+.footer-container p {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    color: var(--system-gray);
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+}
+
+/* 회사 정보 */
+.company-info {
+
+}
+
+/* 법적 링크 */
+.legal-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.legal-links li {
+    margin-bottom: 8px;
+}
+
+.legal-links a {
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.legal-links a:hover {
+    color: var(--system-blue);
+}
+
+/* 저작권 */
+.copyright p {
+    font-size: 12px;
+    color: var(--system-gray);
+    margin: 0;
+}
+
+/* 소셜 링크 */
+.social-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 12px;
+}
+
+.social-links li {
+    margin: 0;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--system-gray6);
+    border-radius: 50%;
+    color: var(--label-primary);
+    text-decoration: none;
+    font-size: 16px;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.social-links a:hover {
+    background-color: var(--system-blue);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-link-item {
+    margin-bottom: 8px;
+}
+
+.footer-link {
+    color: var(--label-secondary);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all var(--animation-duration) var(--animation-ease);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-link:hover {
+    color: var(--system-blue);
+    transform: translateX(4px);
+}
+
+.footer-link-icon {
+    font-size: 16px;
+    transition: transform var(--animation-duration) var(--animation-ease);
+}
+
+.footer-link:hover .footer-link-icon {
+    transform: scale(1.1);
+}
+
+/* 브랜???�션 */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    text-decoration: none;
+    color: var(--label-primary);
+}
+
+.footer-logo-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+    background: linear-gradient(135deg, var(--system-blue), var(--system-purple));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    transition: transform var(--animation-duration) var(--animation-ease);
+}
+
+.footer-logo:hover .footer-logo-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.footer-logo-text {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.footer-description {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    color: var(--label-secondary);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+/* ?�셜 미디??*/
+.footer-social {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--background-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--label-primary);
+    text-decoration: none;
+    font-size: 18px;
+    transition: all var(--animation-duration) var(--animation-ease);
+    border: 1px solid var(--separator-non-opaque);
+}
+
+.social-link:hover {
+    background-color: var(--system-blue);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.social-link.facebook:hover {
+    background-color: #1877F2;
+}
+
+.social-link.twitter:hover {
+    background-color: #1DA1F2;
+}
+
+.social-link.instagram:hover {
+    background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4);
+}
+
+.social-link.linkedin:hover {
+    background-color: #0077B5;
+}
+
+.social-link.github:hover {
+    background-color: #333;
+}
+
+/* ?�락�??�보 */
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    color: var(--label-secondary);
+}
+
+.contact-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--system-blue);
+    font-size: 16px;
+}
+
+.contact-text {
+    flex: 1;
+}
+
+.contact-link {
+    color: var(--label-secondary);
+    text-decoration: none;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.contact-link:hover {
+    color: var(--system-blue);
+}
+
+/* ?�스?�터 */
+.footer-newsletter {
+    display: flex;
+    flex-direction: column;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.newsletter-input {
+    padding: 12px 16px;
+    border: 1px solid var(--separator-opaque);
+    border-radius: 12px;
+    background-color: var(--background-tertiary);
+    color: var(--label-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.newsletter-input:focus {
+    border-color: var(--system-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.newsletter-btn {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--system-blue);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.newsletter-btn:hover {
+    background-color: #0056CC;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+/* ?�터 ?�단 */
+.footer-bottom {
+    border-top: 1px solid var(--separator-non-opaque);
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer-copyright {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--system-gray);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.copyright-icon {
+    font-size: 14px;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.footer-bottom-link {
+    color: var(--system-gray);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    transition: color var(--animation-duration) var(--animation-ease);
+}
+
+.footer-bottom-link:hover {
+    color: var(--system-blue);
+}
+
+/* ?�어 ?�택�?*/
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--separator-opaque);
+    border-radius: 8px;
+    background-color: var(--background-secondary);
+    cursor: pointer;
+    transition: all var(--animation-duration) var(--animation-ease);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--label-primary);
+}
+
+.language-selector:hover {
+    background-color: var(--system-gray6);
+    border-color: var(--system-blue);
+}
+
+.language-icon {
+    font-size: 14px;
+    color: var(--system-blue);
+}
+
+/* ???�운로드 */
+.footer-apps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.app-stores {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.app-store-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--separator-opaque);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--label-primary);
+    transition: all var(--animation-duration) var(--animation-ease);
+    min-width: 140px;
+}
+
+.app-store-link:hover {
+    background-color: var(--system-gray6);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.app-store-icon {
+    font-size: 24px;
+}
+
+.app-store-text {
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.app-store-subtitle {
+    font-size: 10px;
+    color: var(--system-gray);
+    margin-bottom: 2px;
+}
+
+.app-store-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* 반응???�자??*/
+@media (max-width: 768px) {
+    .footer {
+        padding: 32px 0 16px;
+    }
+
+    .footer-container {
+        padding: 0 16px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .footer-brand {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-description {
+        text-align: center;
+        max-width: none;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-bottom-links {
+        justify-content: center;
+    }
+
+    .app-stores {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .app-store-link {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-content {
+        gap: 24px;
+    }
+
+    .footer-social {
+        gap: 8px;
+    }
+
+    .social-link {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .footer-bottom-links {
+        gap: 16px;
+    }
+
+    .newsletter-form {
+        gap: 8px;
+    }
+}
+
+/* ?�크 모드 ?�별 ?��???*/
+@media (prefers-color-scheme: dark) {
+    .social-link {
+        background-color: var(--background-tertiary);
+    }
+
+    .app-store-link {
+        background-color: var(--background-tertiary);
+    }
+
+    .language-selector {
+        background-color: var(--background-tertiary);
+    }
+
+    .newsletter-input {
+        background-color: var(--background-secondary);
+    }
+}
+
+/* ?�니메이??*/
+.footer-section {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.footer-section:nth-child(1) { animation-delay: 0.1s; }
+.footer-section:nth-child(2) { animation-delay: 0.2s; }
+.footer-section:nth-child(3) { animation-delay: 0.3s; }
+.footer-section:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ?�크�?????버튼 */
+.scroll-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--separator-opaque);
+    color: var(--label-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--animation-duration) var(--animation-ease);
+    z-index: 1000;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    background-color: var(--system-blue);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* ?�근??*/
+.footer-link:focus,
+.social-link:focus,
+.newsletter-btn:focus,
+.app-store-link:focus {
+    outline: 2px solid var(--system-blue);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-section {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ?�터 배경 ?�턴 */
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><defs><pattern id="footerPattern" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="1" fill="rgba(0,122,255,0.1)"/></pattern></defs><rect width="60" height="60" fill="url(%23footerPattern)"/></svg>');
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ?�터 구분??*/
+.footer-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--separator-opaque), transparent);
+    margin: 32px 0;
+}
+
+/* ?�터 ?�태 ?�시 */
+.footer-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--system-gray);
+    margin-top: 16px;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--system-green);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ?�터 카드 ?��???*/
+.footer-card {
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--separator-non-opaque);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.footer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.footer-card-title {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--label-primary);
+    margin-bottom: 8px;
+}
+
+.footer-card-content {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--label-secondary);
+    line-height: 1.5;
+}
