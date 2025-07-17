@@ -1,20 +1,12 @@
-/* Apple macOS/iOS 스타일 푸터 CSS */
+/* 푸터 영역 CSS */
 
 .site-footer {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid var(--separator-non-opaque);
-    margin-top: auto;
-    padding: 48px 0 24px;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 40px;
+    padding: 30px 0 20px;
     position: relative;
     z-index: 100;
-}
-
-@media (prefers-color-scheme: dark) {
-    .site-footer {
-        background: rgba(28, 28, 30, 0.8);
-    }
 }
 
 .footer-container {
@@ -23,8 +15,8 @@
     padding: 0 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-bottom: 32px;
+    gap: 30px;
+    margin-bottom: 20px;
 }
 
 /* 푸터 섹션들 */

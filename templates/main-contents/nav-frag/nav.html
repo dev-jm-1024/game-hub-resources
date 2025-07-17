@@ -1,5 +1,7 @@
 <!--nav-frag-->
-<nav class="global-nav" th:fragment="nav" role="navigation" aria-label="주요 메뉴">
+<link rel="stylesheet" th:href="@{/main-contents-skin/nav/css/nav.css}">
+<nav class="nav" th:fragment="nav" role="navigation" aria-label="주요 메뉴">
+    <div class="nav-container">
     <ul class="nav-menu" role="menubar">
         <!-- 게임 목록 -->
         <li class="nav-item" role="none">
@@ -84,6 +86,7 @@
         </li>
     </ul>
 
-    <!-- 네비게이션 인디케이터 (현재 페이지 표시) -->
-    <div class="nav-indicator" aria-hidden="true"></div>
+        <!-- 네비게이션 인디케이터 (현재 페이지 표시) -->
+        <div class="nav-indicator" aria-hidden="true"></div>
+    </div>
 </nav>

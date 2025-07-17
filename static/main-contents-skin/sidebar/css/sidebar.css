@@ -1,41 +1,30 @@
-/* Apple macOS/iOS 스타일 사이드바 CSS */
+/* 사이드바 영역 CSS */
 
 .sidebar {
-    position: fixed;
-    top: 64px;
-    right: 0;
-    width: 320px;
-    height: calc(100vh - 64px);
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-left: 1px solid var(--separator-non-opaque);
-    overflow-y: auto;
-    z-index: 800;
-    transition: all var(--animation-duration) var(--animation-ease);
+    position: sticky;
+    top: 140px; /* 헤더(60px) + 네비게이션(60px) + 여백(20px) */
+    width: 300px;
+    max-height: calc(100vh - 160px);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .sidebar {
-        background: rgba(28, 28, 30, 0.8);
-    }
+    overflow-y: auto;
+    align-self: flex-start;
 }
 
 /* 사이드바 섹션 */
 .sidebar section {
-    background-color: var(--background-tertiary);
-    border: 1px solid var(--separator-non-opaque);
-    border-radius: 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: var(--shadow-light);
-    transition: all var(--animation-duration) var(--animation-ease);
+    transition: all 0.2s;
 }
 
 .sidebar section:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .section-header {
@@ -43,15 +32,14 @@
     align-items: center;
     justify-content: space-between;
     padding-bottom: 12px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid var(--separator-opaque);
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .section-title {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--label-primary);
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
     margin: 0;
     display: flex;
     align-items: center;
@@ -59,21 +47,21 @@
 
 .title-icon {
     margin-right: 8px;
-    font-size: 1.2em; /* 아이콘 크기를 텍스트에 비례하여 조정 */
+    font-size: 1.1em;
+    color: #2563eb;
 }
 
 .section-link {
-    color: var(--system-blue);
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #2563eb;
     font-size: 14px;
     font-weight: 500;
     text-decoration: none;
-    transition: color var(--animation-duration) var(--animation-ease);
+    transition: color 0.2s;
 }
 
 .section-link:hover,
 .section-link:focus {
-    color: #0056CC; /* 더 어두운 파란색으로 변경하여 명확한 호버 상태 표시 */
+    color: #1d4ed8;
     text-decoration: underline;
 }
 

@@ -1,41 +1,32 @@
-/* Apple macOS/iOS 스타일 메인 콘텐츠 CSS */
+/* 메인 콘텐츠 영역 CSS */
 
 .content-main {
-    padding: 40px;
-    min-height: calc(100vh - 64px);
-    background-color: var(--background-primary);
-    transition: all var(--animation-duration) var(--animation-ease);
+    margin-top: 120px; /* 헤더(60px) + 네비게이션(60px) 공간 확보 */
+    padding: 20px;
+    min-height: calc(100vh - 200px); /* 헤더+네비게이션+푸터 공간 제외 */
+    background-color: #f8f9fa;
+    flex: 1;
 }
 
-@media (max-width: 768px) {
-    .content-main {
-        padding: 20px;
-    }
+.main-content-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
 }
 
 /* 환영 섹션 */
 .welcome-section {
-    background: linear-gradient(135deg, var(--system-blue), var(--system-purple));
-    border-radius: 20px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    border-radius: 12px;
     padding: 40px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     color: white;
     text-align: center;
     position: relative;
     overflow: hidden;
-}
-
-.welcome-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 1;
 }
 
 .welcome-content {
@@ -44,16 +35,14 @@
 }
 
 .welcome-title {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
     margin: 0 0 16px 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .welcome-message {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     margin: 0;
     opacity: 0.9;
@@ -64,13 +53,12 @@
 .featured-games-section,
 .new-games-section,
 .community-posts-section {
-    background-color: var(--background-tertiary);
-    border: 1px solid var(--separator-non-opaque);
-    border-radius: 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     padding: 24px;
     margin-bottom: 24px;
-    box-shadow: var(--shadow-light);
-    transition: all var(--animation-duration) var(--animation-ease);
+    transition: all 0.2s;
 }
 
 .featured-games-section:hover,

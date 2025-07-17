@@ -1,32 +1,46 @@
-/* Apple macOS/iOS ?��????�더 CSS */
+/* 헤더 영역 CSS - 상단 고정 */
 
-header {
+.site-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    height: 60px;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--separator-non-opaque);
-    transition: all var(--animation-duration) var(--animation-ease);
-}
-
-@media (prefers-color-scheme: dark) {
-    header {
-        background: rgba(28, 28, 30, 0.8);
-    }
-}
-
-.header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
+    padding: 0 20px;
+}
+
+/* 사이트 로고 영역 */
+.site-logo {
+    display: flex;
+    align-items: center;
+}
+
+.site-logo h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.site-logo a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+
+.site-logo a:hover {
+    color: #2563eb;
+}
+
+.logo-text {
+    display: inline-block;
 }
 
 /* 사이트 로고 */
@@ -37,64 +51,65 @@ header {
 
 .site-logo h1 {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 20px;
     font-weight: 600;
+    color: #1f2937;
 }
 
 .site-logo a {
     text-decoration: none;
-    color: var(--label-primary);
-    transition: all var(--animation-duration) var(--animation-ease);
+    color: inherit;
+    transition: color 0.2s;
 }
 
 .site-logo a:hover {
-    color: var(--system-blue);
-    transform: scale(1.05);
+    color: #2563eb;
 }
 
-/* 네비게이션 */
-.nav-container {
-    display: flex;
-    align-items: center;
+/* 검색창 */
+.search-container {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 30px;
 }
 
-.global-nav .nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-item {
-    position: relative;
-}
-
-.nav-link {
+.search-form {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--label-primary);
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 20px;
     font-size: 14px;
-    font-weight: 500;
-    transition: all var(--animation-duration) var(--animation-ease);
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    padding: 5px 10px;
+    background: none;
+    border: none;
+    color: #6b7280;
     cursor: pointer;
+    border-radius: 15px;
+    transition: color 0.2s;
 }
 
-.nav-link:hover {
-    background-color: var(--system-gray6);
-    color: var(--system-blue);
-}
-
-.nav-item.active .nav-link {
-    background-color: var(--system-blue);
-    color: white;
+.search-btn:hover {
+    color: #2563eb;
 }
 
 /* 드롭다운 메뉴 */
@@ -164,26 +179,43 @@ header {
 .user-area {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 15px;
 }
 
 .guest-user {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .login-btn, .signup-btn, .team-signup-btn {
     padding: 8px 16px;
-    border: 1px solid var(--separator-opaque);
-    border-radius: 8px;
-    background-color: var(--background-secondary);
-    color: var(--label-primary);
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: white;
+    color: #374151;
     text-decoration: none;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 14px;
     font-weight: 500;
-    transition: all var(--animation-duration) var(--animation-ease);
+    transition: all 0.2s;
+}
+
+.login-btn:hover, .signup-btn:hover, .team-signup-btn:hover {
+    background-color: #f9fafb;
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.signup-btn, .team-signup-btn {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+.signup-btn:hover, .team-signup-btn:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+    color: white;
 }
 
 .login-btn:hover, .signup-btn:hover, .team-signup-btn:hover {
