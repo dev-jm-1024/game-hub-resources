@@ -1,12 +1,13 @@
 // Apple macOS/iOS 스타일 푸터 JavaScript
 
-class FooterManager {
+class AppleFooterManager {
     constructor() {
         this.footer = null;
-        this.newsletterForm = null;
-        this.languageSelector = null;
-        this.scrollToTopBtn = null;
-
+        this.backToTopBtn = null;
+        this.intersectionObserver = null;
+        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.isScrolling = false;
+        
         this.init();
     }
 
@@ -14,458 +15,646 @@ class FooterManager {
         this.footer = document.querySelector('.site-footer');
         if (!this.footer) return;
 
-        this.setupNewsletter();
-        this.setupLanguageSelector();
-        this.setupScrollToTop();
-        this.setupSocialLinks();
-        this.setupAppStoreLinks();
+        this.setupBackToTop();
         this.setupFooterAnimations();
+        this.setupSocialLinks();
+        this.setupContactLinks();
+        this.setupAccessibility();
+        this.setupResponsiveHandling();
+        this.setupPerformanceOptimizations();
     }
 
-    setupNewsletter() {
-        this.newsletterForm = this.footer.querySelector('.newsletter-form');
-        if (!this.newsletterForm) return;
-
-        const emailInput = this.newsletterForm.querySelector('.newsletter-input');
-        const submitBtn = this.newsletterForm.querySelector('.newsletter-btn');
-
-        this.newsletterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.handleNewsletterSubmit(emailInput.value, submitBtn);
-        });
-
-        // 실시간 이메일 검증
-        emailInput.addEventListener('input', (e) => {
-            this.validateEmail(e.target);
-        });
-    }
-
-    validateEmail(input) {
-        const email = input.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (email && !emailRegex.test(email)) {
-            input.classList.add('error');
-            this.showFieldError(input, '올바른 이메일 주소를 입력해주세요.');
-        } else {
-            input.classList.remove('error');
-            this.hideFieldError(input);
-        }
-    }
-
-    showFieldError(input, message) {
-        let errorElement = input.parentNode.querySelector('.field-error');
-
-        if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.className = 'field-error';
-            errorElement.style.cssText = `
-                color: var(--system-red);
-                font-size: 12px;
-                margin-top: 4px;
-                font-family: 'SF Pro Text', sans-serif;
-            `;
-            input.parentNode.appendChild(errorElement);
+    setupBackToTop() {
+        this.backToTopBtn = this.footer.querySelector('.back-to-top');
+        if (!this.backToTopBtn) {
+            this.createBackToTopButton();
         }
 
-        errorElement.textContent = message;
-    }
-
-    hideFieldError(input) {
-        const errorElement = input.parentNode.querySelector('.field-error');
-        if (errorElement) {
-            errorElement.remove();
-        }
-    }
-
-    async handleNewsletterSubmit(email, button) {
-        if (!email || !this.validateEmailFormat(email)) {
-            App.notifications.error('올바른 이메일 주소를 입력해주세요.');
-            return;
-        }
-
-        const originalText = button.textContent;
-        button.textContent = '구독 중...';
-        button.disabled = true;
-
-        try {
-            const response = await fetch('/api/newsletter/subscribe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email })
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                App.notifications.success('뉴스레터 구독이 완료되었습니다!');
-                this.newsletterForm.reset();
-                this.showSubscriptionSuccess();
-            } else {
-                throw new Error(result.message || '구독 중 오류가 발생했습니다.');
-            }
-        } catch (error) {
-            console.error('Newsletter subscription error:', error);
-            App.notifications.error(error.message || '구독 중 오류가 발생했습니다.');
-        } finally {
-            button.textContent = originalText;
-            button.disabled = false;
-        }
-    }
-
-    validateEmailFormat(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    showSubscriptionSuccess() {
-        const form = this.newsletterForm;
-        const successMessage = document.createElement('div');
-        successMessage.className = 'subscription-success';
-        successMessage.innerHTML = `
-            <div class="success-icon">✓</div>
-            <div class="success-text">구독해주셔서 감사합니다!</div>
-        `;
-        successMessage.style.cssText = `
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--system-green);
-            font-size: 14px;
-            margin-top: 12px;
-        `;
-
-        form.appendChild(successMessage);
-
-        setTimeout(() => {
-            successMessage.remove();
-        }, 5000);
-    }
-
-    setupLanguageSelector() {
-        this.languageSelector = this.footer.querySelector('.language-selector');
-        if (!this.languageSelector) return;
-
-        this.languageSelector.addEventListener('click', () => {
-            this.showLanguageOptions();
-        });
-    }
-
-    showLanguageOptions() {
-        const options = [
-            { code: 'ko', name: '한국어', flag: '🇰🇷' },
-            { code: 'en', name: 'English', flag: '🇺🇸' },
-            { code: 'ja', name: '日本語', flag: '🇯🇵' },
-            { code: 'zh', name: '中文', flag: '🇨🇳' }
-        ];
-
-        const dropdown = document.createElement('div');
-        dropdown.className = 'language-dropdown';
-        dropdown.style.cssText = `
-            position: absolute;
-            bottom: 100%;
-            left: 0;
-            background: var(--background-tertiary);
-            border: 1px solid var(--separator-non-opaque);
-            border-radius: 8px;
-            box-shadow: var(--shadow-heavy);
-            min-width: 120px;
-            z-index: 1000;
-        `;
-
-        const optionsHtml = options.map(option => `
-            <div class="language-option" data-lang="${option.code}">
-                <span class="language-flag">${option.flag}</span>
-                <span class="language-name">${option.name}</span>
-            </div>
-        `).join('');
-
-        dropdown.innerHTML = optionsHtml;
-
-        // 옵션 클릭 이벤트
-        dropdown.addEventListener('click', (e) => {
-            const option = e.target.closest('.language-option');
-            if (option) {
-                this.changeLanguage(option.dataset.lang);
-                dropdown.remove();
-            }
-        });
-
-        this.languageSelector.appendChild(dropdown);
-
-        // 외부 클릭 시 닫기
-        setTimeout(() => {
-            document.addEventListener('click', (e) => {
-                if (!this.languageSelector.contains(e.target)) {
-                    dropdown.remove();
-                }
-            }, { once: true });
-        }, 0);
-    }
-
-    changeLanguage(langCode) {
-        // 언어 변경 로직
-        Utils.cookie.set('language', langCode, 365);
-        App.notifications.info('언어가 변경되었습니다. 페이지를 새로고침합니다.');
-
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
-    }
-
-    setupScrollToTop() {
-        this.scrollToTopBtn = this.footer.querySelector('.scroll-to-top');
-        if (!this.scrollToTopBtn) {
-            this.createScrollToTopButton();
-        }
-
-        this.scrollToTopBtn.addEventListener('click', () => {
+        this.backToTopBtn.addEventListener('click', () => {
             this.scrollToTop();
         });
 
         // 스크롤 위치에 따라 버튼 표시/숨김
-        window.addEventListener('scroll', Utils.throttle(() => {
-            this.toggleScrollToTopButton();
-        }, 100));
+        let ticking = false;
+        const scrollHandler = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    this.toggleBackToTopButton();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', scrollHandler, { passive: true });
     }
 
-    createScrollToTopButton() {
-        this.scrollToTopBtn = document.createElement('button');
-        this.scrollToTopBtn.className = 'scroll-to-top';
-        this.scrollToTopBtn.innerHTML = '↑';
-        this.scrollToTopBtn.setAttribute('aria-label', '맨 위로 이동');
+    createBackToTopButton() {
+        this.backToTopBtn = document.createElement('button');
+        this.backToTopBtn.className = 'back-to-top';
+        this.backToTopBtn.innerHTML = `
+            <svg class="back-to-top-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M10 4l6 6H4l6-6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        `;
+        this.backToTopBtn.setAttribute('aria-label', '맨 위로 이동');
 
-        document.body.appendChild(this.scrollToTopBtn);
+        document.body.appendChild(this.backToTopBtn);
     }
 
-    toggleScrollToTopButton() {
+    toggleBackToTopButton() {
         const scrollPosition = window.pageYOffset;
         const windowHeight = window.innerHeight;
+        const threshold = windowHeight * 0.3;
 
-        if (scrollPosition > windowHeight * 0.5) {
-            this.scrollToTopBtn.classList.add('visible');
+        if (scrollPosition > threshold) {
+            this.backToTopBtn.classList.add('visible');
         } else {
-            this.scrollToTopBtn.classList.remove('visible');
+            this.backToTopBtn.classList.remove('visible');
         }
     }
 
     scrollToTop() {
-        const scrollDuration = 800;
-        const scrollStep = -window.scrollY / (scrollDuration / 15);
-
-        const scrollInterval = setInterval(() => {
-            if (window.scrollY !== 0) {
-                window.scrollBy(0, scrollStep);
+        if (this.isScrolling) return;
+        
+        this.isScrolling = true;
+        
+        // Apple 스타일 부드러운 스크롤
+        const startPosition = window.pageYOffset;
+        const startTime = performance.now();
+        const duration = 800;
+        
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        
+        const animateScroll = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = easeOutCubic(progress);
+            
+            const currentPosition = startPosition * (1 - easeProgress);
+            window.scrollTo(0, currentPosition);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animateScroll);
             } else {
-                clearInterval(scrollInterval);
+                this.isScrolling = false;
             }
-        }, 15);
+        };
+        
+        requestAnimationFrame(animateScroll);
+    }
+
+    setupFooterAnimations() {
+        if (this.prefersReducedMotion) return;
+
+        // 푸터 섹션 애니메이션
+        const footerSections = this.footer.querySelectorAll('.footer-section');
+        
+        this.intersectionObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.animateFooterSection(entry.target);
+                        this.intersectionObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '50px 0px'
+            }
+        );
+
+        footerSections.forEach(section => {
+            this.intersectionObserver.observe(section);
+        });
+
+        // 푸터 전체 애니메이션
+        this.animateFooterEntrance();
+    }
+
+    animateFooterSection(section) {
+        if (this.prefersReducedMotion) return;
+
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(30px)';
+        
+        requestAnimationFrame(() => {
+            section.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+        });
+    }
+
+    animateFooterEntrance() {
+        if (this.prefersReducedMotion) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.footer.style.opacity = '0';
+                        this.footer.style.transform = 'translateY(50px)';
+                        
+                        requestAnimationFrame(() => {
+                            this.footer.style.transition = 'all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                            this.footer.style.opacity = '1';
+                            this.footer.style.transform = 'translateY(0)';
+                        });
+                        
+                        observer.unobserve(this.footer);
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(this.footer);
     }
 
     setupSocialLinks() {
         const socialLinks = this.footer.querySelectorAll('.social-link');
 
         socialLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                this.trackSocialClick(e.target);
-            });
-
-            // 호버 효과 강화
-            link.addEventListener('mouseenter', () => {
-                this.animateSocialIcon(link, 'enter');
-            });
-
-            link.addEventListener('mouseleave', () => {
-                this.animateSocialIcon(link, 'leave');
-            });
+            this.setupSocialLinkInteraction(link);
         });
+    }
+
+    setupSocialLinkInteraction(link) {
+        // 호버 효과 강화
+        link.addEventListener('mouseenter', () => {
+            if (this.prefersReducedMotion) return;
+            
+            const icon = link.querySelector('.social-icon');
+            if (icon) {
+                icon.style.transform = 'scale(1.2) rotate(5deg)';
+            }
+        });
+
+        link.addEventListener('mouseleave', () => {
+            const icon = link.querySelector('.social-icon');
+            if (icon) {
+                icon.style.transform = '';
+            }
+        });
+
+        // 클릭 애니메이션
+        link.addEventListener('click', (e) => {
+            this.animateSocialClick(link);
+            this.trackSocialClick(link);
+        });
+
+        // 터치 지원
+        link.addEventListener('touchstart', () => {
+            link.style.transform = 'scale(0.95)';
+        });
+
+        link.addEventListener('touchend', () => {
+            setTimeout(() => {
+                link.style.transform = '';
+            }, 150);
+        });
+    }
+
+    animateSocialClick(link) {
+        if (this.prefersReducedMotion) return;
+
+        // 클릭 애니메이션
+        link.style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            link.style.transform = 'scale(1.05)';
+            
+            setTimeout(() => {
+                link.style.transform = '';
+            }, 100);
+        }, 100);
     }
 
     trackSocialClick(link) {
-        const platform = link.className.split(' ').find(cls =>
-            ['facebook', 'twitter', 'instagram', 'linkedin', 'github'].includes(cls)
-        );
-
+        const platform = this.getSocialPlatform(link);
+        
         if (platform) {
             // 분석 이벤트 전송
-            this.sendAnalyticsEvent('social_click', { platform });
+            this.sendAnalyticsEvent('social_click', {
+                platform: platform,
+                url: link.href,
+                timestamp: new Date().toISOString()
+            });
         }
     }
 
-    animateSocialIcon(link, action) {
-        if (action === 'enter') {
-            link.style.transform = 'translateY(-2px) scale(1.1)';
-        } else {
-            link.style.transform = '';
-        }
+    getSocialPlatform(link) {
+        const classList = Array.from(link.classList);
+        const platforms = ['twitter', 'facebook', 'instagram', 'youtube', 'linkedin'];
+        
+        return platforms.find(platform => classList.includes(platform)) || 'unknown';
     }
 
-    setupAppStoreLinks() {
-        const appStoreLinks = this.footer.querySelectorAll('.app-store-link');
+    setupContactLinks() {
+        const contactLinks = this.footer.querySelectorAll('.contact-link');
 
-        appStoreLinks.forEach(link => {
+        contactLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                this.trackAppStoreClick(e.target);
+                this.handleContactClick(link, e);
+            });
+
+            // 호버 효과
+            link.addEventListener('mouseenter', () => {
+                if (this.prefersReducedMotion) return;
+                
+                link.style.transform = 'translateY(-2px)';
+            });
+
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = '';
             });
         });
     }
 
-    trackAppStoreClick(link) {
-        const store = link.href.includes('apple') ? 'app_store' : 'google_play';
-        this.sendAnalyticsEvent('app_store_click', { store });
+    handleContactClick(link, event) {
+        const href = link.getAttribute('href');
+        
+        if (href && href.startsWith('mailto:')) {
+            // 이메일 클릭 추적
+            this.sendAnalyticsEvent('contact_email_click', {
+                email: href.replace('mailto:', ''),
+                timestamp: new Date().toISOString()
+            });
+            
+            // 클릭 피드백
+            this.showContactFeedback(link, '이메일 앱을 여는 중...');
+        }
     }
 
-    setupFooterAnimations() {
-        // 푸터 섹션 애니메이션
-        const footerSections = this.footer.querySelectorAll('.footer-section');
+    showContactFeedback(element, message) {
+        const feedback = document.createElement('div');
+        feedback.className = 'contact-feedback';
+        feedback.textContent = message;
+        feedback.style.cssText = `
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--system-blue);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+        `;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
+        element.style.position = 'relative';
+        element.appendChild(feedback);
+
+        requestAnimationFrame(() => {
+            feedback.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            feedback.style.opacity = '0';
+            setTimeout(() => {
+                feedback.remove();
+            }, 300);
+        }, 2000);
+    }
+
+    setupAccessibility() {
+        // 키보드 네비게이션 지원
+        const focusableElements = this.footer.querySelectorAll(`
+            .legal-link,
+            .quick-link,
+            .social-link,
+            .contact-link,
+            .back-to-top
+        `);
+
+        focusableElements.forEach(element => {
+            element.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    element.click();
                 }
             });
-        }, { threshold: 0.1 });
 
-        footerSections.forEach(section => {
-            observer.observe(section);
-        });
-
-        // 상태 인디케이터 애니메이션
-        this.animateStatusIndicator();
-    }
-
-    animateStatusIndicator() {
-        const statusIndicator = this.footer.querySelector('.status-indicator');
-        if (!statusIndicator) return;
-
-        // 서버 상태 확인
-        this.checkServerStatus().then(isOnline => {
-            statusIndicator.style.backgroundColor = isOnline ?
-                'var(--system-green)' : 'var(--system-red)';
-        });
-    }
-
-    async checkServerStatus() {
-        try {
-            const response = await fetch('/api/health', {
-                method: 'HEAD',
-                cache: 'no-cache'
+            element.addEventListener('focus', () => {
+                this.ensureElementVisible(element);
             });
-            return response.ok;
-        } catch (error) {
-            return false;
+        });
+
+        // 스크린 리더 지원
+        this.setupScreenReaderSupport();
+    }
+
+    setupScreenReaderSupport() {
+        // 동적 콘텐츠 업데이트 시 스크린 리더에 알림
+        const copyrightElement = this.footer.querySelector('.copyright-text');
+        if (copyrightElement) {
+            copyrightElement.setAttribute('aria-live', 'polite');
+            this.updateCopyrightYear();
+        }
+
+        // 소셜 링크에 더 자세한 설명 추가
+        const socialLinks = this.footer.querySelectorAll('.social-link');
+        socialLinks.forEach(link => {
+            const platform = this.getSocialPlatform(link);
+            const currentLabel = link.getAttribute('aria-label') || '';
+            
+            if (platform && !currentLabel.includes('새 창')) {
+                link.setAttribute('aria-label', `${currentLabel} (새 창에서 열림)`);
+            }
+        });
+    }
+
+    ensureElementVisible(element) {
+        const rect = element.getBoundingClientRect();
+        const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+        
+        if (!isVisible) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
         }
     }
 
+    setupResponsiveHandling() {
+        let resizeTimeout;
+        
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.handleResize();
+            }, 150);
+        });
+
+        this.handleResize();
+    }
+
+    handleResize() {
+        const isMobile = window.innerWidth <= 768;
+        
+        // 모바일에서 애니메이션 최적화
+        if (isMobile && !this.prefersReducedMotion) {
+            this.optimizeForMobile();
+        }
+        
+        // 백투탑 버튼 위치 조정
+        this.adjustBackToTopPosition();
+    }
+
+    optimizeForMobile() {
+        // 모바일에서 복잡한 애니메이션 비활성화
+        const footerSections = this.footer.querySelectorAll('.footer-section');
+        footerSections.forEach(section => {
+            section.style.animation = 'none';
+            section.style.transform = 'none';
+            section.style.opacity = '1';
+        });
+    }
+
+    adjustBackToTopPosition() {
+        if (!this.backToTopBtn) return;
+
+        const isMobile = window.innerWidth <= 768;
+        const isSmallMobile = window.innerWidth <= 480;
+        
+        if (isSmallMobile) {
+            this.backToTopBtn.style.bottom = '16px';
+            this.backToTopBtn.style.right = '16px';
+        } else if (isMobile) {
+            this.backToTopBtn.style.bottom = '24px';
+            this.backToTopBtn.style.right = '24px';
+        } else {
+            this.backToTopBtn.style.bottom = '32px';
+            this.backToTopBtn.style.right = '32px';
+        }
+    }
+
+    setupPerformanceOptimizations() {
+        // 이미지 지연 로딩 (소셜 아이콘 등)
+        this.setupLazyLoading();
+        
+        // 메모리 누수 방지
+        this.setupMemoryManagement();
+    }
+
+    setupLazyLoading() {
+        if (!('IntersectionObserver' in window)) return;
+
+        const images = this.footer.querySelectorAll('img');
+        if (images.length === 0) return;
+
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        images.forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+
+    setupMemoryManagement() {
+        // 페이지 언로드 시 이벤트 리스너 정리
+        window.addEventListener('beforeunload', () => {
+            this.cleanup();
+        });
+
+        // 가비지 컬렉션 최적화
+        this.setupGarbageCollection();
+    }
+
+    setupGarbageCollection() {
+        // 주기적으로 불필요한 참조 정리
+        setInterval(() => {
+            this.cleanupUnusedReferences();
+        }, 60000); // 1분마다
+    }
+
+    cleanupUnusedReferences() {
+        // 더 이상 사용되지 않는 DOM 참조 정리
+        const elements = this.footer.querySelectorAll('.removed');
+        elements.forEach(element => {
+            element.remove();
+        });
+    }
+
+    // 유틸리티 메서드들
     sendAnalyticsEvent(eventName, data) {
-        // 분석 도구로 이벤트 전송 (예: Google Analytics)
+        // Google Analytics
         if (typeof gtag !== 'undefined') {
             gtag('event', eventName, data);
         }
 
-        // 자체 분석 시스템으로 전송
+        // 자체 분석 시스템
         if (window.analytics) {
             window.analytics.track(eventName, data);
         }
-    }
 
-    // 푸터 상태 업데이트
-    updateFooterStatus(status) {
-        const statusElement = this.footer.querySelector('.footer-status');
-        if (statusElement) {
-            statusElement.textContent = status;
+        // 콘솔 로그 (개발 환경)
+        if (process.env.NODE_ENV === 'development') {
+            console.log(`Analytics Event: ${eventName}`, data);
         }
     }
 
-    // 저작권 연도 자동 업데이트
     updateCopyrightYear() {
-        const copyrightElement = this.footer.querySelector('.footer-copyright');
+        const copyrightElement = this.footer.querySelector('.copyright-text');
         if (copyrightElement) {
             const currentYear = new Date().getFullYear();
-            copyrightElement.innerHTML = copyrightElement.innerHTML.replace(
-                /\d{4}/,
-                currentYear
-            );
+            const text = copyrightElement.textContent;
+            
+            if (text && !text.includes(currentYear.toString())) {
+                copyrightElement.textContent = text.replace(/\d{4}/, currentYear);
+            }
         }
     }
 
-    // 뉴스레터 구독자 수 업데이트
-    updateSubscriberCount(count) {
-        const countElement = this.footer.querySelector('.subscriber-count');
-        if (countElement) {
-            countElement.textContent = Utils.formatNumber(count);
+    // 다크 모드 감지 및 처리
+    setupThemeHandling() {
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        darkModeQuery.addEventListener('change', (e) => {
+            this.handleThemeChange(e.matches);
+        });
+
+        this.handleThemeChange(darkModeQuery.matches);
+    }
+
+    handleThemeChange(isDark) {
+        this.footer.classList.toggle('dark-mode', isDark);
+        
+        // 테마 변경 애니메이션
+        if (!this.prefersReducedMotion) {
+            this.footer.style.transition = 'all 0.3s ease-out';
+            setTimeout(() => {
+                this.footer.style.transition = '';
+            }, 300);
         }
     }
 
-    // 동적 링크 추가
-    addFooterLink(sectionId, linkData) {
-        const section = this.footer.querySelector(`#${sectionId}`);
-        if (!section) return;
-
-        const linksList = section.querySelector('.footer-links');
-        if (!linksList) return;
-
-        const linkItem = document.createElement('li');
-        linkItem.className = 'footer-link-item';
-        linkItem.innerHTML = `
-            <a href="${linkData.url}" class="footer-link">
-                ${linkData.icon ? `<span class="footer-link-icon">${linkData.icon}</span>` : ''}
-                ${linkData.text}
-            </a>
-        `;
-
-        linksList.appendChild(linkItem);
+    // 정리 메서드
+    cleanup() {
+        if (this.intersectionObserver) {
+            this.intersectionObserver.disconnect();
+        }
+        
+        // 모든 타이머 정리
+        clearInterval(this.garbageCollectionInterval);
+        
+        // 이벤트 리스너 정리
+        window.removeEventListener('scroll', this.scrollHandler);
+        window.removeEventListener('resize', this.resizeHandler);
     }
 
-    // 푸터 위젯 추가
-    addFooterWidget(widgetData) {
-        const footerContent = this.footer.querySelector('.footer-content');
-        if (!footerContent) return;
+    // 공개 API
+    refresh() {
+        this.cleanup();
+        this.init();
+    }
 
-        const widget = document.createElement('div');
-        widget.className = 'footer-section';
-        widget.innerHTML = `
-            <h3 class="footer-title">${widgetData.title}</h3>
-            <div class="footer-widget-content">
-                ${widgetData.content}
+    scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `footer-notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-message">${message}</span>
+                <button class="notification-close" aria-label="닫기">×</button>
             </div>
         `;
 
-        footerContent.appendChild(widget);
+        this.footer.appendChild(notification);
+
+        // 자동 제거
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+
+        // 수동 제거
+        notification.querySelector('.notification-close').addEventListener('click', () => {
+            notification.remove();
+        });
     }
 }
 
-// 푸터 초기화
+// 테마 감지 및 처리
+class AppleThemeManager {
+    constructor() {
+        this.darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        this.init();
+    }
+
+    init() {
+        this.darkModeQuery.addEventListener('change', (e) => {
+            this.handleThemeChange(e.matches);
+        });
+
+        this.handleThemeChange(this.darkModeQuery.matches);
+    }
+
+    handleThemeChange(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        
+        // 테마 변경 이벤트 전송
+        window.dispatchEvent(new CustomEvent('themechange', {
+            detail: { isDark }
+        }));
+    }
+}
+
+// 초기화
 document.addEventListener('DOMContentLoaded', () => {
-    window.footerManager = new FooterManager();
+    // 푸터 매니저 초기화
+    window.appleFooterManager = new AppleFooterManager();
+    
+    // 테마 매니저 초기화
+    window.appleThemeManager = new AppleThemeManager();
+    
+    // 전역 API 노출
+    window.AppleFooter = {
+        refresh: () => window.appleFooterManager.refresh(),
+        scrollToTop: () => window.appleFooterManager.scrollToTop(),
+        scrollToSection: (id) => window.appleFooterManager.scrollToSection(id),
+        showNotification: (msg, type) => window.appleFooterManager.showNotification(msg, type)
+    };
 });
 
-// 전역 푸터 API
-window.Footer = {
-    updateStatus: (status) => {
-        if (window.footerManager) {
-            window.footerManager.updateFooterStatus(status);
-        }
-    },
+// 성능 모니터링
+if ('performance' in window) {
+    window.addEventListener('load', () => {
+        const loadTime = performance.now();
+        console.log(`푸터 로드 시간: ${loadTime.toFixed(2)}ms`);
+    });
+}
 
-    updateSubscriberCount: (count) => {
-        if (window.footerManager) {
-            window.footerManager.updateSubscriberCount(count);
-        }
-    },
-
-    addLink: (sectionId, linkData) => {
-        if (window.footerManager) {
-            window.footerManager.addFooterLink(sectionId, linkData);
-        }
-    },
-
-    addWidget: (widgetData) => {
-        if (window.footerManager) {
-            window.footerManager.addFooterWidget(widgetData);
-        }
+// 페이지 언로드 시 정리
+window.addEventListener('beforeunload', () => {
+    if (window.appleFooterManager) {
+        window.appleFooterManager.cleanup();
     }
-};
+});

@@ -1,155 +1,450 @@
 <!--main-frag-->
-<link rel="stylesheet" th:href="@{/main-contents-skin/main/css/main.css}">
 <main class="content-main" th:fragment="main">
-    <!-- 환영 문구 또는 플랫폼 소개 -->
-    <section class="welcome-section" aria-labelledby="welcome-title">
-        <div class="welcome-content">
-            <h1 class="welcome-title" id="welcome-title" th:text="${welcomeTitle}">환영합니다!</h1>
-            <p class="welcome-message" th:text="${welcomeMessage}">플랫폼 소개 문구가 들어갈 자리입니다.</p>
+    <!-- 히어로 섹션 -->
+    <section class="hero-section" aria-labelledby="hero-title">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title" id="hero-title" th:text="${welcomeTitle}">게임 허브에 오신 것을 환영합니다!</h1>
+                <p class="hero-subtitle" th:text="${welcomeMessage}">최고의 게임들을 발견하고, 커뮤니티와 함께 즐기세요.</p>
+                <div class="hero-actions">
+                    <a href="/games" class="btn-primary">게임 둘러보기</a>
+                    <a href="/board" class="btn-secondary">커뮤니티 참여하기</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">1,250+</div>
+                        <div class="stat-label">게임</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15,000+</div>
+                        <div class="stat-label">사용자</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">만족도</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="welcome-decoration" aria-hidden="true">
-            <div class="decoration-circle"></div>
-            <div class="decoration-circle"></div>
-            <div class="decoration-circle"></div>
+        <div class="hero-decoration" aria-hidden="true">
+            <div class="decoration-orb orb-1"></div>
+            <div class="decoration-orb orb-2"></div>
+            <div class="decoration-orb orb-3"></div>
+            <div class="decoration-grid"></div>
         </div>
     </section>
 
-    <!-- 주요 게임 추천 목록 -->
-    <section class="featured-games-section" aria-labelledby="featured-games-title">
-        <div class="section-header">
-            <h2 class="section-title" id="featured-games-title">주요 게임 추천</h2>
-            <a href="/games" class="section-link" aria-label="게임 목록 전체 보기">
-                전체 보기
-                <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M4 2l4 4-4 4"/>
-                </svg>
-            </a>
-        </div>
-        <div class="games-list" role="region" aria-label="추천 게임 목록">
-            <ul class="game-items" th:if="${not #lists.isEmpty(featuredGames)}">
-                <li class="game-item" th:each="game : ${featuredGames}">
-                    <article class="game-card">
-                        <div class="game-thumbnail" aria-hidden="true">
-                            <img th:src="${game.thumbnailImage}"
-                                 alt=""
-                                 class="game-image"
-                                 onerror="this.src='/static/images/default-game.png'">
+    <!-- 콘텐츠 그리드 -->
+    <div class="content-grid">
+        <!-- 메인 콘텐츠 영역 -->
+        <div class="main-content">
+            <!-- 추천 게임 섹션 -->
+            <section class="featured-games-section" aria-labelledby="featured-games-title">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <h2 class="section-title" id="featured-games-title">🎮 추천 게임</h2>
+                        <p class="section-subtitle">에디터가 선별한 최고의 게임들</p>
+                    </div>
+                    <a href="/games" class="section-link" aria-label="게임 목록 전체 보기">
+                        전체 보기
+                        <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                            <path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="games-grid" role="region" aria-label="추천 게임 목록">
+                    <!-- 샘플 데이터 -->
+                    <div class="game-card featured-card" th:if="${#lists.isEmpty(featuredGames)}">
+                        <div class="game-thumbnail">
+                            <img src="/static/webgl/Laser-Defender/TemplateData/webgl-logo.png" alt="레이저 디펜더" class="game-image">
+                            <div class="game-badge">추천</div>
                         </div>
                         <div class="game-info">
                             <h3 class="game-title">
-                                <a th:href="@{/games/{id}(id=${game.id})}"
-                                   th:text="${game.title}"
-                                   th:aria-label="${game.title} + ' 게임 상세 보기'">게임 제목</a>
+                                <a href="/games/laser-defender">레이저 디펜더</a>
+                            </h3>
+                            <p class="game-description">우주에서 펼쳐지는 스릴 넘치는 슈팅 게임. 다양한 적들과 보스를 물리치고 최고 점수에 도전하세요!</p>
+                            <div class="game-meta">
+                                <div class="game-rating">
+                                    <div class="rating-stars">★★★★★</div>
+                                    <span class="rating-text">4.8</span>
+                                </div>
+                                <span class="game-category">액션</span>
+                                <span class="game-plays">1,234 플레이</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card featured-card" th:if="${#lists.isEmpty(featuredGames)}">
+                        <div class="game-thumbnail">
+                            <img src="/static/webgl/Tile-Vania/TemplateData/webgl-logo.png" alt="타일 바니아" class="game-image">
+                            <div class="game-badge">인기</div>
+                        </div>
+                        <div class="game-info">
+                            <h3 class="game-title">
+                                <a href="/games/tile-vania">타일 바니아</a>
+                            </h3>
+                            <p class="game-description">플랫폼 점프 액션의 진수! 다양한 스테이지와 숨겨진 아이템을 찾아 모험을 떠나보세요.</p>
+                            <div class="game-meta">
+                                <div class="game-rating">
+                                    <div class="rating-stars">★★★★☆</div>
+                                    <span class="rating-text">4.5</span>
+                                </div>
+                                <span class="game-category">플랫폼</span>
+                                <span class="game-plays">892 플레이</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card featured-card" th:if="${#lists.isEmpty(featuredGames)}">
+                        <div class="game-thumbnail">
+                            <div class="game-image placeholder-image">🎯</div>
+                            <div class="game-badge">신규</div>
+                        </div>
+                        <div class="game-info">
+                            <h3 class="game-title">
+                                <a href="/games/puzzle-master">퍼즐 마스터</a>
+                            </h3>
+                            <p class="game-description">두뇌를 자극하는 퍼즐 게임. 점점 어려워지는 단계를 통해 논리적 사고력을 키워보세요.</p>
+                            <div class="game-meta">
+                                <div class="game-rating">
+                                    <div class="rating-stars">★★★★★</div>
+                                    <span class="rating-text">4.7</span>
+                                </div>
+                                <span class="game-category">퍼즐</span>
+                                <span class="game-plays">567 플레이</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 실제 데이터 -->
+                    <div class="game-card featured-card" th:each="game : ${featuredGames}">
+                        <div class="game-thumbnail">
+                            <img th:src="${game.thumbnailImage}" th:alt="${game.title}" class="game-image" 
+                                 onerror="this.src='/static/images/default-game.png'">
+                            <div class="game-badge">추천</div>
+                        </div>
+                        <div class="game-info">
+                            <h3 class="game-title">
+                                <a th:href="@{/games/{id}(id=${game.id})}" th:text="${game.title}">게임 제목</a>
                             </h3>
                             <p class="game-description" th:text="${game.description}">게임 설명</p>
                             <div class="game-meta">
-                                <span class="game-rating" th:if="${game.rating}">
-                                    <span class="rating-stars" aria-hidden="true">★★★★☆</span>
+                                <div class="game-rating" th:if="${game.rating}">
+                                    <div class="rating-stars">★★★★☆</div>
                                     <span class="rating-text" th:text="${game.rating}">4.5</span>
-                                </span>
+                                </div>
                                 <span class="game-category" th:text="${game.category}">카테고리</span>
+                                <span class="game-plays" th:text="${game.playCount + ' 플레이'}">0 플레이</span>
                             </div>
                         </div>
-                    </article>
-                </li>
-            </ul>
-            <!-- 빈 상태 -->
-            <div class="empty-state" th:if="${#lists.isEmpty(featuredGames)}" role="status">
-                <div class="empty-icon" aria-hidden="true">🎮</div>
-                <p class="empty-text">추천 게임이 없습니다</p>
-            </div>
-        </div>
-    </section>
+                    </div>
+                </div>
+            </section>
 
-    <!-- 신규 등록 게임/업데이트된 게임 -->
-    <section class="new-games-section" aria-labelledby="new-games-title">
-        <div class="section-header">
-            <h2 class="section-title" id="new-games-title">신규 등록 게임</h2>
-            <a href="/games?sort=newest" class="section-link" aria-label="신규 게임 전체 보기">
-                전체 보기
-                <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M4 2l4 4-4 4"/>
-                </svg>
-            </a>
-        </div>
-        <div class="games-list" role="region" aria-label="신규 게임 목록">
-            <ul class="game-items" th:if="${not #lists.isEmpty(newGames)}">
-                <li class="game-item" th:each="game : ${newGames}">
-                    <article class="game-card">
-                        <div class="game-info">
-                            <h3 class="game-title">
-                                <a th:href="@{/games/{id}(id=${game.id})}"
-                                   th:text="${game.title}"
-                                   th:aria-label="${game.title} + ' 게임 상세 보기'">게임 제목</a>
-                            </h3>
-                            <div class="game-meta">
-                                <span class="upload-date">
-                                    <time th:datetime="${game.uploadDate}"
-                                          th:text="${#temporals.format(game.uploadDate, 'yyyy-MM-dd')}">업로드 날짜</time>
-                                </span>
-                                <span class="new-badge" aria-label="신규">NEW</span>
+            <!-- 커뮤니티 활동 섹션 -->
+            <section class="community-section" aria-labelledby="community-title">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <h2 class="section-title" id="community-title">💬 커뮤니티 활동</h2>
+                        <p class="section-subtitle">게이머들의 생생한 이야기</p>
+                    </div>
+                    <a href="/board" class="section-link" aria-label="커뮤니티 전체 보기">
+                        전체 보기
+                        <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                            <path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="community-grid" role="region" aria-label="커뮤니티 활동 목록">
+                    <div class="community-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-info">
+                                <div class="stat-number">1,847</div>
+                                <div class="stat-label">오늘의 게시글</div>
                             </div>
                         </div>
-                    </article>
-                </li>
-            </ul>
-            <!-- 빈 상태 -->
-            <div class="empty-state" th:if="${#lists.isEmpty(newGames)}" role="status">
-                <div class="empty-icon" aria-hidden="true">🆕</div>
-                <p class="empty-text">신규 게임이 없습니다</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 커뮤니티 최신 글 요약 -->
-    <section class="community-posts-section" aria-labelledby="community-posts-title">
-        <div class="section-header">
-            <h2 class="section-title" id="community-posts-title">커뮤니티 최신 글</h2>
-            <a href="/board" class="section-link" aria-label="커뮤니티 전체 보기">
-                전체 보기
-                <svg class="link-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M4 2l4 4-4 4"/>
-                </svg>
-            </a>
-        </div>
-        <div class="posts-list" role="region" aria-label="최신 게시글 목록">
-            <ul class="post-items" th:if="${not #lists.isEmpty(communityPosts)}">
-                <li class="post-item" th:each="post : ${communityPosts}">
-                    <article class="post-card">
-                        <div class="post-info">
-                            <h3 class="post-title">
-                                <a th:href="@{/board/{id}(id=${post.id})}"
-                                   th:text="${post.title}"
-                                   th:aria-label="${post.title} + ' 게시글 보기'">글 제목</a>
-                            </h3>
-                            <div class="post-meta">
-                                <span class="post-author" th:text="${post.author}">작성자</span>
-                                <span class="meta-separator" aria-hidden="true">·</span>
-                                <time class="post-date"
-                                      th:datetime="${post.createdAt}"
-                                      th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</time>
-                                <span class="meta-separator" aria-hidden="true">·</span>
-                                <span class="post-views" th:if="${post.views}">
-                                    조회 <span th:text="${post.views}">0</span>
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-info">
+                                <div class="stat-number">892</div>
+                                <div class="stat-label">온라인 유저</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-info">
+                                <div class="stat-number">156</div>
+                                <div class="stat-label">인기 토론</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="posts-list">
+                        <!-- 샘플 데이터 -->
+                        <div class="post-item hot-post" th:if="${#lists.isEmpty(communityPosts)}">
+                            <div class="post-badge">🔥 HOT</div>
+                            <div class="post-info">
+                                <h3 class="post-title">
+                                    <a href="/board/1">레이저 디펜더 고득점 공략법 공유합니다!</a>
+                                </h3>
+                                <p class="post-preview">드디어 100만점 돌파했습니다! 그동안 연구한 패턴과 전략을 정리해서 공유드려요. 특히 3단계 보스 공략이 핵심인데...</p>
+                                <div class="post-meta">
+                                    <span class="post-author">게임마스터</span>
+                                    <span class="meta-separator">·</span>
+                                    <time class="post-date">2024-01-15</time>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-views">조회 2,847</span>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-likes">👍 156</span>
+                                </div>
+                            </div>
+                            <div class="post-actions">
+                                <span class="comment-count">
+                                    <svg class="comment-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M2 2h12v10H5l-3 3V2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    </svg>
+                                    <span>23</span>
                                 </span>
                             </div>
                         </div>
-                        <div class="post-actions">
-                            <span class="comment-count" th:if="${post.commentCount > 0}">
-                                <svg class="comment-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                                    <path d="M2 2h10v8H4l-2 2V2z"/>
-                                </svg>
-                                <span th:text="${post.commentCount}">0</span>
-                            </span>
+                        
+                        <div class="post-item" th:if="${#lists.isEmpty(communityPosts)}">
+                            <div class="post-info">
+                                <h3 class="post-title">
+                                    <a href="/board/2">타일 바니아 숨겨진 아이템 위치 총정리</a>
+                                </h3>
+                                <p class="post-preview">각 스테이지별 숨겨진 아이템과 비밀 통로를 찾아서 정리했습니다. 100% 클리어를 목표로 하시는 분들께 도움이 되길...</p>
+                                <div class="post-meta">
+                                    <span class="post-author">탐험가123</span>
+                                    <span class="meta-separator">·</span>
+                                    <time class="post-date">2024-01-14</time>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-views">조회 1,234</span>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-likes">👍 89</span>
+                                </div>
+                            </div>
+                            <div class="post-actions">
+                                <span class="comment-count">
+                                    <svg class="comment-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M2 2h12v10H5l-3 3V2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    </svg>
+                                    <span>15</span>
+                                </span>
+                            </div>
                         </div>
-                    </article>
-                </li>
-            </ul>
-            <!-- 빈 상태 -->
-            <div class="empty-state" th:if="${#lists.isEmpty(communityPosts)}" role="status">
-                <div class="empty-icon" aria-hidden="true">💬</div>
-                <p class="empty-text">최신 게시글이 없습니다</p>
-            </div>
+                        
+                        <div class="post-item" th:if="${#lists.isEmpty(communityPosts)}">
+                            <div class="post-info">
+                                <h3 class="post-title">
+                                    <a href="/board/3">새로운 게임 추천 받습니다!</a>
+                                </h3>
+                                <p class="post-preview">퍼즐 게임을 좋아하는데 새로운 게임을 찾고 있어요. 어려운 것보다는 적당한 난이도로 스트레스 해소용으로...</p>
+                                <div class="post-meta">
+                                    <span class="post-author">퍼즐러버</span>
+                                    <span class="meta-separator">·</span>
+                                    <time class="post-date">2024-01-14</time>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-views">조회 567</span>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-likes">👍 34</span>
+                                </div>
+                            </div>
+                            <div class="post-actions">
+                                <span class="comment-count">
+                                    <svg class="comment-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M2 2h12v10H5l-3 3V2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    </svg>
+                                    <span>8</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- 실제 데이터 -->
+                        <div class="post-item" th:each="post : ${communityPosts}">
+                            <div class="post-info">
+                                <h3 class="post-title">
+                                    <a th:href="@{/board/{id}(id=${post.id})}" th:text="${post.title}">글 제목</a>
+                                </h3>
+                                <p class="post-preview" th:text="${post.preview}">게시글 미리보기</p>
+                                <div class="post-meta">
+                                    <span class="post-author" th:text="${post.author}">작성자</span>
+                                    <span class="meta-separator">·</span>
+                                    <time class="post-date" th:datetime="${post.createdAt}" 
+                                          th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</time>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-views" th:text="'조회 ' + ${post.views}">조회 0</span>
+                                    <span class="meta-separator">·</span>
+                                    <span class="post-likes" th:text="'👍 ' + ${post.likes}">👍 0</span>
+                                </div>
+                            </div>
+                            <div class="post-actions">
+                                <span class="comment-count" th:if="${post.commentCount > 0}">
+                                    <svg class="comment-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M2 2h12v10H5l-3 3V2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    </svg>
+                                    <span th:text="${post.commentCount}">0</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
+
+        <!-- 사이드 콘텐츠 영역 -->
+        <aside class="side-content">
+            <!-- 신규 게임 위젯 -->
+            <section class="widget new-games-widget" aria-labelledby="new-games-title">
+                <div class="widget-header">
+                    <h3 class="widget-title" id="new-games-title">🆕 신규 게임</h3>
+                </div>
+                <div class="widget-content">
+                    <!-- 샘플 데이터 -->
+                    <div class="new-game-item" th:if="${#lists.isEmpty(newGames)}">
+                        <div class="new-game-info">
+                            <h4 class="new-game-title">
+                                <a href="/games/space-adventure">스페이스 어드벤처</a>
+                            </h4>
+                            <div class="new-game-meta">
+                                <span class="upload-date">1일 전</span>
+                                <span class="new-badge">NEW</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="new-game-item" th:if="${#lists.isEmpty(newGames)}">
+                        <div class="new-game-info">
+                            <h4 class="new-game-title">
+                                <a href="/games/memory-challenge">메모리 챌린지</a>
+                            </h4>
+                            <div class="new-game-meta">
+                                <span class="upload-date">2일 전</span>
+                                <span class="new-badge">NEW</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="new-game-item" th:if="${#lists.isEmpty(newGames)}">
+                        <div class="new-game-info">
+                            <h4 class="new-game-title">
+                                <a href="/games/racing-fever">레이싱 피버</a>
+                            </h4>
+                            <div class="new-game-meta">
+                                <span class="upload-date">3일 전</span>
+                                <span class="new-badge">NEW</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 실제 데이터 -->
+                    <div class="new-game-item" th:each="game : ${newGames}">
+                        <div class="new-game-info">
+                            <h4 class="new-game-title">
+                                <a th:href="@{/games/{id}(id=${game.id})}" th:text="${game.title}">게임 제목</a>
+                            </h4>
+                            <div class="new-game-meta">
+                                <span class="upload-date" th:text="${#temporals.format(game.uploadDate, 'M월 d일')}">업로드 날짜</span>
+                                <span class="new-badge">NEW</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 게임 카테고리 위젯 -->
+            <section class="widget categories-widget" aria-labelledby="categories-title">
+                <div class="widget-header">
+                    <h3 class="widget-title" id="categories-title">🎯 게임 카테고리</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="category-grid">
+                        <a href="/games?category=action" class="category-item">
+                            <div class="category-icon">⚔️</div>
+                            <div class="category-name">액션</div>
+                            <div class="category-count">234</div>
+                        </a>
+                        <a href="/games?category=puzzle" class="category-item">
+                            <div class="category-icon">🧩</div>
+                            <div class="category-name">퍼즐</div>
+                            <div class="category-count">189</div>
+                        </a>
+                        <a href="/games?category=platform" class="category-item">
+                            <div class="category-icon">🏃</div>
+                            <div class="category-name">플랫폼</div>
+                            <div class="category-count">156</div>
+                        </a>
+                        <a href="/games?category=strategy" class="category-item">
+                            <div class="category-icon">♟️</div>
+                            <div class="category-name">전략</div>
+                            <div class="category-count">98</div>
+                        </a>
+                        <a href="/games?category=racing" class="category-item">
+                            <div class="category-icon">🏎️</div>
+                            <div class="category-name">레이싱</div>
+                            <div class="category-count">67</div>
+                        </a>
+                        <a href="/games?category=sports" class="category-item">
+                            <div class="category-icon">⚽</div>
+                            <div class="category-name">스포츠</div>
+                            <div class="category-count">45</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 실시간 랭킹 위젯 -->
+            <section class="widget ranking-widget" aria-labelledby="ranking-title">
+                <div class="widget-header">
+                    <h3 class="widget-title" id="ranking-title">🏆 실시간 랭킹</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="ranking-list">
+                        <div class="ranking-item gold">
+                            <div class="rank-number">1</div>
+                            <div class="rank-info">
+                                <div class="rank-name">게임마스터</div>
+                                <div class="rank-score">1,250,000</div>
+                            </div>
+                            <div class="rank-medal">🥇</div>
+                        </div>
+                        <div class="ranking-item silver">
+                            <div class="rank-number">2</div>
+                            <div class="rank-info">
+                                <div class="rank-name">프로게이머</div>
+                                <div class="rank-score">987,650</div>
+                            </div>
+                            <div class="rank-medal">🥈</div>
+                        </div>
+                        <div class="ranking-item bronze">
+                            <div class="rank-number">3</div>
+                            <div class="rank-info">
+                                <div class="rank-name">스킬러</div>
+                                <div class="rank-score">856,420</div>
+                            </div>
+                            <div class="rank-medal">🥉</div>
+                        </div>
+                        <div class="ranking-item">
+                            <div class="rank-number">4</div>
+                            <div class="rank-info">
+                                <div class="rank-name">챌린저</div>
+                                <div class="rank-score">742,890</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item">
+                            <div class="rank-number">5</div>
+                            <div class="rank-info">
+                                <div class="rank-name">게임러버</div>
+                                <div class="rank-score">698,750</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </div>
 </main>

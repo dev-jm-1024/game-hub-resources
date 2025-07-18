@@ -1,557 +1,156 @@
-/* 푸터 영역 CSS */
+/* Apple macOS/iOS 스타일 푸터 CSS */
 
+/* CSS 변수 정의 */
+:root {
+    /* 컬러 시스템 */
+    --system-blue: #007AFF;
+    --system-green: #34C759;
+    --system-red: #FF3B30;
+    --system-orange: #FF9500;
+    --system-yellow: #FFCC00;
+    --system-pink: #FF2D92;
+    --system-purple: #AF52DE;
+    --system-teal: #5AC8FA;
+    --system-indigo: #5856D6;
+    --system-gray: #8E8E93;
+    --system-gray2: #AEAEB2;
+    --system-gray3: #C7C7CC;
+    --system-gray4: #D1D1D6;
+    --system-gray5: #E5E5EA;
+    --system-gray6: #F2F2F7;
+    
+    /* 라벨 컬러 */
+    --label-primary: rgba(0, 0, 0, 0.85);
+    --label-secondary: rgba(0, 0, 0, 0.6);
+    --label-tertiary: rgba(0, 0, 0, 0.3);
+    --label-quaternary: rgba(0, 0, 0, 0.18);
+    
+    /* 배경 컬러 */
+    --background-primary: #FFFFFF;
+    --background-secondary: #F2F2F7;
+    --background-tertiary: #FFFFFF;
+    --background-grouped-primary: #F2F2F7;
+    --background-grouped-secondary: #FFFFFF;
+    --background-grouped-tertiary: #F2F2F7;
+    
+    /* 구분선 */
+    --separator-opaque: rgba(60, 60, 67, 0.36);
+    --separator-non-opaque: rgba(60, 60, 67, 0.12);
+    
+    /* 글래스모피즘 */
+    --glass-background: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: rgba(0, 0, 0, 0.1);
+    
+    /* 그림자 */
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
+    
+    /* 애니메이션 */
+    --animation-duration: 0.3s;
+    --animation-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --animation-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* 타이포그래피 */
+    --font-family-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+    
+    /* 레이아웃 */
+    --border-radius-small: 8px;
+    --border-radius-medium: 12px;
+    --border-radius-large: 16px;
+    --border-radius-xlarge: 24px;
+    
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+}
+
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --system-blue: #0A84FF;
+        --system-green: #30D158;
+        --system-red: #FF453A;
+        --system-orange: #FF9F0A;
+        --system-yellow: #FFD60A;
+        --system-pink: #FF375F;
+        --system-purple: #BF5AF2;
+        --system-teal: #64D2FF;
+        --system-indigo: #5E5CE6;
+        --system-gray: #8E8E93;
+        --system-gray2: #636366;
+        --system-gray3: #48484A;
+        --system-gray4: #3A3A3C;
+        --system-gray5: #2C2C2E;
+        --system-gray6: #1C1C1E;
+        
+        --label-primary: rgba(255, 255, 255, 0.85);
+        --label-secondary: rgba(255, 255, 255, 0.6);
+        --label-tertiary: rgba(255, 255, 255, 0.3);
+        --label-quaternary: rgba(255, 255, 255, 0.18);
+        
+        --background-primary: #000000;
+        --background-secondary: #1C1C1E;
+        --background-tertiary: #2C2C2E;
+        --background-grouped-primary: #000000;
+        --background-grouped-secondary: #1C1C1E;
+        --background-grouped-tertiary: #2C2C2E;
+        
+        --separator-opaque: rgba(84, 84, 88, 0.65);
+        --separator-non-opaque: rgba(84, 84, 88, 0.2);
+        
+        --glass-background: rgba(28, 28, 30, 0.8);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --glass-shadow: rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* 푸터 메인 컨테이너 */
 .site-footer {
-    background: white;
-    border-top: 1px solid #e5e7eb;
-    margin-top: 40px;
-    padding: 30px 0 20px;
+    background: var(--glass-background);
+    border-top: 1px solid var(--glass-border);
+    margin-top: var(--spacing-xxl);
+    padding: var(--spacing-xxl) 0 var(--spacing-lg);
     position: relative;
     z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 -4px 12px var(--glass-shadow);
+    animation: slideInUp 0.8s var(--animation-ease);
 }
 
-.footer-container {
+.site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+    pointer-events: none;
+}
+
+.footer-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 var(--spacing-lg);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+    position: relative;
+    z-index: 1;
 }
 
-/* 푸터 섹션들 */
-.footer-container section {
-    display: flex;
-    flex-direction: column;
-}
-
-.footer-container h3 {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--label-primary);
-    margin: 0 0 16px 0;
-}
-
-.footer-container p {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    color: var(--system-gray);
-    line-height: 1.5;
-    margin: 0 0 12px 0;
-}
-
-/* 회사 정보 */
-.company-info {
-
-}
-
-/* 법적 링크 */
-.legal-links ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.legal-links li {
-    margin-bottom: 8px;
-}
-
-.legal-links a {
-    color: var(--label-primary);
-    text-decoration: none;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color var(--animation-duration) var(--animation-ease);
-}
-
-.legal-links a:hover {
-    color: var(--system-blue);
-}
-
-/* 저작권 */
-.copyright p {
-    font-size: 12px;
-    color: var(--system-gray);
-    margin: 0;
-}
-
-/* 소셜 링크 */
-.social-links ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 12px;
-}
-
-.social-links li {
-    margin: 0;
-}
-
-.social-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: var(--system-gray6);
-    border-radius: 50%;
-    color: var(--label-primary);
-    text-decoration: none;
-    font-size: 16px;
-    transition: all var(--animation-duration) var(--animation-ease);
-}
-
-.social-links a:hover {
-    background-color: var(--system-blue);
-    color: white;
-    transform: translateY(-2px);
-}
-
-.footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-link-item {
-    margin-bottom: 8px;
-}
-
-.footer-link {
-    color: var(--label-secondary);
-    text-decoration: none;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    transition: all var(--animation-duration) var(--animation-ease);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.footer-link:hover {
-    color: var(--system-blue);
-    transform: translateX(4px);
-}
-
-.footer-link-icon {
-    font-size: 16px;
-    transition: transform var(--animation-duration) var(--animation-ease);
-}
-
-.footer-link:hover .footer-link-icon {
-    transform: scale(1.1);
-}
-
-/* 브랜???�션 */
-.footer-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.footer-logo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-    text-decoration: none;
-    color: var(--label-primary);
-}
-
-.footer-logo-icon {
-    width: 40px;
-    height: 40px;
-    margin-right: 12px;
-    background: linear-gradient(135deg, var(--system-blue), var(--system-purple));
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 18px;
-    transition: transform var(--animation-duration) var(--animation-ease);
-}
-
-.footer-logo:hover .footer-logo-icon {
-    transform: scale(1.1) rotate(5deg);
-}
-
-.footer-logo-text {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.footer-description {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    color: var(--label-secondary);
-    line-height: 1.6;
-    margin-bottom: 20px;
-    max-width: 300px;
-}
-
-/* ?�셜 미디??*/
-.footer-social {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.social-link {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--background-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--label-primary);
-    text-decoration: none;
-    font-size: 18px;
-    transition: all var(--animation-duration) var(--animation-ease);
-    border: 1px solid var(--separator-non-opaque);
-}
-
-.social-link:hover {
-    background-color: var(--system-blue);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
-}
-
-.social-link.facebook:hover {
-    background-color: #1877F2;
-}
-
-.social-link.twitter:hover {
-    background-color: #1DA1F2;
-}
-
-.social-link.instagram:hover {
-    background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4);
-}
-
-.social-link.linkedin:hover {
-    background-color: #0077B5;
-}
-
-.social-link.github:hover {
-    background-color: #333;
-}
-
-/* ?�락�??�보 */
-.footer-contact {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    color: var(--label-secondary);
-}
-
-.contact-icon {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--system-blue);
-    font-size: 16px;
-}
-
-.contact-text {
-    flex: 1;
-}
-
-.contact-link {
-    color: var(--label-secondary);
-    text-decoration: none;
-    transition: color var(--animation-duration) var(--animation-ease);
-}
-
-.contact-link:hover {
-    color: var(--system-blue);
-}
-
-/* ?�스?�터 */
-.footer-newsletter {
-    display: flex;
-    flex-direction: column;
-}
-
-.newsletter-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
-}
-
-.newsletter-input {
-    padding: 12px 16px;
-    border: 1px solid var(--separator-opaque);
-    border-radius: 12px;
-    background-color: var(--background-tertiary);
-    color: var(--label-primary);
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: all var(--animation-duration) var(--animation-ease);
-}
-
-.newsletter-input:focus {
-    border-color: var(--system-blue);
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-}
-
-.newsletter-btn {
-    padding: 12px 16px;
-    border: none;
-    border-radius: 12px;
-    background-color: var(--system-blue);
-    color: white;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--animation-duration) var(--animation-ease);
-}
-
-.newsletter-btn:hover {
-    background-color: #0056CC;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-light);
-}
-
-/* ?�터 ?�단 */
-.footer-bottom {
-    border-top: 1px solid var(--separator-non-opaque);
-    padding-top: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-}
-
-.footer-copyright {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 12px;
-    color: var(--system-gray);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.copyright-icon {
-    font-size: 14px;
-}
-
-.footer-bottom-links {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-}
-
-.footer-bottom-link {
-    color: var(--system-gray);
-    text-decoration: none;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 12px;
-    transition: color var(--animation-duration) var(--animation-ease);
-}
-
-.footer-bottom-link:hover {
-    color: var(--system-blue);
-}
-
-/* ?�어 ?�택�?*/
-.language-selector {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border: 1px solid var(--separator-opaque);
-    border-radius: 8px;
-    background-color: var(--background-secondary);
-    cursor: pointer;
-    transition: all var(--animation-duration) var(--animation-ease);
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 12px;
-    color: var(--label-primary);
-}
-
-.language-selector:hover {
-    background-color: var(--system-gray6);
-    border-color: var(--system-blue);
-}
-
-.language-icon {
-    font-size: 14px;
-    color: var(--system-blue);
-}
-
-/* ???�운로드 */
-.footer-apps {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.app-stores {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.app-store-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background-color: var(--background-secondary);
-    border: 1px solid var(--separator-opaque);
-    border-radius: 12px;
-    text-decoration: none;
-    color: var(--label-primary);
-    transition: all var(--animation-duration) var(--animation-ease);
-    min-width: 140px;
-}
-
-.app-store-link:hover {
-    background-color: var(--system-gray6);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-light);
-}
-
-.app-store-icon {
-    font-size: 24px;
-}
-
-.app-store-text {
-    display: flex;
-    flex-direction: column;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-.app-store-subtitle {
-    font-size: 10px;
-    color: var(--system-gray);
-    margin-bottom: 2px;
-}
-
-.app-store-title {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-/* 반응???�자??*/
-@media (max-width: 768px) {
-    .footer {
-        padding: 32px 0 16px;
-    }
-
-    .footer-container {
-        padding: 0 16px;
-    }
-
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 32px;
-    }
-
-    .footer-brand {
-        align-items: center;
-        text-align: center;
-    }
-
-    .footer-description {
-        text-align: center;
-        max-width: none;
-    }
-
-    .footer-social {
-        justify-content: center;
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .footer-bottom-links {
-        justify-content: center;
-    }
-
-    .app-stores {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .app-store-link {
-        width: 100%;
-        max-width: 200px;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-content {
-        gap: 24px;
-    }
-
-    .footer-social {
-        gap: 8px;
-    }
-
-    .social-link {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-    }
-
-    .footer-bottom-links {
-        gap: 16px;
-    }
-
-    .newsletter-form {
-        gap: 8px;
-    }
-}
-
-/* ?�크 모드 ?�별 ?��???*/
-@media (prefers-color-scheme: dark) {
-    .social-link {
-        background-color: var(--background-tertiary);
-    }
-
-    .app-store-link {
-        background-color: var(--background-tertiary);
-    }
-
-    .language-selector {
-        background-color: var(--background-tertiary);
-    }
-
-    .newsletter-input {
-        background-color: var(--background-secondary);
-    }
-}
-
-/* ?�니메이??*/
+/* 푸터 섹션 공통 스타일 */
 .footer-section {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.6s ease-out forwards;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInUp 0.6s var(--animation-ease);
 }
 
 .footer-section:nth-child(1) { animation-delay: 0.1s; }
@@ -559,23 +158,400 @@
 .footer-section:nth-child(3) { animation-delay: 0.3s; }
 .footer-section:nth-child(4) { animation-delay: 0.4s; }
 
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.footer-title {
+    font-family: var(--font-family-primary);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--label-primary);
+    margin: 0 0 var(--spacing-lg) 0;
+    position: relative;
 }
 
-/* ?�크�?????버튼 */
-.scroll-to-top {
+.footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 30px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--system-blue), var(--system-purple));
+    border-radius: 2px;
+}
+
+/* 회사/팀 소개 */
+.company-info {
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.05), rgba(175, 82, 222, 0.05));
+    border: 1px solid rgba(0, 122, 255, 0.1);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.company-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity var(--animation-duration) var(--animation-ease);
+}
+
+.company-info:hover::before {
+    opacity: 1;
+}
+
+.company-description {
+    font-family: var(--font-family-primary);
+    font-size: 16px;
+    color: var(--label-secondary);
+    line-height: 1.6;
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.contact-info {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.contact-label {
+    font-family: var(--font-family-primary);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--label-primary);
+}
+
+.contact-link {
+    color: var(--system-blue);
+    text-decoration: none;
+    font-family: var(--font-family-primary);
+    font-size: 16px;
+    font-weight: 500;
+    transition: all var(--animation-duration) var(--animation-ease);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-small);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.contact-link::before {
+    content: '✉️';
+    font-size: 18px;
+}
+
+.contact-link:hover {
+    background-color: var(--system-gray6);
+    transform: translateY(-2px);
+}
+
+/* 법적 정보 */
+.legal-links {
+    background: linear-gradient(135deg, rgba(52, 199, 89, 0.05), rgba(90, 200, 250, 0.05));
+    border: 1px solid rgba(52, 199, 89, 0.1);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.legal-links::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity var(--animation-duration) var(--animation-ease);
+}
+
+.legal-links:hover::before {
+    opacity: 1;
+}
+
+.legal-nav,
+.quick-nav {
+    width: 100%;
+}
+
+.legal-list,
+.quick-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--spacing-sm);
+}
+
+.legal-item,
+.quick-item {
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.legal-link,
+.quick-link {
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: var(--font-family-primary);
+    font-size: 15px;
+    font-weight: 500;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-small);
+    transition: all var(--animation-duration) var(--animation-ease);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.legal-link::before {
+    content: '⚖️';
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+.legal-link:hover,
+.quick-link:hover {
+    background-color: var(--system-gray6);
+    color: var(--system-blue);
+    transform: translateX(4px);
+}
+
+/* 빠른 링크 */
+.quick-links {
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.05), rgba(255, 45, 146, 0.05));
+    border: 1px solid rgba(255, 149, 0, 0.1);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-links::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity var(--animation-duration) var(--animation-ease);
+}
+
+.quick-links:hover::before {
+    opacity: 1;
+}
+
+.quick-link::before {
+    content: '🔗';
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+/* 소셜 미디어 */
+.social-links {
+    background: linear-gradient(135deg, rgba(255, 45, 146, 0.05), rgba(175, 82, 222, 0.05));
+    border: 1px solid rgba(255, 45, 146, 0.1);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-links::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity var(--animation-duration) var(--animation-ease);
+}
+
+.social-links:hover::before {
+    opacity: 1;
+}
+
+.social-nav {
+    width: 100%;
+}
+
+.social-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.social-item {
+    transition: all var(--animation-duration) var(--animation-ease);
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--background-grouped-secondary);
+    border: 1px solid var(--separator-non-opaque);
+    border-radius: var(--border-radius-medium);
+    color: var(--label-primary);
+    text-decoration: none;
+    font-family: var(--font-family-primary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--animation-duration) var(--animation-ease);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity var(--animation-duration) var(--animation-ease);
+}
+
+.social-link:hover::before {
+    opacity: 1;
+}
+
+.social-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.social-link.twitter:hover {
+    background: linear-gradient(135deg, #1DA1F2, #0d8bd9);
+    color: white;
+    border-color: #1DA1F2;
+}
+
+.social-link.facebook:hover {
+    background: linear-gradient(135deg, #1877F2, #0e5bb8);
+    color: white;
+    border-color: #1877F2;
+}
+
+.social-link.instagram:hover {
+    background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF);
+    color: white;
+    border-color: #DD2A7B;
+}
+
+.social-link.youtube:hover {
+    background: linear-gradient(135deg, #FF0000, #cc0000);
+    color: white;
+    border-color: #FF0000;
+}
+
+.social-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    transition: transform var(--animation-duration) var(--animation-ease);
+}
+
+.social-link:hover .social-icon {
+    transform: scale(1.1);
+}
+
+.social-text {
+    font-weight: 500;
+}
+
+/* 푸터 하단 */
+.footer-bottom {
+    border-top: 1px solid var(--separator-non-opaque);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    position: relative;
+    z-index: 1;
+}
+
+.footer-bottom-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.copyright {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.copyright-text {
+    font-family: var(--font-family-primary);
+    font-size: 14px;
+    color: var(--label-secondary);
+    margin: 0;
+}
+
+.additional-info {
+    font-family: var(--font-family-primary);
+    font-size: 12px;
+    color: var(--label-tertiary);
+    margin: 0;
+}
+
+.footer-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-family: var(--font-family-primary);
+    font-size: 12px;
+    color: var(--label-tertiary);
+}
+
+.version-info {
+    background: var(--system-gray6);
+    color: var(--label-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-small);
+    font-weight: 500;
+}
+
+.meta-separator {
+    color: var(--separator-opaque);
+}
+
+.last-updated {
+    font-family: var(--font-family-mono);
+}
+
+/* 맨 위로 버튼 */
+.back-to-top {
     position: fixed;
-    bottom: 100px;
-    right: 32px;
-    width: 48px;
-    height: 48px;
+    bottom: var(--spacing-xl);
+    right: var(--spacing-xl);
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background-color: var(--background-tertiary);
-    border: 1px solid var(--separator-opaque);
+    background: var(--glass-background);
+    border: 1px solid var(--glass-border);
     color: var(--label-primary);
     cursor: pointer;
     display: flex;
@@ -586,112 +562,213 @@
     visibility: hidden;
     transition: all var(--animation-duration) var(--animation-ease);
     z-index: 1000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-medium);
 }
 
-.scroll-to-top.visible {
+.back-to-top.visible {
     opacity: 1;
     visibility: visible;
 }
 
-.scroll-to-top:hover {
-    background-color: var(--system-blue);
+.back-to-top:hover {
+    background: var(--system-blue);
     color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: var(--shadow-heavy);
 }
 
-/* ?�근??*/
-.footer-link:focus,
+.back-to-top-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    transition: transform var(--animation-duration) var(--animation-ease);
+}
+
+.back-to-top:hover .back-to-top-icon {
+    transform: translateY(-2px);
+}
+
+/* 애니메이션 */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: var(--spacing-lg) 0;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        padding: 0 var(--spacing-md);
+    }
+    
+    .footer-section {
+        text-align: center;
+    }
+    
+    .footer-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .social-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-bottom-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 0 var(--spacing-md);
+    }
+    
+    .back-to-top {
+        bottom: var(--spacing-lg);
+        right: var(--spacing-lg);
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-footer {
+        padding: var(--spacing-md) 0;
+    }
+    
+    .footer-content {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .footer-section {
+        padding: var(--spacing-md);
+    }
+    
+    .footer-title {
+        font-size: 18px;
+    }
+    
+    .social-link {
+        padding: var(--spacing-sm);
+        font-size: 13px;
+    }
+    
+    .back-to-top {
+        width: 44px;
+        height: 44px;
+        bottom: var(--spacing-md);
+        right: var(--spacing-md);
+    }
+}
+
+/* 접근성 개선 */
+.legal-link:focus,
+.quick-link:focus,
 .social-link:focus,
-.newsletter-btn:focus,
-.app-store-link:focus {
+.contact-link:focus,
+.back-to-top:focus {
     outline: 2px solid var(--system-blue);
     outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .site-footer,
     .footer-section {
         animation: none;
-        opacity: 1;
-        transform: none;
+    }
+    
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
 
-/* ?�터 배경 ?�턴 */
-.footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><defs><pattern id="footerPattern" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="1" fill="rgba(0,122,255,0.1)"/></pattern></defs><rect width="60" height="60" fill="url(%23footerPattern)"/></svg>');
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-/* ?�터 구분??*/
-.footer-divider {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--separator-opaque), transparent);
-    margin: 32px 0;
-}
-
-/* ?�터 ?�태 ?�시 */
-.footer-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 12px;
-    color: var(--system-gray);
-    margin-top: 16px;
-}
-
-.status-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--system-green);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
+/* 고대비 모드 지원 */
+@media (prefers-contrast: high) {
+    :root {
+        --separator-opaque: rgba(0, 0, 0, 0.8);
+        --separator-non-opaque: rgba(0, 0, 0, 0.3);
     }
-    50% {
-        opacity: 0.5;
+    
+    .footer-section {
+        border: 2px solid var(--separator-opaque);
+    }
+    
+    .legal-link:hover,
+    .quick-link:hover,
+    .social-link:hover {
+        background-color: var(--system-blue);
+        color: white;
     }
 }
 
-/* ?�터 카드 ?��???*/
-.footer-card {
-    background-color: var(--background-tertiary);
-    border: 1px solid var(--separator-non-opaque);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-    transition: all var(--animation-duration) var(--animation-ease);
+/* 다크 모드 특별 조정 */
+@media (prefers-color-scheme: dark) {
+    .site-footer {
+        background: var(--glass-background);
+        border-top-color: var(--glass-border);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .company-info,
+    .legal-links,
+    .quick-links,
+    .social-links {
+        background: var(--background-tertiary);
+        border-color: var(--separator-non-opaque);
+    }
+    
+    .social-link {
+        background: var(--background-secondary);
+        border-color: var(--separator-non-opaque);
+    }
+    
+    .version-info {
+        background: var(--system-gray4);
+        color: var(--label-primary);
+    }
+    
+    .back-to-top {
+        background: var(--glass-background);
+        border-color: var(--glass-border);
+    }
 }
 
-.footer-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-light);
-}
-
-.footer-card-title {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--label-primary);
-    margin-bottom: 8px;
-}
-
-.footer-card-content {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 12px;
-    color: var(--label-secondary);
-    line-height: 1.5;
+/* 프린트 스타일 */
+@media print {
+    .site-footer {
+        background: white;
+        border-top: 1px solid #000;
+        box-shadow: none;
+    }
+    
+    .back-to-top {
+        display: none;
+    }
+    
+    .social-links {
+        display: none;
+    }
 }

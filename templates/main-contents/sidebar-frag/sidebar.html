@@ -1,5 +1,4 @@
 <!--sidebar-frag-->
-<link rel="stylesheet" th:href="@{/main-contents-skin/sidebar/css/sidebar.css}">
 <aside class="sidebar" th:fragment="sidebar" role="complementary" aria-label="사이드바 메뉴">
     <!-- Vue App Mount Point -->
     <div id="sidebar-app">
@@ -9,10 +8,129 @@
     <!-- Thymeleaf 데이터를 JavaScript로 전달하기 위한 스크립트 -->
     <script th:inline="javascript">
         /*<![CDATA[*/
-        const popularGamesData = /*[[${popularGames}]]*/ [];
-        const recentGamesData = /*[[${recentGames}]]*/ [];
-        const noticesData = /*[[${notices}]]*/ [];
-        const eventsData = /*[[${events}]]*/ [];
+        // 실제 데이터가 있으면 사용하고, 없으면 샘플 데이터 사용
+        const popularGamesData = /*[[${popularGames}]]*/ [
+            {
+                id: 'laser-defender',
+                title: '레이저 디펜더',
+                playCount: 1234,
+                rating: 4.8
+            },
+            {
+                id: 'tile-vania',
+                title: '타일 바니아',
+                playCount: 892,
+                rating: 4.5
+            },
+            {
+                id: 'puzzle-master',
+                title: '퍼즐 마스터',
+                playCount: 567,
+                rating: 4.7
+            },
+            {
+                id: 'space-adventure',
+                title: '스페이스 어드벤처',
+                playCount: 445,
+                rating: 4.3
+            },
+            {
+                id: 'racing-fever',
+                title: '레이싱 피버',
+                playCount: 389,
+                rating: 4.6
+            }
+        ];
+        
+        const recentGamesData = /*[[${recentGames}]]*/ [
+            {
+                id: 'memory-challenge',
+                title: '메모리 챌린지',
+                uploadDate: '2024-01-15',
+                isNew: true
+            },
+            {
+                id: 'tower-defense',
+                title: '타워 디펜스',
+                uploadDate: '2024-01-14',
+                isNew: true
+            },
+            {
+                id: 'word-puzzle',
+                title: '단어 퍼즐',
+                uploadDate: '2024-01-13',
+                isNew: true
+            },
+            {
+                id: 'bubble-shooter',
+                title: '버블 슈터',
+                uploadDate: '2024-01-12',
+                isNew: false
+            },
+            {
+                id: 'match-three',
+                title: '매치 쓰리',
+                uploadDate: '2024-01-11',
+                isNew: false
+            }
+        ];
+        
+        const noticesData = /*[[${notices}]]*/ [
+            {
+                id: 1,
+                title: '게임 허브 2024년 업데이트 안내',
+                date: '2024-01-15',
+                isImportant: true
+            },
+            {
+                id: 2,
+                title: '새로운 게임 카테고리 추가',
+                date: '2024-01-14',
+                isImportant: false
+            },
+            {
+                id: 3,
+                title: '사용자 랭킹 시스템 개선',
+                date: '2024-01-13',
+                isImportant: false
+            },
+            {
+                id: 4,
+                title: '모바일 버전 최적화 완료',
+                date: '2024-01-12',
+                isImportant: false
+            }
+        ];
+        
+        const eventsData = /*[[${events}]]*/ [
+            {
+                id: 1,
+                title: '신년 특별 이벤트',
+                description: '새해를 맞아 특별한 보상을 받아보세요! 매일 로그인하면 포인트 지급',
+                startDate: '2024-01-01',
+                endDate: '2024-01-31',
+                isActive: true,
+                type: 'special'
+            },
+            {
+                id: 2,
+                title: '게임 리뷰 이벤트',
+                description: '게임 리뷰를 작성하고 추첨을 통해 상품을 받아보세요',
+                startDate: '2024-01-10',
+                endDate: '2024-01-25',
+                isActive: true,
+                type: 'review'
+            },
+            {
+                id: 3,
+                title: '친구 초대 이벤트',
+                description: '친구를 초대하면 둘 다 보너스 포인트를 받을 수 있어요',
+                startDate: '2024-01-05',
+                endDate: '2024-02-05',
+                isActive: true,
+                type: 'referral'
+            }
+        ];
         /*]]>*/
     </script>
 </aside>

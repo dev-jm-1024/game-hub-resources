@@ -16,6 +16,27 @@
 
     <!-- 전역 스타일 -->
     <link rel="stylesheet" th:href="@{/main-contents-skin/global.css}">
+    
+    <!-- 헤더 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/header/css/header.css}">
+    
+    <!-- 네비게이션 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/nav/css/nav.css}">
+    
+    <!-- 메인 콘텐츠 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/main/css/main.css}">
+    
+    <!-- 사이드바 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/sidebar/css/sidebar.css}">
+    
+    <!-- 푸터 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/footer/css/footer.css}">
+
+    <!-- Vue.js 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <!-- Lottie Player (애니메이션용) -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <!-- 전역 Vue 인스턴스 설정 -->
     <script>
@@ -29,9 +50,6 @@
             }
         };
     </script>
-
-    <!-- 전역 JavaScript -->
-    <script th:src="@{/main-contents-skin/global.js}"></script>
 
     <!-- Apple 아이콘 -->
     <link rel="apple-touch-icon" th:href="@{/images/favicon.ico}">
@@ -63,5 +81,13 @@
 <div class="user-status-info" style="display: none;">
     <span id="userInfo" th:text="${isLoggedIn} ? '로그인 상태' : '비회원'">상태 확인 중...</span>
 </div>
+
+<!-- JavaScript 파일들 (defer 속성으로 순서 보장) -->
+<script th:src="@{/main-contents-skin/global.js}" defer></script>
+<script th:src="@{/main-contents-skin/header/js/header.js}" defer></script>
+<script th:src="@{/main-contents-skin/nav/js/nav.js}" defer></script>
+<script th:src="@{/main-contents-skin/main/js/main.js}" defer></script>
+<script th:src="@{/main-contents-skin/sidebar/js/sidebar.js}" defer></script>
+<script th:src="@{/main-contents-skin/footer/js/footer.js}" defer></script>
 </body>
 </html>
