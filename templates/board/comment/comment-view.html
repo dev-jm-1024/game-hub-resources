@@ -1,16 +1,26 @@
 <!-- templates/fragments/comment-view.html -->
-<div th:fragment="commentListFragment" id="comment-list">
-    <div class="comment-item" style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
-        <div class="comment-header">
-            <strong class="comment-writer">작성자</strong>
-        </div>
-        <div class="comment-body">
-            <p class="comment-content">내용</p>
-        </div>
-        <div class="comment-footer">
-            <span class="comment-like">좋아요</span> |
-            <span class="comment-dislike">싫어요</span> |
-            <span class="comment-date">날짜</span>
+<div th:fragment="commentListFragment">
+    <div id="comment-list">
+        <div th:each="comment : ${commentsList}"
+             class="comment-item"
+             style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+
+            <!-- 작성자 -->
+            <div class="comment-header">
+                <strong class="comment-writer" th:text="${comment.user.mbNickname}">작성자</strong>
+            </div>
+
+            <!-- 댓글 내용 -->
+            <div class="comment-body">
+                <p class="comment-content" th:text="${comment.commentContent}">내용</p>
+            </div>
+
+            <!-- 하단 정보 -->
+            <div class="comment-footer">
+                <span class="comment-like">👍 좋아요 <span th:text="${comment.likeCount}">0</span></span> |
+                <span class="comment-dislike">👎 싫어요 <span th:text="${comment.dislikeCount}">0</span></span> |
+                <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">날짜</span>
+            </div>
         </div>
     </div>
 </div>

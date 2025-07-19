@@ -5,83 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="_csrf" th:content="${_csrf.token}"/>
   <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-  <title>글 작성</title>
+  <title>글 수정</title>
+  <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-edit-form.css}">
 </head>
-<body>
-<form id="postForm">
-  <div>
-    <label for="title">제목</label>
-    <input type="text" id="title" name="postTitle" th:value="${postData.postTitle}" required>
-  </div>
-  <div>
-    <label for="content">내용</label>
-    <textarea id="content" name="postContent" rows="10" th:text="${postData.postContent}" required></textarea>
-  </div>
-  <div>
-    <input type="hidden" name="postId" th:value="${postData.postId}">
-<!--    <select id="boardId" name="boardId" th:value="${boardId}">-->
-<!--      <option value="free" th:selected="${boardId == 'free'}">자유 게시판</option>-->
-<!--      <option value="guide" th:selected="${boardId == 'guide'}">공략 게시판</option>-->
-<!--      <option value="qna" th:selected="${boardId == 'qna'}">Q&A 게시판</option>-->
-<!--      <option value="suggestion" th:selected="${boardId == 'suggestion'}">건의사항 게시판</option>-->
-<!--      <option value="report" th:selected="${boardId == 'report'}">신고 게시판</option>-->
-<!--    </select>-->
-    <input type="text" name="boardId" th:value="${postData.board.boardId}" readonly>
+<body class="post-edit-form-body">
+<div class="post-edit-form-container">
+  <h1 class="post-edit-form-title">게시글 수정</h1>
 
-  </div>
-  <div>
-    <button type="submit">수정 완료</button>
-    <button type="button" onclick="history.back()">취소</button>
-  </div>
-</form>
+  <form id="postForm" class="post-edit-form">
+    <div class="form-group">
+      <label for="title" class="form-label">제목</label>
+      <input type="text" id="title" name="postTitle" class="form-input" th:value="${postData.postTitle}" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="content" class="form-label">내용</label>
+      <textarea id="content" name="postContent" rows="10" class="form-textarea" th:text="${postData.postContent}" required></textarea>
+    </div>
+    
+    <div class="form-group">
+      <input type="hidden" name="postId" th:value="${postData.postId}">
+      <label class="form-label">게시판</label>
+      <input type="text" name="boardId" class="form-input readonly" th:value="${postData.board.boardId}" readonly>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="submit-button">수정 완료</button>
+      <button type="button" class="cancel-button" onclick="history.back()">취소</button>
+    </div>
+  </form>
+</div>
 
-<script>
-  document.getElementById("postForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const formData = new FormData(form);
-
-    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    //boardId, postId
-    const boardId = form.querySelector('input[name="boardId"]').value;
-    const postId = form.querySelector('input[name="postId"]').value;
-
-    const data = {
-      postTitle: formData.get("postTitle"),
-      postContent: formData.get("postContent"),
-      boardId: formData.get("boardId"),
-      postId: formData.get("postId")
-    };
-
-    try { // new API path: /api/vi/board/{boardId}/posts/{postId}
-      //past API path: /board/api/v1/edit
-      const response = await fetch(`/api/v1/board/${boardId}/posts/${postId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          [header]: token
-        },
-        credentials: "include",
-        body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-        // ✅ 성공 시 명시적 리다이렉트
-        window.location.href = "/board";
-      } else {
-        const msg = await response.text();
-        alert("작성 실패: " + msg);
-      }
-    } catch (err) {
-      alert("네트워크 오류 또는 서버 응답 없음");
-      console.error("요청 실패", err);
-    }
-  });
-</script>
-
+<script th:src="@{/board-skin/common-skin/post-skin/js/post-edit-form.js}"></script>
 
 </body>
 </html>

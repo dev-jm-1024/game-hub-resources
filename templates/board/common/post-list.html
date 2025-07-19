@@ -3,51 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${board.boardName} + ' - 게시글 목록'">게시판 이름 - 게시글 목록</title>
+    <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-list.css}">
 </head>
-<body>
-<main>
-    <h1 th:text="${board.boardName}">게시판 이름</h1>
+<body class="post-list-body">
+<main class="post-list-container">
+    <h1 class="post-list-title" th:text="${board.boardName}">게시판 이름</h1>
 
     <!-- 게시글 목록 -->
-    <table>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>제목</th><!-- title -->
-            <th>작성자</th><!-- author -->
-            <th>작성일</th><!-- createdAt -->
-            <th>조회수</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- 게시글이 없을 경우 -->
-        <tr th:if="${#lists.isEmpty(summaryPosts)}">
-            <td colspan="5">게시글이 없습니다.</td>
-        </tr>
+    <div class="post-table-wrapper">
+        <table class="post-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th><!-- title -->
+                <th>작성자</th><!-- author -->
+                <th>작성일</th><!-- createdAt -->
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 게시글이 없을 경우 -->
+            <tr th:if="${#lists.isEmpty(summaryPosts)}" class="empty-row">
+                <td colspan="5" class="empty-message">게시글이 없습니다.</td>
+            </tr>
 
-        <!-- 게시글이 있을 경우 -->
-        <tr th:each="post, stat : ${summaryPosts}">
-            <td th:text="${stat.count}">1</td>
-            <td th:text="${post.title}">글 제목</td>
-            <td th:text="${post.author}">작성자</td>
-            <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</td>
-            <td>0</td> <!-- 조회수는 SummaryPostDto에 없으므로 일단 0으로 표시 -->
-        </tr>
-        </tbody>
-
-    </table>
+            <!-- 게시글이 있을 경우 -->
+            <tr th:each="post, stat : ${summaryPosts}" class="post-row" href="https://naver.com">
+                <td class="post-number" th:text="${stat.count}">1</td>
+                <td class="post-title-cell">
+                    <a th:text="${post.title}" href="https://naver.com" class="post-title-link">글 제목</a>
+                </td>
+                <td class="post-author" th:text="${post.author}">작성자</td>
+                <td class="post-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</td>
+                <td class="post-views">0</td> <!-- 조회수는 SummaryPostDto에 없으므로 일단 0으로 표시 -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- 글쓰기 버튼 -->
-    <div>
+    <div class="write-button-container">
         <form action="/board/new" method="get">
             <input type="hidden" name="boardId" th:value="${board.boardId}" />
-            <button type="submit" value="글쓰기"
-                    style="background-color: rgb(54,54,52); color: #fbf8fb; font-weight: 900;
-                    border-radius: 16px; width: 200px; height: 100px; font-size: 13px;">
+            <button type="submit" class="write-button">
                 글쓰기
             </button>
         </form>
     </div>
 </main>
+
+<script th:src="@{/board-skin/common-skin/post-skin/js/post-list.js}"></script>
 </body>
 </html>

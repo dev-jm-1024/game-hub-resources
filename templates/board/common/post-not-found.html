@@ -1,14 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글을 찾을 수 없습니다</title>
+    <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-not-found.css}">
 </head>
-<body>
-<!-- post-not-found.html -->
-<h2 th:text="${errorMessage}">게시글 오류</h2>
-<p th:text="'에러 코드: ' + ${errorCode}"></p>
-<a href="/boards">게시판 목록으로 돌아가기</a>
+<body class="post-not-found-body">
+<div class="post-not-found-container">
+    <div class="error-content">
+        <div class="error-icon">
+            <svg viewBox="0 0 24 24" class="error-svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+        </div>
+        
+        <h2 class="error-title" th:text="${errorMessage}">게시글 오류</h2>
+        <p class="error-code" th:text="'에러 코드: ' + ${errorCode}">에러 코드: 404</p>
+        
+        <div class="error-actions">
+            <a href="/boards" class="back-button">게시판 목록으로 돌아가기</a>
+            <button class="retry-button" onclick="window.location.reload()">다시 시도</button>
+        </div>
+    </div>
+</div>
 
+<script th:src="@{/board-skin/common-skin/post-skin/js/post-not-found.js}"></script>
 </body>
 </html>

@@ -5,75 +5,78 @@
     <title>게시글 상세</title>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-detail.css}">
 </head>
-<body>
+<body class="post-detail-body">
 
-<h1 id="post-title" th:text="${postsData.getPostTitle()}">게시글 제목</h1>
+<div class="post-detail-container">
+    <div class="post-header">
+        <h1 class="post-title" th:text="${postsData.getPostTitle()}">게시글 제목</h1>
 
-<h1 th:text="${postsData.postTitle}">게시글 제목</h1>
+        <div class="post-meta">
+            <div class="post-meta-item">
+                <strong>작성자:</strong>
+                <span th:text="${postsData.user != null ? postsData.user.mbNickname : '알 수 없음'}">닉네임</span>
+            </div>
 
-<div>
-    <strong>작성자:</strong>
-    <span th:text="${postsData.user != null ? postsData.user.mbNickname : '알 수 없음'}">닉네임</span>
-</div>
+            <div class="post-meta-item">
+                <strong>작성일:</strong>
+                <span th:text="${#temporals.format(postsData.createdAt, 'yyyy-MM-dd')}">날짜</span>
+            </div>
 
-<div>
-    <strong>작성일:</strong>
-    <span th:text="${#temporals.format(postsData.createdAt, 'yyyy-MM-dd')}">날짜</span>
-</div>
-
-<div>
-    <strong>조회수:</strong>
-    <span th:text="${postsData.viewCount}">0</span>
-</div>
-
-<div>
-    <strong>사진:</strong>
-    <div th:if="${hasPostFile}">
-        <img th:src="@{${postFiles.fileUrl}}" alt="image">
+            <div class="post-meta-item">
+                <strong>조회수:</strong>
+                <span th:text="${postsData.viewCount}">0</span>
+            </div>
+        </div>
     </div>
-    <div th:unless="${hasPostFile}">
-        <p>첨부파일이 없습니다.</p>
+
+    <div class="post-content-wrapper">
+        <div class="post-content">
+            <p id="post-content" th:text="${postsData.getPostContent}">게시글 내용</p>
+        </div>
+
+        <div class="post-attachments" th:if="${hasPostFile}">
+            <strong>첨부 이미지:</strong>
+            <div class="attachment-image">
+                <img th:src="@{${postFiles.fileUrl}}" alt="첨부 이미지" class="post-image">
+            </div>
+        </div>
+        <div class="post-attachments" th:unless="${hasPostFile}">
+            <p class="no-attachments">첨부파일이 없습니다.</p>
+        </div>
+    </div>
+
+    <div class="post-actions" id="memberForm" th:if="${isAuthUser}">
+        <form id="updatePosts" method="get" action="/board/posts/edit" class="action-form">
+            <input type="hidden" name="postId" th:value="${postsData.getPostId}">
+            <input type="hidden" name="boardId" th:value="${postsData.getBoard().boardId}">
+            <button type="submit" class="edit-button">수정하기</button>
+        </form>
+
+        <form id="deletePosts" class="action-form">
+            <input type="hidden" name="postId" th:value="${postsData.getPostId}">
+            <input type="hidden" name="boardId" th:value="${postsData.getBoard().boardId}">
+            <button type="submit" class="delete-button">삭제하기</button>
+        </form>
+    </div>
+
+    <div class="navigation-actions">
+        <a th:href="@{'/board/' + ${postsData.getBoard().getBoardId} + '/view'}" class="back-button">목록으로 돌아가기</a>
+    </div>
+
+    <!-- 댓글 입력폼 포함 -->
+    <div id="comment-section" class="comment-section">
+        <!-- ✅ 댓글 입력 폼 삽입 (comment-form.html의 form 부분) -->
+        <div th:replace="~{board/comment/comment-form :: commentFormFragment}"></div>
+
+        <hr class="comment-separator">
+
+        <!-- ✅ 댓글 목록 뷰 삽입 (comment-view.html의 리스트 부분) -->
+        <div th:replace="~{board/comment/comment-view :: commentListFragment}"></div>
     </div>
 </div>
 
-<hr>
-
-<div>
-    <p id="post-content" th:text="${postsData.getPostContent}">게시글 내용</p>
-</div>
-
-<hr>
-
-<div id="memberForm" th:if="${isAuthUser}">
-    <form id="updatePosts" method="get" action="/board/posts/edit">
-        <input type="hidden" name="postId" th:value="${postsData.getPostId}">
-        <input type="hidden" name="boardId" th:value="${postsData.getBoard().boardId}">
-        <button type="submit">수정하기</button>
-    </form>
-
-    <form id="deletePosts">
-        <input type="hidden" name="postId" th:value="${postsData.getPostId}">
-        <input type="hidden" name="boardId" th:value="${postsData.getBoard().boardId}">
-        <button type="submit">삭제하기</button>
-    </form>
-</div>
-<a th:href="@{'/board/' + ${postsData.getBoard().getBoardId} + '/view'}">목록으로 돌아가기</a>
-
-<hr>
-
-<!-- 댓글 입력폼 포함 -->
-<div id="comment-section">
-
-    <!-- ✅ 댓글 입력 폼 삽입 (comment-form.html의 form 부분) -->
-    <div th:replace="~{board/comment/comment-form :: commentFormFragment}"></div>
-
-    <hr>
-
-    <!-- ✅ 댓글 목록 뷰 삽입 (comment-view.html의 리스트 부분) -->
-    <div th:replace="~{board/comment/comment-view :: commentListFragment}"></div>
-
-</div>
 <script th:inline="javascript">
     /* ------------------------------------------------------------------
      * 방법 1: Thymeleaf에서 직접 CSRF 토큰 주입 (권장)
@@ -121,61 +124,45 @@
     /* ------------------------------------------------------------------
      * 댓글 등록 – POST /api/v1/posts/{postId}/comments
      * ------------------------------------------------------------------ */
-    document.getElementById('commentForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // document.getElementById('commentForm').addEventListener('submit', async (e) => {
+    //     e.preventDefault();
+    //
+    //     const form = e.target;
+    //     const formData = new FormData(form);
+    //     const commentText = formData.get("commentContent")?.trim();
+    //
+    //     if (!commentText) {
+    //         alert("댓글 내용을 입력해주세요.");
+    //         return;
+    //     }
+    //
+    //     formData.set("commentContent", commentText); // trim 반영
+    //
+    //     try {
+    //         const postId = formData.get("postId");
+    //
+    //         const res = await fetch(`/api/v1/posts/${postId}/comments`, {
+    //             method: 'POST',
+    //             credentials: 'include',
+    //             headers: {
+    //                 'Content-Type': 'application/x-www-form-urlencoded',
+    //                 [csrfHeader]: csrfToken
+    //             },
+    //             body: new URLSearchParams(formData)
+    //         });
+    //
+    //         if (!res.ok) throw new Error(await res.text());
+    //
+    //         alert("댓글 등록 성공!");
+    //         window.location.reload();
+    //     } catch (err) {
+    //         console.error("댓글 등록 실패:", err);
+    //         alert("댓글 등록 실패: " + err.message);
+    //     }
+    // });
 
-        const form          = e.target;
-        const commentInput  = form.querySelector('input[name="commentContent"]');
-        const commentText   = commentInput.value.trim();
-        if (!commentText) {
-            alert('댓글 내용을 입력해주세요.');
-            commentInput.focus();
-            return;
-        }
-
-        const postId  = form.querySelector('input[name="postId"]').value;
-        const boardId = form.querySelector('input[name="boardId"]').value;
-
-        // 디버깅용 로그
-        console.log('CSRF Token:', csrfToken);
-        console.log('CSRF Header:', csrfHeader);
-        console.log('Post ID:', postId);
-        console.log('Request Body:', {
-            commentContent: commentText,
-            postId: parseInt(postId),
-            boardId: parseInt(boardId)
-        });
-
-        try {
-            const res = await fetch(`/api/v1/posts/${postId}/comments`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [csrfHeader]: csrfToken  // Thymeleaf에서 주입된 값 사용
-                },
-                body: JSON.stringify({
-                    commentContent: commentText,
-                    postId: parseInt(postId),     // 숫자로 변환
-                    boardId: parseInt(boardId)    // 숫자로 변환
-                })
-            });
-
-            if (!res.ok) {
-                const errorText = await res.text();
-                console.error('Response status:', res.status);
-                console.error('Error response:', errorText);
-                throw new Error(errorText || res.status);
-            }
-
-            alert('댓글 등록 성공!');
-            window.location.reload();
-        } catch (err) {
-            console.error('댓글 등록 실패:', err);
-            alert('댓글 등록 실패: ' + err.message);
-        }
-    });
 </script>
 
+<script th:src="@{/board-skin/common-skin/post-skin/js/post-detail.js}"></script>
 </body>
 </html>

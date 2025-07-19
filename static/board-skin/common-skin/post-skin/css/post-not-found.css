@@ -1,0 +1,529 @@
+/* Apple macOS/iOS 스타일 게시글 없음 에러 페이지 CSS */
+
+/* CSS 변수 정의 - Apple 디자인 시스템 */
+:root {
+    /* 컬러 시스템 */
+    --primary-blue: #007AFF;
+    --primary-blue-hover: #0056CC;
+    --system-red: #FF3B30;
+    --system-gray: #8E8E93;
+    --system-gray2: #AEAEB2;
+    --system-gray3: #C7C7CC;
+    --system-gray4: #D1D1D6;
+    --system-gray5: #E5E5EA;
+    --system-gray6: #F2F2F7;
+    
+    /* 배경 색상 */
+    --background-primary: #FFFFFF;
+    --background-secondary: #F2F2F7;
+    --background-tertiary: #FFFFFF;
+    
+    /* 텍스트 색상 */
+    --label-primary: #000000;
+    --label-secondary: #3C3C43;
+    --label-tertiary: #3C3C4399;
+    
+    /* 구분선 */
+    --separator-opaque: #C6C6C8;
+    --separator-non-opaque: #3C3C4329;
+    
+    /* 그림자 */
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+    
+    /* 애니메이션 */
+    --animation-duration: 0.3s;
+    --animation-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    
+    /* 폰트 */
+    --font-family-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    
+    /* 레이아웃 */
+    --border-radius-small: 8px;
+    --border-radius-medium: 12px;
+    --border-radius-large: 16px;
+    --border-radius-xlarge: 24px;
+    
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-primary: #000000;
+        --background-secondary: #1C1C1E;
+        --background-tertiary: #2C2C2E;
+        
+        --label-primary: #FFFFFF;
+        --label-secondary: #EBEBF5;
+        --label-tertiary: #EBEBF599;
+        
+        --separator-opaque: #38383A;
+        --separator-non-opaque: #54545899;
+        
+        --system-gray: #8E8E93;
+        --system-gray2: #636366;
+        --system-gray3: #48484A;
+        --system-gray4: #3A3A3C;
+        --system-gray5: #2C2C2E;
+        --system-gray6: #1C1C1E;
+    }
+}
+
+/* 페이지 전체 레이아웃 */
+body {
+    font-family: var(--font-family-primary);
+    background: var(--background-secondary);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 메인 컨테이너 */
+.error-container {
+    max-width: 600px;
+    width: 90%;
+    padding: var(--spacing-xxl);
+    text-align: center;
+}
+
+/* 에러 카드 */
+.error-card {
+    background: var(--background-primary);
+    border-radius: var(--border-radius-xlarge);
+    box-shadow: var(--shadow-card);
+    padding: var(--spacing-xxl);
+    border: 1px solid var(--separator-non-opaque);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 에러 아이콘 */
+.error-icon {
+    font-size: 80px;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.8;
+    animation: float 3s ease-in-out infinite;
+}
+
+.error-icon.not-found::before {
+    content: "🔍";
+}
+
+.error-icon.deleted::before {
+    content: "🗑️";
+}
+
+.error-icon.private::before {
+    content: "🔒";
+}
+
+.error-icon.server-error::before {
+    content: "⚠️";
+}
+
+/* 에러 제목 */
+.error-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--label-primary);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -0.5px;
+}
+
+/* 에러 메시지 */
+.error-message {
+    font-size: 16px;
+    color: var(--label-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* 에러 코드 */
+.error-code {
+    display: inline-block;
+    background: var(--system-gray6);
+    color: var(--system-gray);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-medium);
+    font-family: monospace;
+    font-size: 14px;
+    margin-bottom: var(--spacing-xl);
+    border: 1px solid var(--separator-non-opaque);
+}
+
+/* 액션 버튼들 */
+.error-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-lg);
+}
+
+.error-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: 12px 24px;
+    border-radius: var(--border-radius-medium);
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all var(--animation-duration) var(--animation-ease);
+    min-width: 140px;
+    height: 48px;
+    font-family: var(--font-family-primary);
+    border: none;
+    cursor: pointer;
+}
+
+/* 기본 버튼 (게시판 목록으로) */
+.primary-button {
+    background: var(--primary-blue);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.primary-button:hover {
+    background: var(--primary-blue-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.primary-button::before {
+    content: "📋";
+    font-size: 16px;
+}
+
+/* 뒤로가기 버튼 */
+.secondary-button {
+    background: var(--system-gray5);
+    color: var(--label-primary);
+    border: 1px solid var(--separator-opaque);
+}
+
+.secondary-button:hover {
+    background: var(--system-gray4);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+.secondary-button::before {
+    content: "←";
+    font-size: 16px;
+}
+
+/* 홈으로 가기 버튼 */
+.tertiary-button {
+    background: transparent;
+    color: var(--primary-blue);
+    border: 1px solid var(--primary-blue);
+}
+
+.tertiary-button:hover {
+    background: rgba(0, 122, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.tertiary-button::before {
+    content: "🏠";
+    font-size: 16px;
+}
+
+/* 추가 정보 섹션 */
+.error-details {
+    background: var(--background-secondary);
+    border-radius: var(--border-radius-medium);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    border: 1px solid var(--separator-non-opaque);
+}
+
+.error-details-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--label-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.error-suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.error-suggestions li {
+    color: var(--label-secondary);
+    font-size: 14px;
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-lg);
+    position: relative;
+}
+
+.error-suggestions li::before {
+    content: "•";
+    color: var(--primary-blue);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* 리다이렉트 카운트다운 */
+.redirect-countdown {
+    margin-top: 16px;
+    padding: 8px;
+    background: rgba(0, 122, 255, 0.1);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--primary-blue);
+    text-align: center;
+}
+
+/* 애니메이션 */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.error-card {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* 로딩 애니메이션 (새로고침 시) */
+.loading .error-card {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading .error-icon {
+    animation: spin 1s linear infinite;
+}
+
+/* 알림 메시지 */
+.error-notification,
+.success-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+    color: white;
+    font-weight: 500;
+}
+
+.error-notification {
+    background: var(--system-red);
+}
+
+.success-notification {
+    background: #34C759;
+}
+
+.network-status {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 1000;
+    animation: slideUp 0.3s ease-out;
+    color: white;
+    font-weight: 500;
+}
+
+.network-status.success {
+    background: #34C759;
+}
+
+.network-status.error {
+    background: var(--system-red);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .error-container {
+        padding: var(--spacing-lg);
+    }
+    
+    .error-card {
+        padding: var(--spacing-xl);
+    }
+    
+    .error-icon {
+        font-size: 60px;
+    }
+    
+    .error-title {
+        font-size: 20px;
+    }
+    
+    .error-message {
+        font-size: 15px;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .error-button {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-card {
+        padding: var(--spacing-lg);
+    }
+    
+    .error-icon {
+        font-size: 50px;
+    }
+    
+    .error-title {
+        font-size: 18px;
+    }
+    
+    .error-message {
+        font-size: 14px;
+    }
+    
+    .error-notification,
+    .success-notification {
+        left: 10px;
+        right: 10px;
+        top: 10px;
+    }
+    
+    .network-status {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        transform: none;
+    }
+}
+
+/* 특별한 에러 타입별 스타일 */
+.error-card.not-found {
+    border-top: 4px solid var(--system-red);
+}
+
+.error-card.server-error {
+    border-top: 4px solid #FF9500;
+}
+
+.error-card.access-denied {
+    border-top: 4px solid var(--system-gray);
+}
+
+/* 다크 모드에서의 특별 처리 */
+@media (prefers-color-scheme: dark) {
+    .error-code {
+        background: var(--system-gray6);
+        color: var(--system-gray2);
+    }
+}
+
+/* 접근성 개선 */
+.error-button:focus {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+/* 고대비 모드 지원 */
+@media (prefers-contrast: high) {
+    .error-card {
+        border: 2px solid var(--separator-opaque);
+    }
+    
+    .error-button {
+        border: 2px solid currentColor;
+    }
+}
+
+/* 움직임 줄이기 설정 지원 */
+@media (prefers-reduced-motion: reduce) {
+    .error-icon {
+        animation: none;
+    }
+    
+    .error-card {
+        animation: none;
+    }
+    
+    .error-button {
+        transition: none;
+    }
+    
+    .error-button:hover {
+        transform: none;
+    }
+    
+    .error-notification,
+    .success-notification,
+    .network-status {
+        animation: none;
+    }
+} 
