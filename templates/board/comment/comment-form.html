@@ -10,6 +10,7 @@
 
 
 <div th:fragment="commentFormFragment">
+
     <form id="commentForm" method="post" th:action="@{/api/v1/posts/{postId}/comments(postId=${postsData.getPostId})}">
         <input type="text" name="commentContent">
         <input type="hidden" name="postId" th:value="${postsData.getPostId}">

@@ -1,4 +1,77 @@
 <!--header-frag-->
+
+
+<!-- 헤더 HTML 끝부분에 추가 -->
+<style>
+    .logged-user {
+        position: relative;
+    }
+
+    .user-actions.dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        min-width: 160px;
+        padding: 8px 0;
+        z-index: 1000;
+        display: none;
+    }
+
+    .user-actions.dropdown-menu.show {
+        display: block;
+    }
+
+    .logout-btn {
+        width: 100%;
+        padding: 12px 16px;
+        border: none;
+        background: none;
+        text-align: left;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .logout-btn:hover {
+        background-color: #f5f5f5;
+    }
+
+    .profile-dropdown-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dropdownBtn = document.querySelector('.profile-dropdown-btn');
+        const dropdownMenu = document.querySelector('.user-actions.dropdown-menu');
+
+        if (dropdownBtn && dropdownMenu) {
+            // 드롭다운 버튼 클릭
+            dropdownBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // 외부 클릭시 닫기
+            document.addEventListener('click', () => {
+                dropdownMenu.classList.remove('show');
+            });
+
+            // 드롭다운 메뉴 내부 클릭시 이벤트 전파 방지
+            dropdownMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+    });
+</script>
 <header th:fragment="header" class="site-header">
     <!-- 사이트 로고 -->
     <div class="site-logo">
@@ -45,8 +118,8 @@
         </div>
 
         <!-- 로그인 상태일 때 -->
-        <div class="logged-user" th:if="${isLoggedIn}">
-            <div class="user-profile">
+        <div class="logged-user" th:if="${isLoggedIn}" style="z-index: 100;">
+            <div class="user-profile" style="z-index: 100;">
                 <img th:src="${profileImage}"
                      alt="프로필 이미지"
                      class="profile-img"
@@ -59,7 +132,7 @@
                 </button>
             </div>
 
-            <div class="user-actions dropdown-menu" role="menu">
+            <div class="user-actions dropdown-menu" role="menu" style="z-index: 100;">
                 <form class="logout-form" th:action="@{/logout}" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                     <button type="submit" class="logout-btn" role="menuitem">로그아웃</button>

@@ -19,19 +19,27 @@ BoardSkin.PostSkin.Detail = {
         isEditing: false,
         postData: {},
         unsavedChanges: false,
-        deleteConfirmTimer: null
+        deleteConfirmTimer: null,
+        // 좋아요/싫어요 상태 추가
+        liked: false,
+        disliked: false,
+        currentLikeCount: 0,
+        currentDislikeCount: 0,
+        currentReactType: 'NONE'
     },
 
     // DOM 요소
     elements: {},
 
-    // 초기화
+        // 초기화
     init() {
         this.cacheElements();
         this.bindEvents();
         this.setupCSRF();
         this.setupImageViewer();
         this.setupKeyboardShortcuts();
+        this.setupReactionSystem();
+        this.initCommentSystem();
         
         console.log('BoardSkin.PostSkin.Detail initialized');
     },
@@ -50,7 +58,16 @@ BoardSkin.PostSkin.Detail = {
             commentSection: document.querySelector('#comment-section'),
             postImage: document.querySelector('.post-image'),
             postMeta: document.querySelectorAll('.post-meta-value'),
-            actionButtons: document.querySelector('.post-actions')
+            actionButtons: document.querySelector('.post-actions'),
+            // 좋아요/싫어요 요소들 추가
+            likeButton: document.getElementById('like-button'),
+            likeIcon: document.getElementById('like-icon'),
+            likeText: document.getElementById('like-text'),
+            likeCountSpan: document.getElementById('like-count'),
+            dislikeButton: document.getElementById('dislike-button'),
+            dislikeIcon: document.getElementById('dislike-icon'),
+            dislikeText: document.getElementById('dislike-text'),
+            dislikeCountSpan: document.getElementById('dislike-count')
         };
     },
 
@@ -116,10 +133,196 @@ BoardSkin.PostSkin.Detail = {
         };
     },
 
+    // 좋아요/싫어요 시스템 설정
+    setupReactionSystem() {
+        // window.postDetailData에서 데이터 가져오기
+        if (!window.postDetailData) {
+            console.log('postDetailData가 없습니다 - 좋아요/싫어요 기능 비활성화');
+            return;
+        }
+
+        const { isLoggedIn, postId, reactType, likeCount, dislikeCount } = window.postDetailData;
+
+        if (!isLoggedIn) {
+            console.log('로그인하지 않은 사용자 - 좋아요/싫어요 기능 비활성화');
+            return;
+        }
+
+        // 초기 데이터 설정
+        this.state.currentReactType = reactType || 'NONE';
+        this.state.currentLikeCount = likeCount || 0;
+        this.state.currentDislikeCount = dislikeCount || 0;
+
+        // reactType 기반으로 초기 상태 설정
+        this.state.liked = this.state.currentReactType === 'LIKE';
+        this.state.disliked = this.state.currentReactType === 'DISLIKE';
+
+        console.log('초기 상태 - reactType:', this.state.currentReactType, 'liked:', this.state.liked, 'disliked:', this.state.disliked);
+        console.log('초기 카운트 - like:', this.state.currentLikeCount, 'dislike:', this.state.currentDislikeCount);
+
+        // 초기 UI 업데이트
+        this.updateReactionUI();
+
+        // 이벤트 리스너 추가
+        this.bindReactionEvents(postId);
+    },
+
+    // 좋아요/싫어요 이벤트 바인딩
+    bindReactionEvents(postId) {
+        // 좋아요 버튼 클릭
+        if (this.elements.likeButton) {
+            this.elements.likeButton.addEventListener('click', async () => {
+                await this.handleLikeClick(postId);
+            });
+        }
+
+        // 싫어요 버튼 클릭
+        if (this.elements.dislikeButton) {
+            this.elements.dislikeButton.addEventListener('click', async () => {
+                await this.handleDislikeClick(postId);
+            });
+        }
+    },
+
+    // 좋아요 클릭 핸들러
+    async handleLikeClick(postId) {
+        if (!this.elements.likeButton) return;
+
+        this.elements.likeButton.disabled = true;
+
+        const method = this.state.liked ? 'DELETE' : 'POST';
+        const url = `/api/v1/board/posts/${postId}/reactions/likes`;
+
+        try {
+            const res = await fetch(url, {
+                method: method,
+                credentials: 'include',
+                headers: {
+                    [this.csrfHeader]: this.csrfToken
+                }
+            });
+
+            const resultText = await res.text();
+
+            if (!res.ok) {
+                throw new Error(resultText || `HTTP ${res.status}`);
+            }
+
+            // 상태 업데이트
+            if (this.state.liked) {
+                // 좋아요 취소
+                this.state.liked = false;
+                this.state.currentLikeCount--;
+            } else {
+                // 좋아요 등록 (기존 싫어요가 있다면 처리)
+                if (this.state.disliked) {
+                    this.state.disliked = false;
+                    this.state.currentDislikeCount--;
+                }
+                this.state.liked = true;
+                this.state.currentLikeCount++;
+            }
+
+            // UI 업데이트
+            this.updateReactionUI();
+
+            console.log('좋아요 처리 성공:', resultText);
+
+        } catch (err) {
+            console.error('좋아요 처리 실패:', err);
+            this.showError('좋아요 처리 실패: ' + err.message);
+        } finally {
+            this.elements.likeButton.disabled = false;
+        }
+    },
+
+    // 싫어요 클릭 핸들러
+    async handleDislikeClick(postId) {
+        if (!this.elements.dislikeButton) return;
+
+        this.elements.dislikeButton.disabled = true;
+
+        const method = this.state.disliked ? 'DELETE' : 'POST';
+        const url = `/api/v1/board/posts/${postId}/reactions/dislikes`;
+
+        try {
+            const res = await fetch(url, {
+                method: method,
+                credentials: 'include',
+                headers: {
+                    [this.csrfHeader]: this.csrfToken
+                }
+            });
+
+            const resultText = await res.text();
+
+            if (!res.ok) {
+                throw new Error(resultText || `HTTP ${res.status}`);
+            }
+
+            // 상태 업데이트
+            if (this.state.disliked) {
+                // 싫어요 취소
+                this.state.disliked = false;
+                this.state.currentDislikeCount--;
+            } else {
+                // 싫어요 등록 (기존 좋아요가 있다면 처리)
+                if (this.state.liked) {
+                    this.state.liked = false;
+                    this.state.currentLikeCount--;
+                }
+                this.state.disliked = true;
+                this.state.currentDislikeCount++;
+            }
+
+            // UI 업데이트
+            this.updateReactionUI();
+
+            console.log('싫어요 처리 성공:', resultText);
+
+        } catch (err) {
+            console.error('싫어요 처리 실패:', err);
+            this.showError('싫어요 처리 실패: ' + err.message);
+        } finally {
+            this.elements.dislikeButton.disabled = false;
+        }
+    },
+
+    // 좋아요/싫어요 UI 업데이트
+    updateReactionUI() {
+        // 좋아요 버튼 업데이트
+        if (this.elements.likeButton && this.elements.likeIcon && this.elements.likeText && this.elements.likeCountSpan) {
+            if (this.state.liked) {
+                this.elements.likeButton.classList.add('liked');
+                this.elements.likeIcon.textContent = '💔';
+                this.elements.likeText.textContent = '좋아요 취소';
+            } else {
+                this.elements.likeButton.classList.remove('liked');
+                this.elements.likeIcon.textContent = '❤️';
+                this.elements.likeText.textContent = '좋아요';
+            }
+            this.elements.likeCountSpan.textContent = this.state.currentLikeCount;
+        }
+
+        // 싫어요 버튼 업데이트
+        if (this.elements.dislikeButton && this.elements.dislikeIcon && this.elements.dislikeText && this.elements.dislikeCountSpan) {
+            if (this.state.disliked) {
+                this.elements.dislikeButton.classList.add('disliked');
+                this.elements.dislikeIcon.textContent = '👍';
+                this.elements.dislikeText.textContent = '싫어요 취소';
+            } else {
+                this.elements.dislikeButton.classList.remove('disliked');
+                this.elements.dislikeIcon.textContent = '👎';
+                this.elements.dislikeText.textContent = '싫어요';
+            }
+            this.elements.dislikeCountSpan.textContent = this.state.currentDislikeCount;
+        }
+    },
+
     // 이벤트 핸들러들
     handleEdit(event) {
         event.preventDefault();
-        
+
         // 버튼 애니메이션
         this.animateButton(this.elements.editButton);
 
@@ -136,7 +339,7 @@ BoardSkin.PostSkin.Detail = {
 
     handleDelete(event) {
         event.preventDefault();
-        
+
         // 삭제 확인 모달 표시
         this.showDeleteConfirmation(event.target);
     },
@@ -158,33 +361,33 @@ BoardSkin.PostSkin.Detail = {
             },
             body: new URLSearchParams(formData)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(data => {
-            this.showSuccess('게시글이 삭제되었습니다.');
-            
-            // 2초 후 목록으로 이동
-            setTimeout(() => {
-                window.location.href = `/board/${boardId}/view`;
-            }, 2000);
-        })
-        .catch(error => {
-            console.error('삭제 실패:', error);
-            this.showError('삭제 중 오류가 발생했습니다: ' + error.message);
-        })
-        .finally(() => {
-            this.showLoading(false);
-            this.hideDeleteConfirmation();
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                this.showSuccess('게시글이 삭제되었습니다.');
+
+                // 2초 후 목록으로 이동
+                setTimeout(() => {
+                    window.location.href = `/board/${boardId}/view`;
+                }, 2000);
+            })
+            .catch(error => {
+                console.error('삭제 실패:', error);
+                this.showError('삭제 중 오류가 발생했습니다: ' + error.message);
+            })
+            .finally(() => {
+                this.showLoading(false);
+                this.hideDeleteConfirmation();
+            });
     },
 
     handleBackClick(event) {
         event.preventDefault();
-        
+
         // 애니메이션과 함께 뒤로가기
         this.animatePageTransition(() => {
             window.history.back();
@@ -225,7 +428,7 @@ BoardSkin.PostSkin.Detail = {
     showDeleteConfirmation(form) {
         const modal = this.createDeleteModal();
         document.body.appendChild(modal);
-        
+
         setTimeout(() => {
             modal.classList.add('show');
         }, 10);
@@ -380,7 +583,7 @@ BoardSkin.PostSkin.Detail = {
                 background: #D70015;
             }
         `;
-        
+
         if (!document.querySelector('#delete-modal-styles')) {
             style.id = 'delete-modal-styles';
             document.head.appendChild(style);
@@ -402,7 +605,7 @@ BoardSkin.PostSkin.Detail = {
         `;
 
         document.body.appendChild(modal);
-        
+
         setTimeout(() => {
             modal.classList.add('show');
         }, 10);
@@ -429,7 +632,7 @@ BoardSkin.PostSkin.Detail = {
         const contentHeight = contentElement.offsetHeight;
         const windowHeight = window.innerHeight;
 
-        const progress = Math.min(100, Math.max(0, 
+        const progress = Math.min(100, Math.max(0,
             ((scrollTop - contentTop + windowHeight) / contentHeight) * 100
         ));
 
@@ -473,7 +676,7 @@ BoardSkin.PostSkin.Detail = {
 
     animateButton(button) {
         if (!button) return;
-        
+
         button.style.transform = 'scale(0.95)';
         setTimeout(() => {
             button.style.transform = '';
@@ -485,14 +688,14 @@ BoardSkin.PostSkin.Detail = {
             this.elements.container.style.opacity = '0.8';
             this.elements.container.style.transform = 'translateX(-20px)';
         }
-        
+
         setTimeout(callback, 200);
     },
 
     showImageError() {
         if (this.elements.postImage) {
             this.elements.postImage.style.display = 'none';
-            
+
             const errorMsg = document.createElement('div');
             errorMsg.className = 'image-error';
             errorMsg.textContent = '이미지를 불러올 수 없습니다.';
@@ -503,7 +706,7 @@ BoardSkin.PostSkin.Detail = {
                 background: var(--background-secondary);
                 border-radius: var(--border-radius-medium);
             `;
-            
+
             this.elements.postImage.parentNode.appendChild(errorMsg);
         }
     },
@@ -511,7 +714,7 @@ BoardSkin.PostSkin.Detail = {
     // 상태 관리
     showLoading(show) {
         this.state.isLoading = show;
-        
+
         if (this.elements.container) {
             this.elements.container.classList.toggle('loading', show);
         }
@@ -529,9 +732,9 @@ BoardSkin.PostSkin.Detail = {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.textContent = message;
-        
+
         this.elements.container?.prepend(errorDiv);
-        
+
         setTimeout(() => {
             errorDiv.remove();
         }, 5000);
@@ -541,9 +744,9 @@ BoardSkin.PostSkin.Detail = {
         const successDiv = document.createElement('div');
         successDiv.className = 'success-message';
         successDiv.textContent = message;
-        
+
         this.elements.container?.prepend(successDiv);
-        
+
         setTimeout(() => {
             successDiv.remove();
         }, 3000);
@@ -552,8 +755,93 @@ BoardSkin.PostSkin.Detail = {
     // 댓글 관련 (향후 확장)
     initCommentSystem() {
         if (this.elements.commentSection) {
-            // 댓글 시스템 초기화
+            // 댓글 좋아요/싫어요 이벤트 바인딩
+            this.elements.commentSection.addEventListener('click', async (e) => {
+                const likeBtn = e.target.closest('.comment-like-button');
+                const dislikeBtn = e.target.closest('.comment-dislike-button');
+
+                if (likeBtn) {
+                    const commentId = likeBtn.getAttribute('data-comment-id');
+                    await this.toggleCommentReaction(commentId, 'likes');
+                }
+
+                if (dislikeBtn) {
+                    const commentId = dislikeBtn.getAttribute('data-comment-id');
+                    await this.toggleCommentReaction(commentId, 'dislikes');
+                }
+            });
+
             console.log('Comment system initialized');
+        }
+    },
+
+    // 댓글 좋아요/싫어요 토글 (수정된 버전)
+    async toggleCommentReaction(commentId, type) {
+        const isLike = type === 'likes';
+        
+        const button = document.querySelector(`.comment-${isLike ? 'like' : 'dislike'}-button[data-comment-id="${commentId}"]`);
+        const countSpan = button.querySelector(`.${isLike ? 'like' : 'dislike'}-count`);
+        const isActive = button.classList.contains(isLike ? 'liked' : 'disliked');
+        
+        // 반대 버튼 요소들
+        const oppositeBtn = document.querySelector(`.comment-${isLike ? 'dislike' : 'like'}-button[data-comment-id="${commentId}"]`);
+        const oppCountSpan = oppositeBtn ? oppositeBtn.querySelector(`.${isLike ? 'dislike' : 'like'}-count`) : null;
+        const oppositeActive = oppositeBtn ? oppositeBtn.classList.contains(isLike ? 'disliked' : 'liked') : false;
+
+        const method = isActive ? 'DELETE' : 'POST';
+        const url = `/api/v1/board/posts/comments/${commentId}/reactions/${type}`;
+
+        try {
+            const res = await fetch(url, {
+                method,
+                credentials: 'include',
+                headers: {
+                    [this.csrfHeader]: this.csrfToken
+                }
+            });
+
+            const resultText = await res.text();
+
+            if (!res.ok) {
+                // 서버 에러 상세 분석
+                console.error('서버 응답:', res.status, resultText);
+                
+                if (res.status === 409) {
+                    throw new Error('이미 반응이 등록되어 있습니다');
+                } else if (res.status === 404) {
+                    throw new Error('취소할 반응이 없습니다');
+                } else {
+                    throw new Error(resultText || `HTTP ${res.status}`);
+                }
+            }
+
+            // ✅ 서버 로직과 일치하는 클라이언트 상태 업데이트
+            if (isActive) {
+                // 현재 반응 취소
+                const currentCount = parseInt(countSpan.textContent, 10) || 0;
+                countSpan.textContent = Math.max(0, currentCount - 1);
+                button.classList.remove(isLike ? 'liked' : 'disliked');
+            } else {
+                // 새로운 반응 등록
+                
+                // 반대 반응이 활성화되어 있으면 먼저 비활성화 (서버에서 처리됨)
+                if (oppositeActive && oppCountSpan) {
+                    const oppCount = parseInt(oppCountSpan.textContent, 10) || 0;
+                    oppCountSpan.textContent = Math.max(0, oppCount - 1);
+                    oppositeBtn.classList.remove(isLike ? 'disliked' : 'liked');
+                }
+                
+                // 현재 반응 활성화
+                const currentCount = parseInt(countSpan.textContent, 10) || 0;
+                countSpan.textContent = currentCount + 1;
+                button.classList.add(isLike ? 'liked' : 'disliked');
+            }
+
+            console.log(`댓글 ${type} 처리 성공:`, resultText);
+
+        } catch (err) {
+            console.error(`댓글 ${type} 처리 실패:`, err);
+            this.showError(`댓글 ${isLike ? '좋아요' : '싫어요'} 처리 실패: ` + err.message);
         }
     }
 };
@@ -564,4 +852,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 전역 함수로 노출
-window.PostDetail = BoardSkin.PostSkin.Detail; 
+window.PostDetail = BoardSkin.PostSkin.Detail;

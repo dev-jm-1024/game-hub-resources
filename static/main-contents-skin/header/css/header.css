@@ -11,34 +11,34 @@
     --system-gray4: #D1D1D6;
     --system-gray5: #E5E5EA;
     --system-gray6: #F2F2F7;
-    
+
     /* 배경 색상 */
     --background-primary: #FFFFFF;
     --background-secondary: #F2F2F7;
     --background-tertiary: #FFFFFF;
-    
+
     /* 텍스트 색상 */
     --label-primary: #000000;
     --label-secondary: #3C3C43;
     --label-tertiary: #3C3C4399;
-    
+
     /* 구분선 */
     --separator-opaque: #C6C6C8;
     --separator-non-opaque: #3C3C4329;
-    
+
     /* 그림자 */
     --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
     --shadow-heavy: 0 10px 25px rgba(0, 0, 0, 0.15);
-    
+
     /* 블러 효과 */
     --blur-light: blur(10px);
     --blur-medium: blur(20px);
-    
+
     /* 애니메이션 */
     --animation-duration: 0.3s;
     --animation-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-    
+
     /* 폰트 */
     --font-family-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
     --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
@@ -50,14 +50,14 @@
         --background-primary: #000000;
         --background-secondary: #1C1C1E;
         --background-tertiary: #2C2C2E;
-        
+
         --label-primary: #FFFFFF;
         --label-secondary: #EBEBF5;
         --label-tertiary: #EBEBF599;
-        
+
         --separator-opaque: #38383A;
         --separator-non-opaque: #54545899;
-        
+
         --system-gray: #8E8E93;
         --system-gray2: #636366;
         --system-gray3: #48484A;
@@ -75,24 +75,24 @@
     right: 0;
     height: 60px;
     z-index: 1000;
-    
+
     /* 글래스모피즘 효과 */
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: var(--blur-light);
     -webkit-backdrop-filter: var(--blur-light);
-    
+
     /* 경계선 */
     border-bottom: 0.5px solid var(--separator-non-opaque);
-    
+
     /* 그림자 */
     box-shadow: var(--shadow-light);
-    
+
     /* 레이아웃 */
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    
+
     /* 애니메이션 */
     transition: all var(--animation-duration) var(--animation-ease);
 }
@@ -195,7 +195,7 @@
     font-weight: 400;
     outline: none;
     transition: all var(--animation-duration) var(--animation-ease);
-    
+
     /* 플레이스홀더 스타일 */
     &::placeholder {
         color: var(--system-gray);
@@ -308,74 +308,58 @@
     box-shadow: var(--shadow-light);
 }
 
-/* 로그인된 사용자 */
+/* 간단한 헤더 드롭다운 CSS */
+
 .logged-user {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 16px;
-    position: relative;
 }
 
 .user-profile {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 4px 8px;
-    border-radius: 20px;
-    background-color: var(--background-secondary);
+    padding: 8px 12px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all var(--animation-duration) var(--animation-ease);
-    border: 1px solid transparent;
+    transition: background-color 0.2s ease;
 }
 
 .user-profile:hover {
-    background-color: var(--system-gray6);
-    border-color: var(--separator-opaque);
-    transform: scale(1.02);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .profile-img {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid var(--separator-opaque);
+    border: 2px solid rgba(0, 122, 255, 0.2);
 }
 
 .user-nickname {
-    font-family: var(--font-family-primary);
     font-size: 14px;
     font-weight: 500;
-    color: var(--label-primary);
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: #1d1d1f;
 }
 
 .profile-dropdown-btn {
     background: none;
     border: none;
-    color: var(--system-gray);
     cursor: pointer;
-    padding: 2px;
+    padding: 4px;
     border-radius: 4px;
-    transition: all var(--animation-duration) var(--animation-ease);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: background-color 0.2s ease;
 }
 
 .profile-dropdown-btn:hover {
-    color: var(--label-primary);
-    background-color: var(--system-gray6);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-icon {
-    width: 12px;
-    height: 12px;
-    fill: currentColor;
-    transition: transform var(--animation-duration) var(--animation-ease);
+    transition: transform 0.2s ease;
+    fill: #86868b;
 }
 
 .profile-dropdown-btn[aria-expanded="true"] .dropdown-icon {
@@ -383,62 +367,84 @@
 }
 
 /* 드롭다운 메뉴 */
-.dropdown-menu {
+.user-actions.dropdown-menu {
     position: absolute;
     top: 100%;
     right: 0;
-    margin-top: 8px;
-    min-width: 200px;
-    background-color: var(--background-tertiary);
-    border: 1px solid var(--separator-non-opaque);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    box-shadow: var(--shadow-heavy);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px) scale(0.95);
-    transition: all var(--animation-duration) var(--animation-ease);
-    z-index: 1000;
-    overflow: hidden;
-}
-
-.dropdown-menu.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-}
-
-.user-actions {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    min-width: 160px;
     padding: 8px 0;
+    z-index: 1000;
+    margin-top: 8px;
+
+    /* 초기 상태 (숨김) */
+    display: none;
 }
 
+/* 드롭다운 메뉴 열림 상태 */
+.user-actions.dropdown-menu.show {
+    display: block;
+}
+
+/* 로그아웃 버튼 */
 .logout-form {
     margin: 0;
+    padding: 0;
 }
 
 .logout-btn {
     width: 100%;
     padding: 12px 16px;
-    border: none;
     background: none;
-    color: var(--label-primary);
-    font-family: var(--font-family-primary);
-    font-size: 14px;
-    font-weight: 400;
+    border: none;
     text-align: left;
+    font-size: 14px;
+    color: #1d1d1f;
     cursor: pointer;
-    transition: all var(--animation-duration) var(--animation-ease);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    transition: background-color 0.2s ease;
 }
 
 .logout-btn:hover {
-    background-color: var(--system-gray6);
-    color: var(--primary-blue);
+    background-color: #f5f5f7;
 }
 
-.logout-btn:active {
-    background-color: var(--system-gray5);
+.logout-btn:focus {
+    background-color: #007aff;
+    color: white;
+    outline: none;
+}
+
+/* 계정 비활성화 폼 숨김 */
+.deactivate-form {
+    display: none;
+}
+
+/* 다크모드 */
+@media (prefers-color-scheme: dark) {
+    .user-profile:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .user-nickname {
+        color: #f2f2f7;
+    }
+
+    .user-actions.dropdown-menu {
+        background: #1c1c1e;
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .logout-btn {
+        color: #f2f2f7;
+    }
+
+    .logout-btn:hover {
+        background-color: #2c2c2e;
+    }
 }
 
 /* 언어 선택 */
@@ -590,11 +596,11 @@
     .nav-container {
         display: none;
     }
-    
+
     .search-container {
         max-width: 200px;
     }
-    
+
     .lang-select {
         display: none;
     }
@@ -604,30 +610,30 @@
     .site-header {
         padding: 0 16px;
     }
-    
+
     .search-container {
         display: none;
     }
-    
+
     .mobile-menu-btn {
         display: flex;
     }
-    
+
     .user-nickname {
         display: none;
     }
-    
+
     .guest-user {
         gap: 6px;
     }
-    
+
     .login-btn,
     .signup-btn,
     .team-signup-btn {
         padding: 6px 12px;
         font-size: 13px;
     }
-    
+
     .team-signup-btn {
         display: none;
     }
@@ -638,16 +644,16 @@
         height: 56px;
         padding: 0 12px;
     }
-    
+
     .site-logo h1 {
         font-size: 18px;
     }
-    
+
     .profile-img {
         width: 24px;
         height: 24px;
     }
-    
+
     .user-profile {
         padding: 2px 6px;
     }
@@ -667,7 +673,7 @@
     .site-header {
         border-bottom: 2px solid var(--separator-opaque);
     }
-    
+
     .login-btn,
     .signup-btn,
     .team-signup-btn {
