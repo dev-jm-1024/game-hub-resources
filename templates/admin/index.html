@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>This is Admin Mode</h2>
+<button type="button" name="view-game-status" id="view-game-status">
+    게임 상태 보기
+</button>
+
+</body>
+<script>
+    document.getElementById("view-game-status").addEventListener("click", function () {
+        window.location.href = "/admin/game-status";
+    })
+
+</script>
+</html>

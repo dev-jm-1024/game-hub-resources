@@ -311,9 +311,10 @@
 /* 간단한 헤더 드롭다운 CSS */
 
 .logged-user {
-    position: relative;
-    display: flex;
-    align-items: center;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    z-index: 1000 !important;
 }
 
 .user-profile {
@@ -368,25 +369,30 @@
 
 /* 드롭다운 메뉴 */
 .user-actions.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    min-width: 160px;
-    padding: 8px 0;
-    z-index: 1000;
-    margin-top: 8px;
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+    min-width: 160px !important;
+    padding: 8px 0 !important;
+    z-index: 10000 !important;
+    margin-top: 8px !important;
 
     /* 초기 상태 (숨김) */
-    display: none;
+    display: none !important;
+    opacity: 0 !important;
+    transform: translateY(-10px) !important;
+    transition: all 0.2s ease !important;
 }
 
 /* 드롭다운 메뉴 열림 상태 */
 .user-actions.dropdown-menu.show {
-    display: block;
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 /* 로그아웃 버튼 */

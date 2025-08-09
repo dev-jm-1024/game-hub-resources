@@ -7,7 +7,7 @@ class AppleFooterManager {
         this.intersectionObserver = null;
         this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.isScrolling = false;
-        
+
         this.init();
     }
 
@@ -76,31 +76,31 @@ class AppleFooterManager {
 
     scrollToTop() {
         if (this.isScrolling) return;
-        
+
         this.isScrolling = true;
-        
+
         // Apple 스타일 부드러운 스크롤
         const startPosition = window.pageYOffset;
         const startTime = performance.now();
         const duration = 800;
-        
+
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-        
+
         const animateScroll = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const easeProgress = easeOutCubic(progress);
-            
+
             const currentPosition = startPosition * (1 - easeProgress);
             window.scrollTo(0, currentPosition);
-            
+
             if (progress < 1) {
                 requestAnimationFrame(animateScroll);
             } else {
                 this.isScrolling = false;
             }
         };
-        
+
         requestAnimationFrame(animateScroll);
     }
 
@@ -109,7 +109,7 @@ class AppleFooterManager {
 
         // 푸터 섹션 애니메이션
         const footerSections = this.footer.querySelectorAll('.footer-section');
-        
+
         this.intersectionObserver = new IntersectionObserver(
             (entries) => {
                 entries.forEach(entry => {
@@ -138,7 +138,7 @@ class AppleFooterManager {
 
         section.style.opacity = '0';
         section.style.transform = 'translateY(30px)';
-        
+
         requestAnimationFrame(() => {
             section.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             section.style.opacity = '1';
@@ -155,13 +155,13 @@ class AppleFooterManager {
                     if (entry.isIntersecting) {
                         this.footer.style.opacity = '0';
                         this.footer.style.transform = 'translateY(50px)';
-                        
+
                         requestAnimationFrame(() => {
                             this.footer.style.transition = 'all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                             this.footer.style.opacity = '1';
                             this.footer.style.transform = 'translateY(0)';
                         });
-                        
+
                         observer.unobserve(this.footer);
                     }
                 });
@@ -184,7 +184,7 @@ class AppleFooterManager {
         // 호버 효과 강화
         link.addEventListener('mouseenter', () => {
             if (this.prefersReducedMotion) return;
-            
+
             const icon = link.querySelector('.social-icon');
             if (icon) {
                 icon.style.transform = 'scale(1.2) rotate(5deg)';
@@ -221,10 +221,10 @@ class AppleFooterManager {
 
         // 클릭 애니메이션
         link.style.transform = 'scale(0.9)';
-        
+
         setTimeout(() => {
             link.style.transform = 'scale(1.05)';
-            
+
             setTimeout(() => {
                 link.style.transform = '';
             }, 100);
@@ -233,7 +233,7 @@ class AppleFooterManager {
 
     trackSocialClick(link) {
         const platform = this.getSocialPlatform(link);
-        
+
         if (platform) {
             // 분석 이벤트 전송
             this.sendAnalyticsEvent('social_click', {
@@ -247,7 +247,7 @@ class AppleFooterManager {
     getSocialPlatform(link) {
         const classList = Array.from(link.classList);
         const platforms = ['twitter', 'facebook', 'instagram', 'youtube', 'linkedin'];
-        
+
         return platforms.find(platform => classList.includes(platform)) || 'unknown';
     }
 
@@ -262,7 +262,7 @@ class AppleFooterManager {
             // 호버 효과
             link.addEventListener('mouseenter', () => {
                 if (this.prefersReducedMotion) return;
-                
+
                 link.style.transform = 'translateY(-2px)';
             });
 
@@ -274,14 +274,14 @@ class AppleFooterManager {
 
     handleContactClick(link, event) {
         const href = link.getAttribute('href');
-        
+
         if (href && href.startsWith('mailto:')) {
             // 이메일 클릭 추적
             this.sendAnalyticsEvent('contact_email_click', {
                 email: href.replace('mailto:', ''),
                 timestamp: new Date().toISOString()
             });
-            
+
             // 클릭 피드백
             this.showContactFeedback(link, '이메일 앱을 여는 중...');
         }
@@ -364,7 +364,7 @@ class AppleFooterManager {
         socialLinks.forEach(link => {
             const platform = this.getSocialPlatform(link);
             const currentLabel = link.getAttribute('aria-label') || '';
-            
+
             if (platform && !currentLabel.includes('새 창')) {
                 link.setAttribute('aria-label', `${currentLabel} (새 창에서 열림)`);
             }
@@ -374,7 +374,7 @@ class AppleFooterManager {
     ensureElementVisible(element) {
         const rect = element.getBoundingClientRect();
         const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-        
+
         if (!isVisible) {
             element.scrollIntoView({
                 behavior: 'smooth',
@@ -385,7 +385,7 @@ class AppleFooterManager {
 
     setupResponsiveHandling() {
         let resizeTimeout;
-        
+
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
@@ -398,12 +398,12 @@ class AppleFooterManager {
 
     handleResize() {
         const isMobile = window.innerWidth <= 768;
-        
+
         // 모바일에서 애니메이션 최적화
         if (isMobile && !this.prefersReducedMotion) {
             this.optimizeForMobile();
         }
-        
+
         // 백투탑 버튼 위치 조정
         this.adjustBackToTopPosition();
     }
@@ -423,7 +423,7 @@ class AppleFooterManager {
 
         const isMobile = window.innerWidth <= 768;
         const isSmallMobile = window.innerWidth <= 480;
-        
+
         if (isSmallMobile) {
             this.backToTopBtn.style.bottom = '16px';
             this.backToTopBtn.style.right = '16px';
@@ -439,7 +439,7 @@ class AppleFooterManager {
     setupPerformanceOptimizations() {
         // 이미지 지연 로딩 (소셜 아이콘 등)
         this.setupLazyLoading();
-        
+
         // 메모리 누수 방지
         this.setupMemoryManagement();
     }
@@ -454,12 +454,12 @@ class AppleFooterManager {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    
+
                     if (img.dataset.src) {
                         img.src = img.dataset.src;
                         img.removeAttribute('data-src');
                     }
-                    
+
                     imageObserver.unobserve(img);
                 }
             });
@@ -518,7 +518,7 @@ class AppleFooterManager {
         if (copyrightElement) {
             const currentYear = new Date().getFullYear();
             const text = copyrightElement.textContent;
-            
+
             if (text && !text.includes(currentYear.toString())) {
                 copyrightElement.textContent = text.replace(/\d{4}/, currentYear);
             }
@@ -528,7 +528,7 @@ class AppleFooterManager {
     // 다크 모드 감지 및 처리
     setupThemeHandling() {
         const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        
+
         darkModeQuery.addEventListener('change', (e) => {
             this.handleThemeChange(e.matches);
         });
@@ -538,7 +538,7 @@ class AppleFooterManager {
 
     handleThemeChange(isDark) {
         this.footer.classList.toggle('dark-mode', isDark);
-        
+
         // 테마 변경 애니메이션
         if (!this.prefersReducedMotion) {
             this.footer.style.transition = 'all 0.3s ease-out';
@@ -553,10 +553,10 @@ class AppleFooterManager {
         if (this.intersectionObserver) {
             this.intersectionObserver.disconnect();
         }
-        
+
         // 모든 타이머 정리
         clearInterval(this.garbageCollectionInterval);
-        
+
         // 이벤트 리스너 정리
         window.removeEventListener('scroll', this.scrollHandler);
         window.removeEventListener('resize', this.resizeHandler);
@@ -619,7 +619,7 @@ class AppleThemeManager {
 
     handleThemeChange(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
-        
+
         // 테마 변경 이벤트 전송
         window.dispatchEvent(new CustomEvent('themechange', {
             detail: { isDark }
@@ -631,10 +631,10 @@ class AppleThemeManager {
 document.addEventListener('DOMContentLoaded', () => {
     // 푸터 매니저 초기화
     window.appleFooterManager = new AppleFooterManager();
-    
+
     // 테마 매니저 초기화
     window.appleThemeManager = new AppleThemeManager();
-    
+
     // 전역 API 노출
     window.AppleFooter = {
         refresh: () => window.appleFooterManager.refresh(),

@@ -9,15 +9,31 @@ class HeaderManager {
         this.searchInput = null;
         this.mobileMenuButton = null;
         this.profileDropdown = null;
-        this.scrollTimeout = null;
-        this.searchTimeout = null;
+
+        // 타이머 및 이벤트 리스너 관리
+        this.timers = new Set();
+        this.eventListeners = new Map();
+        this.observers = new Set();
+
+        // 성능 최적화
+        this.isInitialized = false;
+        this.rafId = null;
+        this.lastRafTime = 0;
+
+        // 메모리 누수 방지
+        this.boundMethods = new Map();
 
         this.init();
     }
 
     init() {
+        if (this.isInitialized) return;
+
         this.header = document.querySelector('.site-header');
         if (!this.header) return;
+
+        // 메서드 바인딩 캐시
+        this.bindMethods();
 
         this.setupScrollBehavior();
         this.setupSearch();
@@ -27,6 +43,58 @@ class HeaderManager {
         this.setupKeyboardNavigation();
         this.setupThemeHandling();
         this.setupAccessibility();
+
+        this.isInitialized = true;
+    }
+
+    // 메서드 바인딩 캐시로 메모리 최적화
+    bindMethods() {
+        const methodsToCache = [
+            'handleScroll',
+            'handleResize',
+            'handleClick',
+            'handleKeydown',
+            'handleVisibilityChange'
+        ];
+
+        methodsToCache.forEach(methodName => {
+            if (this[methodName]) {
+                this.boundMethods.set(methodName, this[methodName].bind(this));
+            }
+        });
+    }
+
+    // 이벤트 리스너 추가 헬퍼
+    addEventListener(element, event, handler, options = {}) {
+        const key = `${element.constructor.name}-${event}`;
+
+        if (!this.eventListeners.has(key)) {
+            this.eventListeners.set(key, []);
+        }
+
+        const boundHandler = typeof handler === 'string'
+            ? this.boundMethods.get(handler) || this[handler].bind(this)
+            : handler.bind(this);
+
+        element.addEventListener(event, boundHandler, options);
+        this.eventListeners.get(key).push({ element, event, handler: boundHandler, options });
+    }
+
+    // 타이머 관리 헬퍼
+    setTimeout(callback, delay) {
+        const timer = setTimeout(() => {
+            this.timers.delete(timer);
+            callback();
+        }, delay);
+
+        this.timers.add(timer);
+        return timer;
+    }
+
+    setInterval(callback, delay) {
+        const timer = setInterval(callback, delay);
+        this.timers.add(timer);
+        return timer;
     }
 
     // 프로필 메뉴 설정 - 드롭다운 수정
@@ -100,12 +168,27 @@ class HeaderManager {
         const dropdownMenu = this.header.querySelector('.user-actions.dropdown-menu');
         const dropdownBtn = this.header.querySelector('.profile-dropdown-btn');
 
-        if (!dropdownMenu || !dropdownBtn) return;
+        if (!dropdownMenu || !dropdownBtn) {
+            console.error('드롭다운 요소를 찾을 수 없음');
+            return;
+        }
+
+        // 강제로 스타일 적용
+        dropdownMenu.style.display = 'block';
+        dropdownMenu.style.opacity = '1';
+        dropdownMenu.style.transform = 'translateY(0)';
+        dropdownMenu.style.zIndex = '10000';
+        dropdownMenu.style.position = 'absolute';
+        dropdownMenu.style.top = '100%';
+        dropdownMenu.style.right = '0';
 
         dropdownMenu.classList.add('show');
         dropdownBtn.setAttribute('aria-expanded', 'true');
 
-        console.log('드롭다운 열림');
+        console.log('✅ 드롭다운 열림 - show 클래스 및 강제 스타일 적용됨');
+        console.log('드롭다운 메뉴 표시 상태:', getComputedStyle(dropdownMenu).display);
+        console.log('드롭다운 메뉴 z-index:', getComputedStyle(dropdownMenu).zIndex);
+        console.log('드롭다운 메뉴 opacity:', getComputedStyle(dropdownMenu).opacity);
 
         // 첫 번째 버튼에 포커스
         const firstButton = dropdownMenu.querySelector('.logout-btn');
@@ -120,25 +203,33 @@ class HeaderManager {
 
         if (!dropdownMenu || !dropdownBtn) return;
 
+        // 강제로 스타일 제거
+        dropdownMenu.style.display = 'none';
+        dropdownMenu.style.opacity = '0';
+        dropdownMenu.style.transform = 'translateY(-10px)';
+
         dropdownMenu.classList.remove('show');
         dropdownBtn.setAttribute('aria-expanded', 'false');
+
+        console.log('🔒 드롭다운 닫힘');
     }
 
-    // 스크롤 동작 설정 - Apple 스타일
+    // 스크롤 동작 설정 - Apple 스타일 (최적화)
     setupScrollBehavior() {
-        let ticking = false;
+        this.handleScroll = () => {
+            if (this.rafId) return;
 
-        const handleScroll = () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
+            this.rafId = requestAnimationFrame((currentTime) => {
+                // 16ms 간격으로 제한 (60fps)
+                if (currentTime - this.lastRafTime >= 16) {
                     this.updateHeaderOnScroll();
-                    ticking = false;
-                });
-                ticking = true;
-            }
+                    this.lastRafTime = currentTime;
+                }
+                this.rafId = null;
+            });
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        this.addEventListener(window, 'scroll', this.handleScroll, { passive: true });
         this.updateHeaderOnScroll();
     }
 
@@ -248,9 +339,60 @@ class HeaderManager {
     }
 
     destroy() {
-        clearTimeout(this.scrollTimeout);
-        clearTimeout(this.searchTimeout);
+        // RAF 취소
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafId);
+            this.rafId = null;
+        }
+
+        // 모든 타이머 정리
+        this.timers.forEach(timer => {
+            clearTimeout(timer);
+            clearInterval(timer);
+        });
+        this.timers.clear();
+
+        // 모든 이벤트 리스너 제거
+        this.eventListeners.forEach(listeners => {
+            listeners.forEach(({ element, event, handler, options }) => {
+                element.removeEventListener(event, handler, options);
+            });
+        });
+        this.eventListeners.clear();
+
+        // 옵저버 정리
+        this.observers.forEach(observer => {
+            if (observer.disconnect) observer.disconnect();
+            if (observer.unobserve) observer.unobserve();
+        });
+        this.observers.clear();
+
+        // 바인딩된 메서드 정리
+        this.boundMethods.clear();
+
+        // DOM 참조 해제
+        this.header = null;
+        this.searchInput = null;
+        this.mobileMenuButton = null;
+        this.profileDropdown = null;
+
+        // 상태 초기화
+        this.isInitialized = false;
+
         document.body.style.overflow = '';
+
+        console.log('🧹 HeaderManager 메모리 정리 완료');
+    }
+
+    // 메모리 사용량 모니터링
+    getMemoryUsage() {
+        return {
+            timers: this.timers.size,
+            eventListeners: Array.from(this.eventListeners.values()).reduce((sum, arr) => sum + arr.length, 0),
+            observers: this.observers.size,
+            boundMethods: this.boundMethods.size,
+            isInitialized: this.isInitialized
+        };
     }
 }
 

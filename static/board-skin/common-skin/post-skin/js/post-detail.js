@@ -31,7 +31,7 @@ BoardSkin.PostSkin.Detail = {
     // DOM 요소
     elements: {},
 
-        // 초기화
+    // 초기화
     init() {
         this.cacheElements();
         this.bindEvents();
@@ -40,7 +40,7 @@ BoardSkin.PostSkin.Detail = {
         this.setupKeyboardShortcuts();
         this.setupReactionSystem();
         this.initCommentSystem();
-        
+
         console.log('BoardSkin.PostSkin.Detail initialized');
     },
 
@@ -778,11 +778,11 @@ BoardSkin.PostSkin.Detail = {
     // 댓글 좋아요/싫어요 토글 (수정된 버전)
     async toggleCommentReaction(commentId, type) {
         const isLike = type === 'likes';
-        
+
         const button = document.querySelector(`.comment-${isLike ? 'like' : 'dislike'}-button[data-comment-id="${commentId}"]`);
         const countSpan = button.querySelector(`.${isLike ? 'like' : 'dislike'}-count`);
         const isActive = button.classList.contains(isLike ? 'liked' : 'disliked');
-        
+
         // 반대 버튼 요소들
         const oppositeBtn = document.querySelector(`.comment-${isLike ? 'dislike' : 'like'}-button[data-comment-id="${commentId}"]`);
         const oppCountSpan = oppositeBtn ? oppositeBtn.querySelector(`.${isLike ? 'dislike' : 'like'}-count`) : null;
@@ -805,7 +805,7 @@ BoardSkin.PostSkin.Detail = {
             if (!res.ok) {
                 // 서버 에러 상세 분석
                 console.error('서버 응답:', res.status, resultText);
-                
+
                 if (res.status === 409) {
                     throw new Error('이미 반응이 등록되어 있습니다');
                 } else if (res.status === 404) {
@@ -823,14 +823,14 @@ BoardSkin.PostSkin.Detail = {
                 button.classList.remove(isLike ? 'liked' : 'disliked');
             } else {
                 // 새로운 반응 등록
-                
+
                 // 반대 반응이 활성화되어 있으면 먼저 비활성화 (서버에서 처리됨)
                 if (oppositeActive && oppCountSpan) {
                     const oppCount = parseInt(oppCountSpan.textContent, 10) || 0;
                     oppCountSpan.textContent = Math.max(0, oppCount - 1);
                     oppositeBtn.classList.remove(isLike ? 'disliked' : 'liked');
                 }
-                
+
                 // 현재 반응 활성화
                 const currentCount = parseInt(countSpan.textContent, 10) || 0;
                 countSpan.textContent = currentCount + 1;

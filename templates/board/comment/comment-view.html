@@ -15,11 +15,31 @@
                 <p class="comment-content" th:text="${comment.commentContent}">내용</p>
             </div>
 
+            <!-- 리액션 버튼 영역 -->
+            <div class="comment-reaction-buttons" style="margin: 8px 0;">
+                <button type="button"
+                        class="comment-like-button"
+                        th:classappend="${userCommentReactionMap[comment.commentId]?.name() == 'LIKE'} ? 'liked' : ''"
+                        th:data-comment-id="${comment.commentId}">
+                    👍 좋아요
+                    <span class="like-count"
+                          th:text="${commentReactionMap[comment.commentId]?.likeCount}">0</span>
+                </button>
+
+                <button type="button"
+                        class="comment-dislike-button"
+                        th:classappend="${userCommentReactionMap[comment.commentId]?.name() == 'DISLIKE'} ? 'disliked' : ''"
+                        th:data-comment-id="${comment.commentId}">
+                    👎 싫어요
+                    <span class="dislike-count"
+                          th:text="${commentReactionMap[comment.commentId]?.dislikeCount}">0</span>
+                </button>
+            </div>
+
             <!-- 하단 정보 -->
-            <div class="comment-footer">
-                <span class="comment-like">👍 좋아요 <span th:text="${comment.likeCount}">0</span></span> |
-                <span class="comment-dislike">👎 싫어요 <span th:text="${comment.dislikeCount}">0</span></span> |
-                <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">날짜</span>
+            <div class="comment-footer" style="font-size: 12px; color: #666;">
+                <span class="comment-date"
+                      th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">날짜</span>
             </div>
         </div>
     </div>

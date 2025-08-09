@@ -18,13 +18,13 @@
     --system-gray4: #D1D1D6;
     --system-gray5: #E5E5EA;
     --system-gray6: #F2F2F7;
-    
+
     /* 라벨 컬러 */
     --label-primary: rgba(0, 0, 0, 0.85);
     --label-secondary: rgba(0, 0, 0, 0.6);
     --label-tertiary: rgba(0, 0, 0, 0.3);
     --label-quaternary: rgba(0, 0, 0, 0.18);
-    
+
     /* 배경 컬러 */
     --background-primary: #FFFFFF;
     --background-secondary: #F2F2F7;
@@ -32,45 +32,45 @@
     --background-grouped-primary: #F2F2F7;
     --background-grouped-secondary: #FFFFFF;
     --background-grouped-tertiary: #F2F2F7;
-    
+
     /* 구분선 */
     --separator-opaque: rgba(60, 60, 67, 0.36);
     --separator-non-opaque: rgba(60, 60, 67, 0.12);
-    
+
     /* 글래스모피즘 */
     --glass-background: rgba(255, 255, 255, 0.8);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: rgba(0, 0, 0, 0.1);
-    
+
     /* 그림자 */
     --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
     --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
     --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
-    
+
     /* 애니메이션 */
     --animation-duration: 0.3s;
     --animation-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --animation-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    
+
     /* 타이포그래피 */
     --font-family-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
     --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
-    
+
     /* 레이아웃 */
     --border-radius-small: 8px;
     --border-radius-medium: 12px;
     --border-radius-large: 16px;
     --border-radius-xlarge: 24px;
-    
+
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 32px;
     --spacing-xxl: 48px;
-    
+
     /* 그리드 */
     --content-max-width: 1400px;
     --main-content-width: 70%;
@@ -96,22 +96,22 @@
         --system-gray4: #3A3A3C;
         --system-gray5: #2C2C2E;
         --system-gray6: #1C1C1E;
-        
+
         --label-primary: rgba(255, 255, 255, 0.85);
         --label-secondary: rgba(255, 255, 255, 0.6);
         --label-tertiary: rgba(255, 255, 255, 0.3);
         --label-quaternary: rgba(255, 255, 255, 0.18);
-        
+
         --background-primary: #000000;
         --background-secondary: #1C1C1E;
         --background-tertiary: #2C2C2E;
         --background-grouped-primary: #000000;
         --background-grouped-secondary: #1C1C1E;
         --background-grouped-tertiary: #2C2C2E;
-        
+
         --separator-opaque: rgba(84, 84, 88, 0.65);
         --separator-non-opaque: rgba(84, 84, 88, 0.2);
-        
+
         --glass-background: rgba(28, 28, 30, 0.8);
         --glass-border: rgba(255, 255, 255, 0.1);
         --glass-shadow: rgba(0, 0, 0, 0.3);
@@ -130,10 +130,10 @@
 
 /* 히어로 섹션 */
 .hero-section {
-    background: linear-gradient(135deg, 
-        var(--system-blue) 0%, 
-        var(--system-purple) 50%, 
-        var(--system-pink) 100%);
+    background: linear-gradient(135deg,
+    var(--system-blue) 0%,
+    var(--system-purple) 50%,
+    var(--system-pink) 100%);
     position: relative;
     overflow: hidden;
     color: white;
@@ -314,9 +314,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 30px 30px;
     animation: gridMove 20s linear infinite;
 }
@@ -648,9 +648,9 @@
 
 .post-item.hot-post {
     border-color: var(--system-orange);
-    background: linear-gradient(135deg, 
-        var(--background-grouped-secondary) 0%, 
-        rgba(255, 149, 0, 0.05) 100%);
+    background: linear-gradient(135deg,
+    var(--background-grouped-secondary) 0%,
+    rgba(255, 149, 0, 0.05) 100%);
 }
 
 .post-badge {
@@ -917,23 +917,23 @@
 }
 
 .ranking-item.gold {
-    background: linear-gradient(135deg, 
-        var(--background-grouped-secondary) 0%, 
-        rgba(255, 215, 0, 0.1) 100%);
+    background: linear-gradient(135deg,
+    var(--background-grouped-secondary) 0%,
+    rgba(255, 215, 0, 0.1) 100%);
     border-color: rgba(255, 215, 0, 0.3);
 }
 
 .ranking-item.silver {
-    background: linear-gradient(135deg, 
-        var(--background-grouped-secondary) 0%, 
-        rgba(192, 192, 192, 0.1) 100%);
+    background: linear-gradient(135deg,
+    var(--background-grouped-secondary) 0%,
+    rgba(192, 192, 192, 0.1) 100%);
     border-color: rgba(192, 192, 192, 0.3);
 }
 
 .ranking-item.bronze {
-    background: linear-gradient(135deg, 
-        var(--background-grouped-secondary) 0%, 
-        rgba(205, 127, 50, 0.1) 100%);
+    background: linear-gradient(135deg,
+    var(--background-grouped-secondary) 0%,
+    rgba(205, 127, 50, 0.1) 100%);
     border-color: rgba(205, 127, 50, 0.3);
 }
 
@@ -1024,24 +1024,24 @@
     .content-grid {
         flex-direction: column;
     }
-    
+
     .main-content,
     .side-content {
         width: 100%;
     }
-    
+
     .side-content {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: var(--spacing-lg);
     }
-    
+
     .hero-content {
         flex-direction: column;
         text-align: center;
         gap: var(--spacing-xl);
     }
-    
+
     .hero-stats {
         justify-content: center;
     }
@@ -1051,53 +1051,53 @@
     .content-main {
         margin-top: 100px;
     }
-    
+
     .hero-content {
         padding: var(--spacing-xl) var(--spacing-lg);
         min-height: 300px;
     }
-    
+
     .hero-actions {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .hero-stats {
         flex-direction: column;
         gap: var(--spacing-md);
     }
-    
+
     .content-grid {
         padding: var(--spacing-lg) var(--spacing-md);
     }
-    
+
     .featured-games-section,
     .community-section {
         padding: var(--spacing-lg);
     }
-    
+
     .section-header {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--spacing-sm);
     }
-    
+
     .section-title {
         font-size: 24px;
     }
-    
+
     .games-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .community-stats {
         grid-template-columns: 1fr;
     }
-    
+
     .side-content {
         grid-template-columns: 1fr;
     }
-    
+
     .category-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -1107,30 +1107,30 @@
     .hero-content {
         padding: var(--spacing-lg) var(--spacing-md);
     }
-    
+
     .hero-title {
         font-size: 28px;
     }
-    
+
     .hero-subtitle {
         font-size: 16px;
     }
-    
+
     .content-grid {
         padding: var(--spacing-md);
     }
-    
+
     .featured-games-section,
     .community-section,
     .widget {
         padding: var(--spacing-md);
     }
-    
+
     .widget-header,
     .widget-content {
         padding: var(--spacing-md);
     }
-    
+
     .category-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1151,7 +1151,7 @@
         --separator-opaque: rgba(0, 0, 0, 0.8);
         --separator-non-opaque: rgba(0, 0, 0, 0.3);
     }
-    
+
     .game-card,
     .post-item,
     .stat-card,
@@ -1160,7 +1160,7 @@
     .ranking-item {
         border-width: 2px;
     }
-    
+
     .section-link:hover {
         background-color: var(--system-blue);
         color: white;
@@ -1170,13 +1170,13 @@
 /* 다크 모드 특별 조정 */
 @media (prefers-color-scheme: dark) {
     .hero-section {
-        background: linear-gradient(135deg, 
-            var(--system-blue) 0%, 
-            var(--system-purple) 50%, 
-            var(--system-pink) 100%);
+        background: linear-gradient(135deg,
+        var(--system-blue) 0%,
+        var(--system-purple) 50%,
+        var(--system-pink) 100%);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
-    
+
     .game-card,
     .post-item,
     .stat-card,
@@ -1186,7 +1186,7 @@
         background: var(--background-tertiary);
         border-color: var(--separator-non-opaque);
     }
-    
+
     .game-card:hover,
     .post-item:hover,
     .stat-card:hover,
@@ -1195,13 +1195,13 @@
     .ranking-item:hover {
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
-    
+
     .game-category,
     .game-plays {
         background: var(--system-gray4);
         color: var(--label-primary);
     }
-    
+
     .stat-icon {
         background: var(--system-gray4);
     }

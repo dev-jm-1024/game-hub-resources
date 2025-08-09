@@ -18,13 +18,13 @@
     --system-gray4: #D1D1D6;
     --system-gray5: #E5E5EA;
     --system-gray6: #F2F2F7;
-    
+
     /* 라벨 컬러 */
     --label-primary: rgba(0, 0, 0, 0.85);
     --label-secondary: rgba(0, 0, 0, 0.6);
     --label-tertiary: rgba(0, 0, 0, 0.3);
     --label-quaternary: rgba(0, 0, 0, 0.18);
-    
+
     /* 배경 컬러 */
     --background-primary: #FFFFFF;
     --background-secondary: #F2F2F7;
@@ -32,36 +32,36 @@
     --background-grouped-primary: #F2F2F7;
     --background-grouped-secondary: #FFFFFF;
     --background-grouped-tertiary: #F2F2F7;
-    
+
     /* 구분선 */
     --separator-opaque: rgba(60, 60, 67, 0.36);
     --separator-non-opaque: rgba(60, 60, 67, 0.12);
-    
+
     /* 글래스모피즘 */
     --glass-background: rgba(255, 255, 255, 0.8);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: rgba(0, 0, 0, 0.1);
-    
+
     /* 그림자 */
     --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
     --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
-    
+
     /* 애니메이션 */
     --animation-duration: 0.3s;
     --animation-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --animation-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    
+
     /* 타이포그래피 */
     --font-family-primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
     --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
-    
+
     /* 레이아웃 */
     --border-radius-small: 8px;
     --border-radius-medium: 12px;
     --border-radius-large: 16px;
     --border-radius-xlarge: 24px;
-    
+
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
@@ -88,22 +88,22 @@
         --system-gray4: #3A3A3C;
         --system-gray5: #2C2C2E;
         --system-gray6: #1C1C1E;
-        
+
         --label-primary: rgba(255, 255, 255, 0.85);
         --label-secondary: rgba(255, 255, 255, 0.6);
         --label-tertiary: rgba(255, 255, 255, 0.3);
         --label-quaternary: rgba(255, 255, 255, 0.18);
-        
+
         --background-primary: #000000;
         --background-secondary: #1C1C1E;
         --background-tertiary: #2C2C2E;
         --background-grouped-primary: #000000;
         --background-grouped-secondary: #1C1C1E;
         --background-grouped-tertiary: #2C2C2E;
-        
+
         --separator-opaque: rgba(84, 84, 88, 0.65);
         --separator-non-opaque: rgba(84, 84, 88, 0.2);
-        
+
         --glass-background: rgba(28, 28, 30, 0.8);
         --glass-border: rgba(255, 255, 255, 0.1);
         --glass-shadow: rgba(0, 0, 0, 0.3);
@@ -618,32 +618,32 @@
     .site-footer {
         padding: var(--spacing-lg) 0;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
         padding: 0 var(--spacing-md);
     }
-    
+
     .footer-section {
         text-align: center;
     }
-    
+
     .footer-title::after {
         left: 50%;
         transform: translateX(-50%);
     }
-    
+
     .social-list {
         grid-template-columns: 1fr;
     }
-    
+
     .footer-bottom-content {
         flex-direction: column;
         text-align: center;
         padding: 0 var(--spacing-md);
     }
-    
+
     .back-to-top {
         bottom: var(--spacing-lg);
         right: var(--spacing-lg);
@@ -656,24 +656,24 @@
     .site-footer {
         padding: var(--spacing-md) 0;
     }
-    
+
     .footer-content {
         padding: 0 var(--spacing-sm);
     }
-    
+
     .footer-section {
         padding: var(--spacing-md);
     }
-    
+
     .footer-title {
         font-size: 18px;
     }
-    
+
     .social-link {
         padding: var(--spacing-sm);
         font-size: 13px;
     }
-    
+
     .back-to-top {
         width: 44px;
         height: 44px;
@@ -697,7 +697,7 @@
     .footer-section {
         animation: none;
     }
-    
+
     * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
@@ -711,11 +711,11 @@
         --separator-opaque: rgba(0, 0, 0, 0.8);
         --separator-non-opaque: rgba(0, 0, 0, 0.3);
     }
-    
+
     .footer-section {
         border: 2px solid var(--separator-opaque);
     }
-    
+
     .legal-link:hover,
     .quick-link:hover,
     .social-link:hover {
@@ -731,7 +731,7 @@
         border-top-color: var(--glass-border);
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
     }
-    
+
     .company-info,
     .legal-links,
     .quick-links,
@@ -739,17 +739,17 @@
         background: var(--background-tertiary);
         border-color: var(--separator-non-opaque);
     }
-    
+
     .social-link {
         background: var(--background-secondary);
         border-color: var(--separator-non-opaque);
     }
-    
+
     .version-info {
         background: var(--system-gray4);
         color: var(--label-primary);
     }
-    
+
     .back-to-top {
         background: var(--glass-background);
         border-color: var(--glass-border);
@@ -763,11 +763,11 @@
         border-top: 1px solid #000;
         box-shadow: none;
     }
-    
+
     .back-to-top {
         display: none;
     }
-    
+
     .social-links {
         display: none;
     }

@@ -99,7 +99,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 400;
     transition: background-color var(--animation-duration) var(--animation-ease),
-                color var(--animation-duration) var(--animation-ease);
+    color var(--animation-duration) var(--animation-ease);
 }
 
 /* 헤더 스타일 */
@@ -441,7 +441,7 @@ footer {
     .page-content-wrapper {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         position: static;
@@ -449,19 +449,19 @@ footer {
         border-right: none;
         border-bottom: 1px solid var(--separator-non-opaque);
     }
-    
+
     .header-container {
         padding: 0 16px;
     }
-    
+
     main.content-main {
         padding: 20px;
     }
-    
+
     .nav-list {
         flex-wrap: wrap;
     }
-    
+
     .nav-item {
         margin-right: 20px;
     }
@@ -517,4 +517,4 @@ footer {
 .empty-state p {
     font-size: 14px;
     line-height: 1.5;
-} 
+}

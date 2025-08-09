@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="game-card featured-card" th:if="${#lists.isEmpty(featuredGames)}">
                         <div class="game-thumbnail">
                             <img src="/static/webgl/Tile-Vania/TemplateData/webgl-logo.png" alt="타일 바니아" class="game-image">
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="game-card featured-card" th:if="${#lists.isEmpty(featuredGames)}">
                         <div class="game-thumbnail">
                             <div class="game-image placeholder-image">🎯</div>
@@ -118,11 +118,11 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- 실제 데이터 -->
                     <div class="game-card featured-card" th:each="game : ${featuredGames}">
                         <div class="game-thumbnail">
-                            <img th:src="${game.thumbnailImage}" th:alt="${game.title}" class="game-image" 
+                            <img th:src="${game.thumbnailImage}" th:alt="${game.title}" class="game-image"
                                  onerror="this.src='/static/images/default-game.png'">
                             <div class="game-badge">추천</div>
                         </div>
@@ -182,7 +182,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="posts-list">
                         <!-- 샘플 데이터 -->
                         <div class="post-item hot-post" th:if="${#lists.isEmpty(communityPosts)}">
@@ -211,7 +211,7 @@
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div class="post-item" th:if="${#lists.isEmpty(communityPosts)}">
                             <div class="post-info">
                                 <h3 class="post-title">
@@ -237,7 +237,7 @@
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div class="post-item" th:if="${#lists.isEmpty(communityPosts)}">
                             <div class="post-info">
                                 <h3 class="post-title">
@@ -263,7 +263,7 @@
                                 </span>
                             </div>
                         </div>
-                        
+
                         <!-- 실제 데이터 -->
                         <div class="post-item" th:each="post : ${communityPosts}">
                             <div class="post-info">
@@ -274,7 +274,7 @@
                                 <div class="post-meta">
                                     <span class="post-author" th:text="${post.author}">작성자</span>
                                     <span class="meta-separator">·</span>
-                                    <time class="post-date" th:datetime="${post.createdAt}" 
+                                    <time class="post-date" th:datetime="${post.createdAt}"
                                           th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성일</time>
                                     <span class="meta-separator">·</span>
                                     <span class="post-views" th:text="'조회 ' + ${post.views}">조회 0</span>
@@ -316,7 +316,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="new-game-item" th:if="${#lists.isEmpty(newGames)}">
                         <div class="new-game-info">
                             <h4 class="new-game-title">
@@ -328,7 +328,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="new-game-item" th:if="${#lists.isEmpty(newGames)}">
                         <div class="new-game-info">
                             <h4 class="new-game-title">
@@ -340,7 +340,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- 실제 데이터 -->
                     <div class="new-game-item" th:each="game : ${newGames}">
                         <div class="new-game-info">

@@ -16,25 +16,25 @@
 
     <!-- 전역 스타일 -->
     <link rel="stylesheet" th:href="@{/main-contents-skin/global.css}">
-    
+
     <!-- 헤더 전용 스타일 -->
     <link rel="stylesheet" th:href="@{/main-contents-skin/header/css/header.css}">
-    
+
     <!-- 네비게이션 전용 스타일 -->
     <link rel="stylesheet" th:href="@{/main-contents-skin/nav/css/nav.css}">
-    
+
     <!-- 메인 콘텐츠 전용 스타일 -->
     <link rel="stylesheet" th:href="@{/main-contents-skin/main/css/main.css}">
-    
+
     <!-- 사이드바 전용 스타일 -->
     <link rel="stylesheet" th:href="@{/main-contents-skin/sidebar/css/sidebar.css}">
-    
+
     <!-- 푸터 전용 스타일 -->
     <link rel="stylesheet" th:href="@{/main-contents-skin/footer/css/footer.css}">
 
     <!-- Vue.js 3 CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
+
     <!-- Lottie Player (애니메이션용) -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
@@ -58,7 +58,11 @@
 </head>
 <body>
 <!-- 헤더 영역 -->
-<header th:replace="main-contents/header-frag/header :: header"></header>
+<!-- ✅ 로그인 상태 관련 model 값을 header에 넘겨줘야 조건 분기가 정상 동작 -->
+<header th:replace="main-contents/header-frag/header :: header"
+        th:with="isLoggedIn=${isLoggedIn}, nickname=${nickname}, profileImage=${profileImage}, deactivatePath=${deactivatePath}">
+</header>
+
 
 <!-- 네비게이션 영역 -->
 <nav th:replace="main-contents/nav-frag/nav :: nav"></nav>
@@ -69,7 +73,7 @@
     <main class="content-main">
         <div class="main-content-inner" th:replace="main-contents/main-frag/content-main :: main"></div>
     </main>
-    
+
     <!-- 사이드바 -->
     <aside class="sidebar" th:replace="main-contents/sidebar-frag/sidebar :: sidebar"></aside>
 </div>

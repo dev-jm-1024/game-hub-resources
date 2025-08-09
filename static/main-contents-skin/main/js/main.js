@@ -13,15 +13,15 @@ class MainContentController {
             interactionCount: 0,
             errorCount: 0
         };
-        
+
         this.init();
     }
 
     init() {
         if (this.isInitialized) return;
-        
+
         const startTime = performance.now();
-        
+
         try {
             this.setupEventListeners();
             this.initializeAnimations();
@@ -31,10 +31,10 @@ class MainContentController {
             this.initializeCommunitySection();
             this.initializeWidgets();
             this.initializeKeyboardNavigation();
-            
+
             this.performanceMetrics.loadTime = performance.now() - startTime;
             this.isInitialized = true;
-            
+
             console.log(`메인 콘텐츠 초기화 완료: ${this.performanceMetrics.loadTime.toFixed(2)}ms`);
         } catch (error) {
             console.error('메인 콘텐츠 초기화 실패:', error);
@@ -73,7 +73,7 @@ class MainContentController {
 
         // 스태거 애니메이션 설정
         this.setupStaggeredAnimations();
-        
+
         // 패럴랙스 효과 초기화
         this.initializeParallax();
     }
@@ -120,26 +120,26 @@ class MainContentController {
 
         // 히어로 통계 카운터 애니메이션
         this.initializeStatCounters();
-        
+
         // 히어로 버튼 인터랙션
         this.initializeHeroButtons();
-        
+
         // 배경 장식 애니메이션
         this.initializeHeroDecorations();
     }
 
     initializeStatCounters() {
         const statItems = document.querySelectorAll('.stat-item');
-        
+
         statItems.forEach(item => {
             const numberElement = item.querySelector('.stat-number');
             if (!numberElement) return;
-            
+
             const targetText = numberElement.textContent;
             const targetNumber = parseInt(targetText.replace(/[^\d]/g, ''));
-            
+
             if (isNaN(targetNumber)) return;
-            
+
             // 카운터 애니메이션 설정
             item.addEventListener('mouseenter', () => {
                 this.animateCounter(numberElement, targetNumber, targetText);
@@ -149,24 +149,24 @@ class MainContentController {
 
     animateCounter(element, targetNumber, originalText) {
         if (element.dataset.animated === 'true') return;
-        
+
         element.dataset.animated = 'true';
         const duration = 1000;
         const startTime = performance.now();
-        
+
         const animate = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            
+
             // 이징 함수 적용
             const easeProgress = this.easeOutCubic(progress);
             const currentNumber = Math.floor(targetNumber * easeProgress);
-            
+
             // 숫자 포맷팅
             const formattedNumber = this.formatNumber(currentNumber);
             const suffix = originalText.replace(/[\d,]/g, '');
             element.textContent = formattedNumber + suffix;
-            
+
             if (progress < 1) {
                 requestAnimationFrame(animate);
             } else {
@@ -176,19 +176,19 @@ class MainContentController {
                 }, 2000);
             }
         };
-        
+
         requestAnimationFrame(animate);
     }
 
     initializeHeroButtons() {
         const heroButtons = document.querySelectorAll('.hero-actions .btn-primary, .hero-actions .btn-secondary');
-        
+
         heroButtons.forEach(button => {
             // 마우스 인터랙션
             button.addEventListener('mouseenter', () => {
                 this.createRippleEffect(button);
             });
-            
+
             // 클릭 피드백
             button.addEventListener('click', (e) => {
                 this.handleButtonClick(e);
@@ -197,7 +197,7 @@ class MainContentController {
                     href: button.getAttribute('href')
                 });
             });
-            
+
             // 키보드 접근성
             button.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -210,17 +210,17 @@ class MainContentController {
 
     initializeHeroDecorations() {
         const decorationOrbs = document.querySelectorAll('.decoration-orb');
-        
+
         decorationOrbs.forEach((orb, index) => {
             // 마우스 추적 효과
             document.addEventListener('mousemove', this.throttle((e) => {
                 const rect = orb.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
-                
+
                 const deltaX = (e.clientX - centerX) * 0.1;
                 const deltaY = (e.clientY - centerY) * 0.1;
-                
+
                 orb.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
             }, 16));
         });
@@ -228,19 +228,19 @@ class MainContentController {
 
     initializeGameCards() {
         const gameCards = document.querySelectorAll('.game-card');
-        
+
         gameCards.forEach(card => {
             // 3D 틸트 효과
             this.add3DTiltEffect(card);
-            
+
             // 이미지 로딩 처리
             this.handleImageLoading(card);
-            
+
             // 클릭 인터랙션
             card.addEventListener('click', (e) => {
                 this.handleGameCardClick(e, card);
             });
-            
+
             // 키보드 네비게이션
             const link = card.querySelector('.game-title a');
             if (link) {
@@ -257,21 +257,21 @@ class MainContentController {
         element.addEventListener('mouseenter', () => {
             element.style.transformStyle = 'preserve-3d';
         });
-        
+
         element.addEventListener('mousemove', (e) => {
             const rect = element.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            
+
             const deltaX = (e.clientX - centerX) / rect.width;
             const deltaY = (e.clientY - centerY) / rect.height;
-            
+
             const rotateX = deltaY * -10;
             const rotateY = deltaX * 10;
-            
+
             element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
         });
-        
+
         element.addEventListener('mouseleave', () => {
             element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
         });
@@ -280,28 +280,28 @@ class MainContentController {
     handleImageLoading(card) {
         const img = card.querySelector('.game-image');
         if (!img || img.tagName !== 'IMG') return;
-        
+
         // 로딩 스켈레톤 표시
         const thumbnail = card.querySelector('.game-thumbnail');
         thumbnail.classList.add('loading');
-        
+
         img.addEventListener('load', () => {
             thumbnail.classList.remove('loading');
             thumbnail.classList.add('loaded');
-            
+
             // 이미지 페이드 인 애니메이션
             img.style.opacity = '0';
             img.style.transition = 'opacity 0.3s ease';
-            
+
             requestAnimationFrame(() => {
                 img.style.opacity = '1';
             });
         });
-        
+
         img.addEventListener('error', () => {
             thumbnail.classList.remove('loading');
             thumbnail.classList.add('error');
-            
+
             // 에러 시 플레이스홀더 표시
             const placeholder = document.createElement('div');
             placeholder.className = 'placeholder-image';
@@ -313,25 +313,25 @@ class MainContentController {
     initializeCommunitySection() {
         const communitySection = document.querySelector('.community-section');
         if (!communitySection) return;
-        
+
         // 통계 카드 애니메이션
         this.initializeStatCards();
-        
+
         // 포스트 아이템 인터랙션
         this.initializePostItems();
-        
+
         // 실시간 업데이트 시뮬레이션
         this.simulateRealTimeUpdates();
     }
 
     initializeStatCards() {
         const statCards = document.querySelectorAll('.stat-card');
-        
+
         statCards.forEach(card => {
             card.addEventListener('mouseenter', () => {
                 this.animateStatCard(card);
             });
-            
+
             // 클릭 시 관련 페이지로 이동
             card.addEventListener('click', () => {
                 this.handleStatCardClick(card);
@@ -342,13 +342,13 @@ class MainContentController {
     animateStatCard(card) {
         const number = card.querySelector('.stat-number');
         if (!number) return;
-        
+
         // 숫자 증가 애니메이션
         const originalValue = parseInt(number.textContent.replace(/[^\d]/g, ''));
         const increment = Math.floor(originalValue * 0.1);
-        
+
         number.textContent = (originalValue + increment).toLocaleString();
-        
+
         setTimeout(() => {
             number.textContent = originalValue.toLocaleString();
         }, 1000);
@@ -356,17 +356,17 @@ class MainContentController {
 
     initializePostItems() {
         const postItems = document.querySelectorAll('.post-item');
-        
+
         postItems.forEach(item => {
             // 호버 효과
             item.addEventListener('mouseenter', () => {
                 this.highlightPostItem(item);
             });
-            
+
             item.addEventListener('mouseleave', () => {
                 this.unhighlightPostItem(item);
             });
-            
+
             // 클릭 인터랙션
             const link = item.querySelector('.post-title a');
             if (link) {
@@ -383,7 +383,7 @@ class MainContentController {
         if (preview) {
             preview.style.webkitLineClamp = '3';
         }
-        
+
         // 메타 정보 강조
         const meta = item.querySelector('.post-meta');
         if (meta) {
@@ -396,7 +396,7 @@ class MainContentController {
         if (preview) {
             preview.style.webkitLineClamp = '2';
         }
-        
+
         const meta = item.querySelector('.post-meta');
         if (meta) {
             meta.style.opacity = '0.7';
@@ -406,22 +406,22 @@ class MainContentController {
     initializeWidgets() {
         // 신규 게임 위젯
         this.initializeNewGamesWidget();
-        
+
         // 카테고리 위젯
         this.initializeCategoryWidget();
-        
+
         // 랭킹 위젯
         this.initializeRankingWidget();
     }
 
     initializeNewGamesWidget() {
         const newGameItems = document.querySelectorAll('.new-game-item');
-        
+
         newGameItems.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 this.animateNewGameItem(item);
             });
-            
+
             const link = item.querySelector('.new-game-title a');
             if (link) {
                 link.addEventListener('click', (e) => {
@@ -444,12 +444,12 @@ class MainContentController {
 
     initializeCategoryWidget() {
         const categoryItems = document.querySelectorAll('.category-item');
-        
+
         categoryItems.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 this.animateCategoryItem(item);
             });
-            
+
             item.addEventListener('click', (e) => {
                 this.handleCategoryClick(e, item);
             });
@@ -468,11 +468,11 @@ class MainContentController {
 
     initializeRankingWidget() {
         const rankingItems = document.querySelectorAll('.ranking-item');
-        
+
         rankingItems.forEach((item, index) => {
             // 순차적 애니메이션
             item.style.animationDelay = `${index * 0.1}s`;
-            
+
             item.addEventListener('mouseenter', () => {
                 this.animateRankingItem(item);
             });
@@ -499,12 +499,12 @@ class MainContentController {
             .category-item,
             .section-link
         `);
-        
+
         focusableElements.forEach(element => {
             element.addEventListener('focus', () => {
                 this.handleElementFocus(element);
             });
-            
+
             element.addEventListener('blur', () => {
                 this.handleElementBlur(element);
             });
@@ -517,7 +517,7 @@ class MainContentController {
         if (parent) {
             parent.classList.add('focused');
         }
-        
+
         // 스크롤 위치 조정
         this.ensureElementVisible(element);
     }
@@ -532,7 +532,7 @@ class MainContentController {
     ensureElementVisible(element) {
         const rect = element.getBoundingClientRect();
         const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-        
+
         if (!isVisible) {
             element.scrollIntoView({
                 behavior: 'smooth',
@@ -545,17 +545,17 @@ class MainContentController {
     handleResize() {
         // 레이아웃 재계산
         this.updateLayoutMetrics();
-        
+
         // 애니메이션 재설정
         this.resetAnimations();
     }
 
     handleScroll() {
         const scrollY = window.scrollY;
-        
+
         // 패럴랙스 효과 업데이트
         this.updateParallaxEffect(scrollY);
-        
+
         // 히어로 섹션 스케일 효과
         this.updateHeroScale(scrollY);
     }
@@ -563,7 +563,7 @@ class MainContentController {
     updateParallaxEffect(scrollY) {
         const heroSection = document.querySelector('.hero-section');
         if (!heroSection) return;
-        
+
         const decorationGrid = heroSection.querySelector('.decoration-grid');
         if (decorationGrid) {
             const translateY = scrollY * 0.5;
@@ -574,10 +574,10 @@ class MainContentController {
     updateHeroScale(scrollY) {
         const heroSection = document.querySelector('.hero-section');
         if (!heroSection) return;
-        
+
         const scale = Math.max(0.8, 1 - scrollY * 0.0005);
         const opacity = Math.max(0.3, 1 - scrollY * 0.001);
-        
+
         heroSection.style.transform = `scale(${scale})`;
         heroSection.style.opacity = opacity;
     }
@@ -612,10 +612,10 @@ class MainContentController {
     handleButtonClick(e) {
         const button = e.target.closest('a, button');
         if (!button) return;
-        
+
         // 클릭 애니메이션
         this.createClickAnimation(button);
-        
+
         // 햅틱 피드백 시뮬레이션
         if (navigator.vibrate) {
             navigator.vibrate(50);
@@ -625,12 +625,12 @@ class MainContentController {
     handleGameCardClick(e, card) {
         const link = card.querySelector('.game-title a');
         if (!link) return;
-        
+
         // 카드 클릭 시 링크로 이동
         if (!e.target.closest('a')) {
             link.click();
         }
-        
+
         this.trackInteraction('game_card_click', {
             game: link.textContent.trim()
         });
@@ -638,7 +638,7 @@ class MainContentController {
 
     handlePostClick(e, item) {
         this.createClickAnimation(item);
-        
+
         this.trackInteraction('post_click', {
             post: e.target.textContent.trim()
         });
@@ -647,11 +647,11 @@ class MainContentController {
     handleStatCardClick(card) {
         const icon = card.querySelector('.stat-icon');
         const label = card.querySelector('.stat-label');
-        
+
         if (label) {
             const labelText = label.textContent.trim();
             let targetUrl = '/';
-            
+
             switch (labelText) {
                 case '오늘의 게시글':
                     targetUrl = '/board?date=today';
@@ -663,16 +663,16 @@ class MainContentController {
                     targetUrl = '/board?sort=popular';
                     break;
             }
-            
+
             window.location.href = targetUrl;
         }
     }
 
     handleCategoryClick(e, item) {
         e.preventDefault();
-        
+
         this.createClickAnimation(item);
-        
+
         setTimeout(() => {
             window.location.href = item.getAttribute('href');
         }, 150);
@@ -682,16 +682,16 @@ class MainContentController {
     createRippleEffect(element) {
         const ripple = document.createElement('span');
         ripple.className = 'ripple';
-        
+
         const rect = element.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
-        
+
         ripple.style.width = ripple.style.height = size + 'px';
         ripple.style.left = (rect.width / 2 - size / 2) + 'px';
         ripple.style.top = (rect.height / 2 - size / 2) + 'px';
-        
+
         element.appendChild(ripple);
-        
+
         setTimeout(() => {
             ripple.remove();
         }, 600);
@@ -700,7 +700,7 @@ class MainContentController {
     createClickAnimation(element) {
         element.style.transform = 'scale(0.95)';
         element.style.transition = 'transform 0.1s ease';
-        
+
         setTimeout(() => {
             element.style.transform = 'scale(1)';
         }, 100);
@@ -708,11 +708,11 @@ class MainContentController {
 
     animateElementIn(element) {
         if (element.classList.contains('animated')) return;
-        
+
         element.classList.add('animated');
         element.style.opacity = '0';
         element.style.transform = 'translateY(20px)';
-        
+
         requestAnimationFrame(() => {
             element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             element.style.opacity = '1';
@@ -727,7 +727,7 @@ class MainContentController {
             '.community-stats .stat-card',
             '.ranking-list .ranking-item'
         ];
-        
+
         groups.forEach(selector => {
             const elements = document.querySelectorAll(selector);
             elements.forEach((element, index) => {
@@ -738,9 +738,9 @@ class MainContentController {
 
     initializeParallax() {
         if (!this.supportsAnimations()) return;
-        
+
         const parallaxElements = document.querySelectorAll('.decoration-orb');
-        
+
         parallaxElements.forEach(element => {
             element.style.willChange = 'transform';
         });
@@ -755,16 +755,16 @@ class MainContentController {
 
     updateRandomStats() {
         const statNumbers = document.querySelectorAll('.stat-number');
-        
+
         statNumbers.forEach(number => {
             const currentValue = parseInt(number.textContent.replace(/[^\d]/g, ''));
             const change = Math.floor(Math.random() * 10) - 5; // -5 ~ +5
             const newValue = Math.max(0, currentValue + change);
-            
+
             if (change !== 0) {
                 number.textContent = newValue.toLocaleString();
                 number.style.color = change > 0 ? 'var(--system-green)' : 'var(--system-red)';
-                
+
                 setTimeout(() => {
                     number.style.color = '';
                 }, 1000);
@@ -819,7 +819,7 @@ class MainContentController {
             width: window.innerWidth,
             height: window.innerHeight
         };
-        
+
         // 모바일 레이아웃 조정
         if (viewport.width <= 768) {
             document.documentElement.classList.add('mobile-layout');
@@ -841,7 +841,7 @@ class MainContentController {
     trackInteraction(eventName, data = {}) {
         // 사용자 인터랙션 추적
         this.performanceMetrics.interactionCount++;
-        
+
         // 실제 구현 시 분석 도구로 전송
         console.log(`인터랙션 추적: ${eventName}`, data);
     }
@@ -868,14 +868,14 @@ class MainContentController {
         this.observers.forEach(observer => {
             observer.disconnect();
         });
-        
+
         // 애니메이션 정리
         this.resetAnimations();
-        
+
         // 메모리 정리
         this.observers.clear();
         this.animations.clear();
-        
+
         console.log('메인 콘텐츠 컨트롤러 정리 완료');
     }
 }

@@ -8,23 +8,23 @@
     right: 0;
     height: 48px; /* 헤더보다 조금 낮게 */
     z-index: 900;
-    
+
     /* 글래스모피즘 효과 */
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: var(--blur-light);
     -webkit-backdrop-filter: var(--blur-light);
-    
+
     /* 경계선 */
     border-bottom: 0.5px solid var(--separator-non-opaque);
-    
+
     /* 그림자 */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    
+
     /* 레이아웃 */
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     /* 애니메이션 */
     transition: all var(--animation-duration) var(--animation-ease);
 }
@@ -92,7 +92,7 @@
     position: relative;
     white-space: nowrap;
     min-height: 32px;
-    
+
     /* 호버 효과를 위한 배경 */
     background-color: transparent;
 }
@@ -161,7 +161,7 @@
     transition: all var(--animation-duration) var(--animation-ease);
     z-index: 1000;
     overflow: hidden;
-    
+
     /* 최대 높이 제한 */
     max-height: 300px;
     overflow-y: auto;
@@ -231,6 +231,40 @@
     margin: 0;
 }
 
+/* 정보 상태 (개별 게시판이 없을 때) */
+.info-state {
+    padding: 12px 16px;
+    text-align: center;
+    color: var(--system-gray2);
+}
+
+.info-text {
+    font-family: var(--font-family-primary);
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0;
+    font-style: italic;
+}
+
+/* 전체 게시판 링크 강조 */
+.default-board {
+    background-color: rgba(0, 122, 255, 0.05);
+    font-weight: 600;
+}
+
+.default-board:hover {
+    background-color: rgba(0, 122, 255, 0.1);
+    color: var(--primary-blue);
+}
+
+/* 드롭다운 구분선 */
+.dropdown-separator {
+    height: 1px;
+    background-color: var(--separator-non-opaque);
+    margin: 8px 0;
+    list-style: none;
+}
+
 /* 관리자 전용 메뉴 */
 .admin-only {
     margin-left: auto;
@@ -280,7 +314,7 @@
         height: 44px; /* 모바일에서 더 낮게 */
         padding: 0 16px;
     }
-    
+
     .nav-container {
         justify-content: flex-start;
         overflow-x: auto;
@@ -288,26 +322,26 @@
         scrollbar-width: none;
         -ms-overflow-style: none;
     }
-    
+
     .nav-container::-webkit-scrollbar {
         display: none;
     }
-    
+
     .nav-menu {
         gap: 4px;
         padding: 0 8px;
     }
-    
+
     .nav-link {
         padding: 6px 12px;
         font-size: 13px;
         min-width: max-content;
     }
-    
+
     .admin-only {
         margin-left: 16px;
     }
-    
+
     /* 모바일에서 드롭다운 위치 조정 */
     .dropdown-menu {
         left: 0;
@@ -316,7 +350,7 @@
         margin: 8px 16px 0 16px;
         width: auto;
     }
-    
+
     .dropdown-menu.show {
         transform: translateY(0) scale(1);
     }
@@ -327,18 +361,18 @@
         height: 40px;
         padding: 0 12px;
     }
-    
+
     .nav-link {
         padding: 4px 8px;
         font-size: 12px;
     }
-    
+
     .dropdown-icon {
         width: 10px;
         height: 10px;
         margin-left: 4px;
     }
-    
+
     .admin-badge {
         font-size: 8px;
         padding: 1px 4px;
@@ -358,17 +392,17 @@
     .nav {
         border-bottom: 2px solid var(--separator-opaque);
     }
-    
+
     .nav-link,
     .dropdown-link {
         border: 1px solid transparent;
     }
-    
+
     .nav-link:hover,
     .dropdown-link:hover {
         border-color: var(--primary-blue);
     }
-    
+
     .nav-link.active {
         border-color: var(--primary-blue);
     }
@@ -476,11 +510,11 @@
     right: 0;
     height: 2px;
     background: linear-gradient(
-        90deg,
-        transparent 0%,
-        var(--primary-blue) 20%,
-        var(--primary-blue) 80%,
-        transparent 100%
+            90deg,
+            transparent 0%,
+            var(--primary-blue) 20%,
+            var(--primary-blue) 80%,
+            transparent 100%
     );
     opacity: 0;
     transition: opacity var(--animation-duration) var(--animation-ease);

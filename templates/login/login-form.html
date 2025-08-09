@@ -27,41 +27,59 @@
 </form>
 
 <script>
-    document.getElementById("loginForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
 
-        const userId = document.getElementById("authUserId").value;
-        const userPw = document.getElementById("authPassword").value;
+        // CSRF 토큰 가져오기
+        const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+        const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
 
-        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+        // 폼 제출 이벤트 처리
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-        //new API path: /api/v1/auth/login
-        ///game-hub/api/v1/login : past API path
-        const response = await fetch("/api/v1/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                //"Content-Type": "application/json",
-                [header]: token
-            },
-            body: new URLSearchParams({
-                authUserId: userId,
-                authPassword: userPw
-            })
+            const authUserId = document.getElementById('authUserId').value.trim();
+            const authPassword = document.getElementById('authPassword').value.trim();
+
+            if (!authUserId || !authPassword) {
+                alert('아이디와 비밀번호를 모두 입력해주세요.');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('authUserId', authUserId);
+                formData.append('authPassword', authPassword);
+
+                const response = await fetch('/api/v1/login', {
+                    method: 'POST',
+                    headers: {
+                        [csrfHeader]: csrfToken
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+
+                    alert('로그인 성공! ' + responseData.nickname + '님 환영합니다.');
+
+                    // 사용자 역할에 따라 다른 페이지로 리다이렉트
+                    if (responseData.role === 'ROLE_PRODUCER') {
+                        window.location.href = '/game-hub/prod';
+                    } else {
+                        window.location.href = '/';
+                    }
+                } else {
+                    const responseText = await response.text();
+                    alert(responseText || '로그인에 실패했습니다.');
+                }
+
+            } catch (error) {
+                console.error('로그인 오류:', error);
+                alert('네트워크 오류가 발생했습니다.');
+            }
         });
-
-        if (response.ok) {
-            const jwt = response.headers.get("Authorization"); // Bearer 토큰
-            //alert("로그인 성공! 토큰: " + jwt);
-
-            localStorage.setItem("jwt", jwt); // JWT 저장
-
-            window.location.href = "/game-hub"; // 홈으로 이동
-        } else {
-            const msg = await response.text();
-            alert("로그인 실패: " + msg);
-        }
     });
 </script>
 

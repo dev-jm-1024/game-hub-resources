@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             this.isVisible = false;
             this.observers = new Map();
-            
+
             this.init();
         }
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const scrollY = window.scrollY;
             const opacity = Math.max(0.8, 1 - (scrollY / 1000));
-            
+
             sidebar.style.opacity = opacity;
         }
 
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setupResponsiveHandling() {
             let resizeTimeout;
-            
+
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(() => {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         handleResize() {
             const isMobile = window.innerWidth <= 768;
             const sidebar = document.querySelector('.sidebar');
-            
+
             if (sidebar && isMobile) {
                 this.setupMobileSidebar(sidebar);
             }
@@ -130,9 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleBtn.className = 'sidebar-toggle';
                 toggleBtn.innerHTML = '☰';
                 toggleBtn.setAttribute('aria-label', '사이드바 토글');
-                
+
                 document.body.appendChild(toggleBtn);
-                
+
                 toggleBtn.addEventListener('click', () => {
                     this.toggleMobileSidebar();
                 });
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const overlay = document.createElement('div');
                 overlay.className = 'sidebar-overlay';
                 document.body.appendChild(overlay);
-                
+
                 overlay.addEventListener('click', () => {
                     this.closeMobileSidebar();
                 });
@@ -153,10 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleMobileSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.querySelector('.sidebar-overlay');
-            
+
             if (sidebar && overlay) {
                 const isActive = sidebar.classList.contains('active');
-                
+
                 if (isActive) {
                     this.closeMobileSidebar();
                 } else {
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         openMobileSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.querySelector('.sidebar-overlay');
-            
+
             if (sidebar && overlay) {
                 sidebar.classList.add('active');
                 overlay.classList.add('active');
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeMobileSidebar() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.querySelector('.sidebar-overlay');
-            
+
             if (sidebar && overlay) {
                 sidebar.classList.remove('active');
                 overlay.classList.remove('active');
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             element.style.opacity = '0';
             element.style.transform = 'translateY(20px)';
-            
+
             requestAnimationFrame(() => {
                 element.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 element.style.opacity = '1';
@@ -206,10 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const rect = element.getBoundingClientRect();
             const sidebarRect = sidebar.getBoundingClientRect();
-            
-            const isVisible = rect.top >= sidebarRect.top && 
-                            rect.bottom <= sidebarRect.bottom;
-            
+
+            const isVisible = rect.top >= sidebarRect.top &&
+                rect.bottom <= sidebarRect.bottom;
+
             if (!isVisible) {
                 element.scrollIntoView({
                     behavior: 'smooth',
@@ -230,11 +230,11 @@ document.addEventListener('DOMContentLoaded', () => {
             nextTick(() => {
                 if (elementRef.value && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     const children = elementRef.value.children;
-                    
+
                     Array.from(children).forEach((child, index) => {
                         child.style.opacity = '0';
                         child.style.transform = 'translateY(20px)';
-                        
+
                         setTimeout(() => {
                             child.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                             child.style.opacity = '1';
@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             onMounted(() => {
                 // Apple 스타일 로딩 애니메이션
                 const loadingDuration = 1200; // 1.2초로 단축
-                
+
                 setTimeout(() => {
                     popularGamesData.value = window.popularGamesData || [];
                     recentGamesData.value = window.recentGamesData || [];
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         props: ['index'],
         setup(props) {
             const skeletonRef = ref(null);
-            
+
             onMounted(() => {
                 if (skeletonRef.value) {
                     skeletonRef.value.style.animationDelay = `${props.index * 0.1}s`;
@@ -320,11 +320,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setup(props) {
             const listRef = ref(null);
             const { animate } = useAppleAnimation(listRef);
-            
+
             onMounted(() => {
                 setTimeout(animate, 100);
             });
-            
+
             watch(() => props.games, () => {
                 setTimeout(animate, 50);
             });
@@ -384,11 +384,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setup(props) {
             const listRef = ref(null);
             const { animate } = useAppleAnimation(listRef);
-            
+
             onMounted(() => {
                 setTimeout(animate, 200);
             });
-            
+
             watch(() => props.games, () => {
                 setTimeout(animate, 50);
             });
@@ -456,11 +456,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setup(props) {
             const listRef = ref(null);
             const { animate } = useAppleAnimation(listRef);
-            
+
             onMounted(() => {
                 setTimeout(animate, 300);
             });
-            
+
             watch(() => props.notices, () => {
                 setTimeout(animate, 50);
             });
@@ -514,11 +514,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setup(props) {
             const listRef = ref(null);
             const { animate } = useAppleAnimation(listRef);
-            
+
             onMounted(() => {
                 setTimeout(animate, 400);
             });
-            
+
             watch(() => props.events, () => {
                 setTimeout(animate, 50);
             });
@@ -568,18 +568,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    
+
     // 사이드바 푸터 컴포넌트
     app.component('sidebar-footer', {
         setup() {
             const footerRef = ref(null);
-            
+
             onMounted(() => {
                 if (footerRef.value && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     setTimeout(() => {
                         footerRef.value.style.opacity = '0';
                         footerRef.value.style.transform = 'translateY(20px)';
-                        
+
                         setTimeout(() => {
                             footerRef.value.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                             footerRef.value.style.opacity = '1';
