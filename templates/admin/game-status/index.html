@@ -3,372 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게임 승인 관리</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 3px solid #007bff;
-            padding-bottom: 10px;
-        }
-        .section {
-            margin-bottom: 50px;
-        }
-        .section-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            border-radius: 5px;
-        }
-        .pending-title {
-            background-color: #fff3cd;
-            color: #856404;
-            border-left: 5px solid #ffc107;
-        }
-        .approved-title {
-            background-color: #d4edda;
-            color: #155724;
-            border-left: 5px solid #28a745;
-        }
-        .game-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: #fafafa;
-        }
-        .game-header {
-            display: flex;
-            justify-content: space-between;  /* 이렇게 수정 */
-            align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .game-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            margin: 0;
-        }
-        .game-status {
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .status-pending {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        .status-active {
-            background-color: #28a745;
-            color: white;
-        }
-        .game-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .info-label {
-            font-weight: bold;
-            color: #666;
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            color: #333;
-            word-break: break-word;
-        }
-        .file-info {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-        .file-title {
-            font-weight: bold;
-            color: #495057;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #dee2e6;
-            padding-bottom: 5px;
-        }
-        .file-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-        }
-        .actions {
-            margin-top: 20px;
-            text-align: right;
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-left: 10px;
-            transition: all 0.3s ease;
-        }
-        .btn-approve {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-approve:hover {
-            background-color: #218838;
-            transform: translateY(-1px);
-        }
-        .btn-reject {
-            background-color: #dc3545;
-            color: white;
-        }
-        .btn-reject:hover {
-            background-color: #c82333;
-            transform: translateY(-1px);
-        }
-        .btn-deactivate {
-            background-color: #6c757d;
-            color: white;
-        }
-        .btn-deactivate:hover {
-            background-color: #545b62;
-            transform: translateY(-1px);
-        }
-        .no-data {
-            text-align: center;
-            color: #666;
-            font-style: italic;
-            padding: 40px;
-            background: #f8f9fa;
-            border-radius: 5px;
-        }
-        .url-link {
-            color: #007bff;
-            text-decoration: none;
-            word-break: break-all;
-        }
-        .url-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>게임 상태 관리</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" th:href="@{/admin-skin/css/admin-game-skin.css}">
 </head>
 <body>
 <div class="container">
-    <h1>🎮 게임 승인 관리 시스템</h1>
-
-    <!-- 승인 대기 중인 게임들 -->
-    <div class="section">
-        <h2 class="section-title pending-title">⏳ 승인 대기 중인 게임들</h2>
-
-        <!-- 승인 대기 게임이 있는 경우 -->
-        <div th:if="${notApprovedGame != null and !notApprovedGame.gamesList.isEmpty()}">
-            <div th:each="game, iterStat : ${notApprovedGame.gamesList}"
-                 th:if="${iterStat.index == 0}" class="game-card">
-                <div class="game-header">
-                    <h3 class="game-name" th:text="${game.gameName}">슈퍼 어드벤처 게임</h3>
-                    <span class="game-status status-pending" th:text="${game.status}">PENDING_REVIEW</span>
-                </div>
-
-                <div class="game-info">
-                    <div class="info-item">
-                        <span class="info-label">팀명</span>
-                        <span class="info-value" th:text="${game.teamName}">게임 개발팀 A</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">개발자</span>
-                        <span class="info-value" th:text="${game.user != null ? game.user.name : 'N/A'}">홍길동</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">장르</span>
-                        <span class="info-value" th:text="${game.genre}">액션/어드벤처</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">플랫폼</span>
-                        <span class="info-value" th:text="${game.platform}">PC</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">버전</span>
-                        <span class="info-value" th:text="${game.gameVersion ?: 'v1.0'}">v1.0</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">등록일</span>
-                        <span class="info-value" th:text="${#temporals.format(game.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-15 14:30</span>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">게임 설명</span>
-                    <span class="info-value" th:text="${game.gameDescription}">스릴 넘치는 모험이 기다리는 액션 어드벤처 게임입니다.</span>
-                </div>
-
-                <!-- 파일 정보 -->
-                <div class="file-info" th:if="${game.gamesFile != null}">
-                    <div class="file-title">📁 파일 정보</div>
-                    <div class="file-details">
-                        <div class="info-item">
-                            <span class="info-label">원본 파일명</span>
-                            <span class="info-value" th:text="${game.gamesFile.originalFilename}">super_adventure_v1.0.zip</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">파일 크기</span>
-                            <span class="info-value" th:text="${#numbers.formatDecimal(game.gamesFile.fileSize / 1024 / 1024, 1, 2)} + ' MB'">45.2 MB</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">파일 해시</span>
-                            <span class="info-value" th:text="${game.gamesFile.gameHash}">a1b2c3d4e5f6789...</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">파일 URL</span>
-                            <a class="url-link" th:href="${game.gamesFile.gameUrl}" th:text="${game.gamesFile.gameUrl}" target="_blank">
-                                https://storage.googleapis.com/game-webgl-bucket/temp-game/super_adventure.zip
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 승인/거절 액션 -->
-                <div class="actions">
-                    <form th:action="@{/admin/games/approve}" method="post" style="display: inline;">
-                        <input type="hidden" name="gameId" th:value="${game.gameId}">
-                        <button type="submit" class="btn btn-approve">✅ 승인</button>
-                    </form>
-                    <form th:action="@{/admin/games/reject}" method="post" style="display: inline;">
-                        <input type="hidden" name="gameId" th:value="${game.gameId}">
-                        <button type="submit" class="btn btn-reject">❌ 거절</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 더 많은 게임이 있다면 -->
-            <div th:if="${notApprovedGame.gamesList.size() > 1}" class="no-data">
-                그 외 <span th:text="${notApprovedGame.gamesList.size() - 1}">X</span>개의 게임이 더 있습니다.
-            </div>
-        </div>
-
-        <!-- 승인 대기 게임이 없는 경우 -->
-        <div th:unless="${notApprovedGame != null and !notApprovedGame.gamesList.isEmpty()}" class="no-data">
-            현재 승인 대기 중인 게임이 없습니다.
-        </div>
+    <div class="header">
+        <h1>🎮 게임 상태 관리</h1>
+        <p>등록된 게임들의 승인 상태를 관리하고 검토할 수 있습니다.</p>
     </div>
 
-    <!-- 승인된 게임들 -->
-    <div class="section">
-        <h2 class="section-title approved-title">✅ 승인된 게임들</h2>
+    <!-- 🔍 디버깅 정보 (임시) -->
+    <div style="background: #f0f0f0; padding: 15px; margin: 15px 0; border-radius: 8px;">
+        <h4>🔍 디버깅 정보</h4>
+        <p>notApprovedGame: <span th:text="${notApprovedGame != null}">false</span>
+            (<span th:text="${notApprovedGame != null && notApprovedGame.gamesList != null ? notApprovedGame.gamesList.size() : 0}">0</span>개)</p>
+        <p>approvedGame: <span th:text="${approvedGame != null}">false</span>
+            (<span th:text="${approvedGame != null && approvedGame.gamesList != null ? approvedGame.gamesList.size() : 0}">0</span>개)</p>
+        <p>underReviewGame: <span th:text="${underReviewGame != null}">false</span>
+            (<span th:text="${underReviewGame != null && underReviewGame.gamesList != null ? underReviewGame.gamesList.size() : 0}">0</span>개)</p>
+        <p>rejectedGame: <span th:text="${rejectedGame != null}">false</span>
+            (<span th:text="${rejectedGame != null && rejectedGame.gamesList != null ? rejectedGame.gamesList.size() : 0}">0</span>개)</p>
+        <p>suspendedGame: <span th:text="${suspendedGame != null}">false</span>
+            (<span th:text="${suspendedGame != null && suspendedGame.gamesList != null ? suspendedGame.gamesList.size() : 0}">0</span>개)</p>
+        <p>deactivatedGame: <span th:text="${deactivatedGame != null}">false</span>
+            (<span th:text="${deactivatedGame != null && deactivatedGame.gamesList != null ? deactivatedGame.gamesList.size() : 0}">0</span>개)</p>
+    </div>
 
-        <!-- 승인된 게임이 있는 경우 -->
-        <div th:if="${approvedGame != null and !approvedGame.gamesList.isEmpty()}">
-            <div th:each="game, iterStat : ${approvedGame.gamesList}"
-                 th:if="${iterStat.index == 0}" class="game-card">
-                <div class="game-header">
-                    <h3 class="game-name" th:text="${game.gameName}">미스터리 퍼즐 월드</h3>
-                    <span class="game-status status-active" th:text="${game.status}">ACTIVE</span>
-                </div>
+    <!-- 탭 네비게이션 - 수정됨 -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('pending')" id="tab-pending">
+            🔍 미승인
+            <span class="tab-badge" th:text="${notApprovedGame != null && notApprovedGame.gamesList != null ? notApprovedGame.gamesList.size() : 0}">0</span>
+        </button>
+        <button class="nav-tab" onclick="showTab('review')" id="tab-review">
+            📋 검토중
+            <span class="tab-badge" th:text="${underReviewGame != null && underReviewGame.gamesList != null ? underReviewGame.gamesList.size() : 0}">0</span>
+        </button>
+        <button class="nav-tab" onclick="showTab('approved')" id="tab-approved">
+            ✅ 승인완료
+            <span class="tab-badge" th:text="${approvedGame != null && approvedGame.gamesList != null ? approvedGame.gamesList.size() : 0}">0</span>
+        </button>
+        <button class="nav-tab" onclick="showTab('rejected')" id="tab-rejected">
+            ❌ 거부됨
+            <span class="tab-badge" th:text="${rejectedGame != null && rejectedGame.gamesList != null ? rejectedGame.gamesList.size() : 0}">0</span>
+        </button>
+        <button class="nav-tab" onclick="showTab('suspended')" id="tab-suspended">
+            ⏸️ 정지됨
+            <span class="tab-badge" th:text="${suspendedGame != null && suspendedGame.gamesList != null ? suspendedGame.gamesList.size() : 0}">0</span>
+        </button>
+        <button class="nav-tab" onclick="showTab('deactivated')" id="tab-deactivated">
+            🔚 종료됨
+            <span class="tab-badge" th:text="${deactivatedGame != null && deactivatedGame.gamesList != null ? deactivatedGame.gamesList.size() : 0}">0</span>
+        </button>
+    </div>
 
-                <div class="game-info">
-                    <div class="info-item">
-                        <span class="info-label">팀명</span>
-                        <span class="info-value" th:text="${game.teamName}">퍼즐 크리에이터즈</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">개발자</span>
-                        <span class="info-value" th:text="${game.user != null ? game.user.name : 'N/A'}">김개발</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">장르</span>
-                        <span class="info-value" th:text="${game.genre}">퍼즐</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">플랫폼</span>
-                        <span class="info-value" th:text="${game.platform}">모바일</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">승인일</span>
-                        <span class="info-value" th:text="${game.approvedAt != null ? #temporals.format(game.approvedAt, 'yyyy-MM-dd HH:mm') : 'N/A'}">2024-01-10 09:15</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">등록일</span>
-                        <span class="info-value" th:text="${#temporals.format(game.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-08 16:45</span>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">게임 설명</span>
-                    <span class="info-value" th:text="${game.gameDescription}">도전적인 퍼즐을 풀며 신비로운 세계를 탐험하세요!</span>
-                </div>
-
-                <!-- 파일 정보 -->
-                <div class="file-info" th:if="${game.gamesFile != null}">
-                    <div class="file-title">📁 파일 정보</div>
-                    <div class="file-details">
-                        <div class="info-item">
-                            <span class="info-label">원본 파일명</span>
-                            <span class="info-value" th:text="${game.gamesFile.originalFilename}">mystery_puzzle_world.zip</span>
+    <!-- 탭 컨텐츠 -->
+    <div class="tab-content">
+        <!-- 미승인 탭 (PENDING_REVIEW) -->
+        <div class="tab-pane active" id="pending-pane">
+            <div class="games-grid" th:if="${notApprovedGame != null && notApprovedGame.gamesList != null && !notApprovedGame.gamesList.isEmpty()}">
+                <div class="game-card" th:each="game, iterStat : ${notApprovedGame.gamesList}">
+                    <div class="game-header">
+                        <div>
+                            <div class="game-title" th:text="${game.gameName}">게임 이름</div>
+                            <div class="game-team" th:text="${game.teamName}">제작팀</div>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">파일 크기</span>
-                            <span class="info-value" th:text="${#numbers.formatDecimal(game.gamesFile.fileSize / 1024 / 1024, 1, 2)} + ' MB'">28.7 MB</span>
+                        <div class="status-indicator status-pending">PENDING</div>
+                    </div>
+
+                    <div class="game-info">
+                        <div class="info-row">
+                            <span class="info-label">장르:</span>
+                            <span class="info-value" th:text="${game.genre}">액션</span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">파일 상태</span>
-                            <span class="info-value" th:text="${game.gamesFile.fileStatus}">ACTIVE</span>
+                        <div class="info-row">
+                            <span class="info-label">플랫폼:</span>
+                            <span class="info-value" th:text="${game.platform}">PC</span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">게임 URL</span>
-                            <a class="url-link" th:href="${game.gamesFile.gameUrl}" th:text="${game.gamesFile.gameUrl}" target="_blank">
-                                https://storage.googleapis.com/game-webgl-bucket/activate-game/mystery_puzzle/index.html
-                            </a>
+                        <div class="info-row">
+                            <span class="info-label">버전:</span>
+                            <span class="info-value" th:text="${game.gameVersion}">1.0.0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">등록일:</span>
+                            <span class="info-value" th:text="${#temporals.format(game.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01 10:00</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- 비활성화 액션 -->
-                <div class="actions">
-                    <form th:action="@{/admin/games/deactivate}" method="post" style="display: inline;">
-                        <input type="hidden" name="gameId" th:value="${game.gameId}">
-                        <button type="submit" class="btn btn-deactivate"
-                                onclick="return confirm('정말 이 게임을 비활성화하시겠습니까?')">
-                            🔒 서비스 종료
+                    <div class="game-description" th:if="${game.gameDescription != null && !game.gameDescription.isEmpty()}">
+                        <div th:text="${game.gameDescription}">게임 설명이 여기에 표시됩니다.</div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="moveToReview(this)" th:data-game-id="${game.gameId}">
+                            🔍 검토 시작
                         </button>
-                    </form>
+                        <button class="btn btn-danger" onclick="rejectGame(this)" th:data-game-id="${game.gameId}">
+                            ❌ 거부
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 더 많은 게임이 있다면 -->
-            <div th:if="${approvedGame.gamesList.size() > 1}" class="no-data">
-                그 외 <span th:text="${approvedGame.gamesList.size() - 1}">X</span>개의 게임이 더 있습니다.
+            <div class="empty-state" th:if="${notApprovedGame == null || notApprovedGame.gamesList == null || notApprovedGame.gamesList.isEmpty()}">
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <h3>검토 대기 중인 게임이 없습니다</h3>
+                <p>새로운 게임이 등록되면 여기에 표시됩니다.</p>
             </div>
         </div>
 
-        <!-- 승인된 게임이 없는 경우 -->
-        <div th:unless="${approvedGame != null and !approvedGame.gamesList.isEmpty()}" class="no-data">
-            현재 승인된 게임이 없습니다.
+        <!-- 검토중 탭 (UNDER_REVIEW) - 수정됨 -->
+        <div class="tab-pane" id="review-pane">
+            <div class="games-grid" th:if="${underReviewGame != null && underReviewGame.gamesList != null && !underReviewGame.gamesList.isEmpty()}">
+                <div class="game-card" th:each="game, iterStat : ${underReviewGame.gamesList}">
+                    <div class="game-header">
+                        <div>
+                            <div class="game-title" th:text="${game.gameName}">게임 이름</div>
+                            <div class="game-team" th:text="${game.teamName}">제작팀</div>
+                        </div>
+                        <div class="status-indicator status-review">REVIEWING</div>
+                    </div>
+
+                    <div class="game-info">
+                        <div class="info-row">
+                            <span class="info-label">장르:</span>
+                            <span class="info-value" th:text="${game.genre}">액션</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">플랫폼:</span>
+                            <span class="info-value" th:text="${game.platform}">PC</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">등록일:</span>
+                            <span class="info-value" th:text="${#temporals.format(game.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01 10:00</span>
+                        </div>
+                    </div>
+
+                    <div class="game-description" th:if="${game.gameDescription != null && !game.gameDescription.isEmpty()}">
+                        <div th:text="${game.gameDescription}">게임 설명이 여기에 표시됩니다.</div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-success" onclick="approveGame(this)" th:data-game-id="${game.gameId}">
+                            ✅ 승인
+                        </button>
+                        <button class="btn btn-danger" onclick="rejectGame(this)" th:data-game-id="${game.gameId}">
+                            ❌ 거부
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${underReviewGame == null || underReviewGame.gamesList == null || underReviewGame.gamesList.isEmpty()}">
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+                <h3>검토 중인 게임이 없습니다</h3>
+                <p>검토가 시작된 게임들이 여기에 표시됩니다.</p>
+            </div>
+        </div>
+
+        <!-- 승인완료 탭 (ACTIVE) -->
+        <div class="tab-pane" id="approved-pane">
+            <div class="games-grid" th:if="${approvedGame != null && approvedGame.gamesList != null && !approvedGame.gamesList.isEmpty()}">
+                <div class="game-card" th:each="game, iterStat : ${approvedGame.gamesList}">
+                    <div class="game-header">
+                        <div>
+                            <div class="game-title" th:text="${game.gameName}">게임 이름</div>
+                            <div class="game-team" th:text="${game.teamName}">제작팀</div>
+                        </div>
+                        <div class="status-indicator status-active">ACTIVE</div>
+                    </div>
+
+                    <div class="game-info">
+                        <div class="info-row">
+                            <span class="info-label">장르:</span>
+                            <span class="info-value" th:text="${game.genre}">액션</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">플랫폼:</span>
+                            <span class="info-value" th:text="${game.platform}">PC</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">승인일:</span>
+                            <span class="info-value" th:text="${game.approvedAt != null ? #temporals.format(game.approvedAt, 'yyyy-MM-dd HH:mm') : 'N/A'}">2024-01-01 10:00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">노출 상태:</span>
+                            <span class="info-value" th:text="${game.isVisible() ? '👁️ 노출 중' : '🙈 숨김'}">👁️ 노출 중</span>
+                        </div>
+                    </div>
+
+                    <div class="game-description" th:if="${game.gameDescription != null && !game.gameDescription.isEmpty()}">
+                        <div th:text="${game.gameDescription}">게임 설명이 여기에 표시됩니다.</div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-success" onclick="playGame(this)" th:data-game-id="${game.gameId}">
+                            🎮 플레이하기
+                        </button>
+                        <button class="btn btn-warning" onclick="toggleVisibility(this)"
+                                th:data-game-id="${game.gameId}"
+                                th:data-visible="${game.isVisible()}"
+                                th:text="${game.isVisible() ? '🙈 숨기기' : '👁️ 노출하기'}">
+                            🙈 숨기기
+                        </button>
+                        <button class="btn btn-danger" onclick="suspendGame(this)" th:data-game-id="${game.gameId}">
+                            ⏸️ 정지
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${approvedGame == null || approvedGame.gamesList == null || approvedGame.gamesList.isEmpty()}">
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                <h3>승인된 게임이 없습니다</h3>
+                <p>승인된 게임들이 여기에 표시됩니다.</p>
+            </div>
+        </div>
+
+        <!-- 거부됨 탭 (REJECTED) - 수정됨 -->
+        <div class="tab-pane" id="rejected-pane">
+            <div class="games-grid" th:if="${rejectedGame != null && rejectedGame.gamesList != null && !rejectedGame.gamesList.isEmpty()}">
+                <div class="game-card" th:each="game, iterStat : ${rejectedGame.gamesList}">
+                    <div class="game-header">
+                        <div>
+                            <div class="game-title" th:text="${game.gameName}">게임 이름</div>
+                            <div class="game-team" th:text="${game.teamName}">제작팀</div>
+                        </div>
+                        <div class="status-indicator status-rejected">REJECTED</div>
+                    </div>
+
+                    <div class="game-info">
+                        <div class="info-row">
+                            <span class="info-label">장르:</span>
+                            <span class="info-value" th:text="${game.genre}">액션</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">등록일:</span>
+                            <span class="info-value" th:text="${#temporals.format(game.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01 10:00</span>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="moveToReview(this)" th:data-game-id="${game.gameId}">
+                            🔄 재검토
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${rejectedGame == null || rejectedGame.gamesList == null || rejectedGame.gamesList.isEmpty()}">
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                </svg>
+                <h3>거부된 게임이 없습니다</h3>
+                <p>거부된 게임들이 여기에 표시됩니다.</p>
+            </div>
+        </div>
+
+        <!-- 정지됨 탭 (SUSPENDED) - 수정됨 -->
+        <div class="tab-pane" id="suspended-pane">
+            <div class="games-grid" th:if="${suspendedGame != null && suspendedGame.gamesList != null && !suspendedGame.gamesList.isEmpty()}">
+                <div class="game-card" th:each="game, iterStat : ${suspendedGame.gamesList}">
+                    <div class="game-header">
+                        <div>
+                            <div class="game-title" th:text="${game.gameName}">게임 이름</div>
+                            <div class="game-team" th:text="${game.teamName}">제작팀</div>
+                        </div>
+                        <div class="status-indicator status-suspended">SUSPENDED</div>
+                    </div>
+
+                    <div class="game-info">
+                        <div class="info-row">
+                            <span class="info-label">장르:</span>
+                            <span class="info-value" th:text="${game.genre}">액션</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">승인일:</span>
+                            <span class="info-value" th:text="${game.approvedAt != null ? #temporals.format(game.approvedAt, 'yyyy-MM-dd HH:mm') : 'N/A'}">2024-01-01 10:00</span>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-success" onclick="reactivateGame(this)" th:data-game-id="${game.gameId}">
+                            🔄 재활성화
+                        </button>
+                        <button class="btn btn-danger" onclick="deactivateGame(this)" th:data-game-id="${game.gameId}">
+                            🔚 서비스 종료
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${suspendedGame == null || suspendedGame.gamesList == null || suspendedGame.gamesList.isEmpty()}">
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14,19.14L15.41,20.55L20,16L15.41,11.45L14,12.86L16.17,15H4V17H16.17L14,19.14M10,4H22V6H10V4M10,7H22V9H10V7M10,10H22V12H10V10Z"/>
+                </svg>
+                <h3>정지된 게임이 없습니다</h3>
+                <p>정지된 게임들이 여기에 표시됩니다.</p>
+            </div>
+        </div>
+
+        <!-- 종료됨 탭 (DEACTIVATED) - 추가됨 -->
+        <div class="tab-pane" id="deactivated-pane">
+            <div class="games-grid" th:if="${deactivatedGame != null && deactivatedGame.gamesList != null && !deactivatedGame.gamesList.isEmpty()}">
+                <div class="game-card" th:each="game, iterStat : ${deactivatedGame.gamesList}">
+                    <div class="game-header">
+                        <div>
+                            <div class="game-title" th:text="${game.gameName}">게임 이름</div>
+                            <div class="game-team" th:text="${game.teamName}">제작팀</div>
+                        </div>
+                        <div class="status-indicator status-deactivated">DEACTIVATED</div>
+                    </div>
+
+                    <div class="game-info">
+                        <div class="info-row">
+                            <span class="info-label">장르:</span>
+                            <span class="info-value" th:text="${game.genre}">액션</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">승인일:</span>
+                            <span class="info-value" th:text="${game.approvedAt != null ? #temporals.format(game.approvedAt, 'yyyy-MM-dd HH:mm') : 'N/A'}">2024-01-01 10:00</span>
+                        </div>
+                    </div>
+
+                    <div class="game-description" th:if="${game.gameDescription != null && !game.gameDescription.isEmpty()}">
+                        <div th:text="${game.gameDescription}">게임 설명이 여기에 표시됩니다.</div>
+                    </div>
+
+                    <div class="actions">
+                        <span class="btn" style="background: #ccc; cursor: not-allowed;">🔚 서비스 종료됨</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${deactivatedGame == null || deactivatedGame.gamesList == null || deactivatedGame.gamesList.isEmpty()}">
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M14.5,9L13.5,7.5C13.5,7.5 13.25,7 12.75,7C12.25,7 12,7.5 12,7.5L11,9H10V10H11V14H10V15H14V14H13V10H14.5V9Z"/>
+                </svg>
+                <h3>종료된 게임이 없습니다</h3>
+                <p>서비스가 종료된 게임들이 여기에 표시됩니다.</p>
+            </div>
         </div>
     </div>
 </div>
+
+<script th:src="@{/admin-skin/js/admin-game-skin.js}" defer></script>
 </body>
 </html>

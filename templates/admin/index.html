@@ -1,20 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게임 상태 관리</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
-<h2>This is Admin Mode</h2>
-<button type="button" name="view-game-status" id="view-game-status">
-    게임 상태 보기
-</button>
-
-</body>
+<button type="button">게임 상태 보기</button>
 <script>
-    document.getElementById("view-game-status").addEventListener("click", function () {
-        window.location.href = "/admin/game-status";
-    })
-
+document.querySelector('button').addEventListener('click', () => {
+    window.location.href = '/admin/game-status';
+})
 </script>
+</body>
 </html>
