@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <title>게임 정보 입력</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        input[type="radio"] {
+            margin: 0;
+        }
+
+        .radio-option label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .file-upload-area {
+            position: relative;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            background-color: #fafafa;
+        }
+
+        input[type="file"]:hover {
+            border-color: #007bff;
+            background-color: #f0f8ff;
+        }
+
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .file-upload-info {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .file-name {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .file-help {
+            color: #666;
+            display: block;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>게임 정보 입력</h1>
+
+    <form>
+        <div class="form-group">
+            <label for="gameName">게임 이름</label>
+            <input type="text" id="gameName" name="gameName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gameDescription">게임 설명</label>
+            <input type="text" id="gameDescription" name="gameDescription" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="teamName">팀 이름</label>
+                <input type="text" id="teamName" name="teamName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gameVersion">게임 버전</label>
+                <input type="text" id="gameVersion" name="gameVersion" placeholder="예: 1.0.0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="specs">권장사양</label>
+            <input type="text" id="specs" name="specs" placeholder="예: CPU i5, RAM 8GB, GPU GTX 1060">
+        </div>
+
+        <div class="form-group">
+            <label for="genre">게임 장르</label>
+            <select name="genre" id="genre" required>
+                <option value="">장르를 선택하세요</option>
+                <option value="action">액션</option>
+                <option value="adventure">어드벤처</option>
+                <option value="rpg">RPG</option>
+                <option value="simulation">시뮬레이션</option>
+                <option value="strategy">전략</option>
+                <option value="puzzle">퍼즐</option>
+                <option value="racing">레이싱</option>
+                <option value="sports">스포츠</option>
+                <option value="fighting">격투</option>
+                <option value="horror">호러</option>
+                <option value="casual">캐주얼</option>
+                <option value="mmo">MMO</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>게임 지원 플랫폼</label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" name="platform" id="pc" value="PC" required>
+                    <label for="pc">PC</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" name="platform" id="mobile" value="Mobile">
+                    <label for="mobile">모바일</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="gameFile">WebGL 게임 파일</label>
+            <div class="file-upload-area">
+                <input type="file" id="gameFile" name="gameFile" accept=".zip,.rar,.7z" required>
+                <div class="file-upload-info">
+                    <span class="file-name">파일을 선택하세요</span>
+                    <span class="file-help">압축 파일만 업로드 가능 (ZIP, RAR, 7Z)</span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">게임 정보 등록</button>
+    </form>
+</div>
+
+<script>
+    // 폼 제출 시 API 요청
+    document.querySelector('form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // 파일 크기 검증 (100MB 제한)
+        const fileInput = document.getElementById('gameFile');
+        const file = fileInput.files[0];
+
+        if (file && file.size > 100 * 1024 * 1024) {
+            alert('파일 크기는 100MB 이하로 제한됩니다.');
+            return;
+        }
+
+        // 필수 필드 검증
+        const requiredFields = ['gameName', 'gameDescription', 'teamName', 'genre'];
+        for (let fieldId of requiredFields) {
+            const field = document.getElementById(fieldId);
+            if (!field.value.trim()) {
+                alert(`${field.previousElementSibling.textContent}을(를) 입력해주세요.`);
+                field.focus();
+                return;
+            }
+        }
+
+        // 플랫폼 선택 검증
+        const platform = document.querySelector('input[name="platform"]:checked');
+        if (!platform) {
+            alert('게임 지원 플랫폼을 선택해주세요.');
+            return;
+        }
+
+        // 파일 선택 검증
+        if (!file) {
+            alert('WebGL 게임 파일을 선택해주세요.');
+            return;
+        }
+
+        // 제출 버튼 비활성화 및 로딩 표시
+        const submitBtn = document.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '업로드 중...';
+        submitBtn.style.backgroundColor = '#6c757d';
+
+        try {
+            // CSRF 토큰 가져오기
+            const csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
+            const csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+            // FormData 생성
+            const formData = new FormData();
+
+            // 게임 정보 추가
+            formData.append('gameName', document.getElementById('gameName').value.trim());
+            formData.append('gameDescription', document.getElementById('gameDescription').value.trim());
+            formData.append('teamName', document.getElementById('teamName').value.trim());
+            formData.append('gameVersion', document.getElementById('gameVersion').value.trim() || '1.0.0');
+            formData.append('specs', document.getElementById('specs').value.trim());
+            formData.append('genre', document.getElementById('genre').value);
+            formData.append('platform', platform.value);
+            formData.append('gameFile', file);
+
+            // API 요청 (CSRF 헤더 포함)
+            const response = await fetch('/game-hub/api/v1/games/upload', {
+                method: 'POST',
+                headers: {
+                    [csrfHeader]: csrfToken
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                // 성공 시 응답 데이터 파싱
+                const result = await response.json();
+
+                // 성공 메시지 표시
+                alert(`게임 업로드가 완료되었습니다!\n\n게임명: ${result.gameName}\n팀명: ${result.teamName}\n상태: ${result.status}\n\n${result.message}`);
+
+                // 제작자 페이지로 이동
+                window.location.href = '/game-hub/prod';
+
+            } else {
+                // 실패 시 에러 처리
+                let errorMessage = '업로드에 실패했습니다.';
+
+                try {
+                    const errorData = await response.json();
+                    if (errorData.message) {
+                        errorMessage = errorData.message;
+                    }
+                } catch (parseError) {
+                    // JSON 파싱 실패 시 텍스트로 시도
+                    try {
+                        errorMessage = await response.text();
+                    } catch (textError) {
+                        errorMessage = `업로드 실패 (HTTP ${response.status})`;
+                    }
+                }
+
+                // 에러 메시지 표시 (상태에 따른 구체적 안내)
+                let detailedMessage = '';
+                switch (response.status) {
+                    case 400:
+                        detailedMessage = '\n\n• 파일 형식이나 내용을 확인해주세요.\n• index.html 파일이 포함되어 있는지 확인해주세요.\n• 모든 필수 정보가 올바르게 입력되었는지 확인해주세요.';
+                        break;
+                    case 401:
+                        detailedMessage = '\n\n• 로그인이 필요합니다.\n• 페이지를 새로고침 후 다시 시도해주세요.';
+                        break;
+                    case 413:
+                        detailedMessage = '\n\n• 파일 크기가 너무 큽니다.\n• 100MB 이하의 파일로 압축해주세요.';
+                        break;
+                    case 500:
+                        detailedMessage = '\n\n• 서버에 일시적인 문제가 발생했습니다.\n• 잠시 후 다시 시도해주세요.';
+                        break;
+                    default:
+                        detailedMessage = '\n\n• 문제가 지속되면 관리자에게 문의해주세요.';
+                }
+
+                alert(`❌ ${errorMessage}${detailedMessage}`);
+            }
+
+        } catch (error) {
+            console.error('업로드 요청 중 오류 발생:', error);
+            alert('❌ 네트워크 오류가 발생했습니다.\n\n• 인터넷 연결을 확인해주세요.\n• 잠시 후 다시 시도해주세요.');
+
+        } finally {
+            // 제출 버튼 복원
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            submitBtn.style.backgroundColor = '#007bff';
+        }
+    });
+</script>
+</body>
+</html>

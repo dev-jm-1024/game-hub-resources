@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 서비스 중 게임들 Fragment -->
+<div th:fragment="active-games" id="active-games" class="tab-content" style="display: none;">
+  <div th:each="game : ${activeGames}">
+    <div th:replace="~{prod/upload-status/game-card-frag :: game-card(${game}, 'badge-success', ${formatter.formatGameStatus(game.status)}, true, true, false)}"></div>
+  </div>
+
+  <div th:if="${#lists.isEmpty(activeGames)}" class="text-center py-4 text-muted">
+    <i class="fas fa-gamepad fa-2x mb-2"></i>
+    <p>서비스 중인 게임이 없습니다.</p>
+  </div>
+</div>
+</body>
+</html>

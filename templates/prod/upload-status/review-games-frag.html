@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 검토 중 게임들 Fragment -->
+<div th:fragment="review-games" id="review-games" class="tab-content" style="display: none;">
+  <div th:each="game : ${underReviewGames}">
+    <div th:replace="~{prod/upload-status/game-card-frag :: game-card(${game}, 'badge-info', ${formatter.formatGameStatus(game.status)}, false, false, false)}"></div>
+  </div>
+
+  <div th:if="${#lists.isEmpty(underReviewGames)}" class="text-center py-4 text-muted">
+    <i class="fas fa-search fa-2x mb-2"></i>
+    <p>검토 중인 게임이 없습니다.</p>
+  </div>
+</div>
+</body>
+</html>

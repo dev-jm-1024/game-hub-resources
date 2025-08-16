@@ -1,0 +1,30 @@
+
+<!-- 통계 요약 Fragment -->
+<div th:fragment="stats-summary" class="stats-summary">
+  <div class="row">
+    <div class="col-md-2 stat-item">
+      <div class="stat-number" th:text="${totalCount}">0</div>
+      <div class="stat-label">전체 게임</div>
+    </div>
+    <div class="col-md-2 stat-item">
+      <div class="stat-number text-success" th:text="${activeCount}">0</div>
+      <div class="stat-label">서비스 중</div>
+    </div>
+    <div class="col-md-2 stat-item">
+      <div class="stat-number text-warning" th:text="${pendingCount}">0</div>
+      <div class="stat-label">승인 대기</div>
+    </div>
+    <div class="col-md-2 stat-item">
+      <div class="stat-number text-info" th:text="${underReviewCount}">0</div>
+      <div class="stat-label">검토 중</div>
+    </div>
+    <div class="col-md-2 stat-item">
+      <div class="stat-number text-danger" th:text="${rejectedCount}">0</div>
+      <div class="stat-label">승인 거부</div>
+    </div>
+    <div class="col-md-2 stat-item">
+      <div class="stat-number text-secondary" th:text="${suspendedCount + deactivatedCount + failedCount}">0</div>
+      <div class="stat-label">기타</div>
+    </div>
+  </div>
+</div>

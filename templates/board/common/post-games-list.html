@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${board.boardName} + ' - 게임 목록'">게임 게시판 - 게임 목록</title>
+    <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-list.css}">
+
+    <!-- 게임 게시판 전용 스타일 추가 -->
+    <style>
+        /* 게임 게시판 전용 스타일 확장 */
+        .game-status-active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .game-status-pending {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .game-icon {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+
+        .game-title-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .team-name {
+            color: #8b5cf6;
+            font-weight: 600;
+        }
+
+        /* 기존 post-list.css 스타일을 상속하면서 게임 전용 스타일 추가 */
+        .post-table th:nth-child(1) { width: 8%; }  /* 번호 */
+        .post-table th:nth-child(2) { width: 35%; } /* 게임명 */
+        .post-table th:nth-child(3) { width: 20%; } /* 팀명 */
+        .post-table th:nth-child(4) { width: 20%; } /* 승인일 */
+        .post-table th:nth-child(5) { width: 17%; } /* 상태 */
+    </style>
+</head>
+
+<body class="post-list-body">
+<main class="post-list-container">
+    <!-- 게시판 이름 -->
+    <h1 class="post-list-title" th:text="${board.boardName}">
+        게임 게시판
+    </h1>
+
+    <!-- 게임 목록 테이블 -->
+    <div class="post-table-wrapper">
+        <table class="post-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>게임명</th>
+                <th>개발팀</th>
+                <th>승인일</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 게임이 없을 때 -->
+            <tr th:if="${#lists.isEmpty(summaryGames)}" class="empty-row">
+                <td colspan="5" class="empty-message">
+                    <div style="text-align: center; padding: 40px;">
+                        <div class="game-icon" style="margin: 0 auto 16px auto; width: 48px; height: 48px; font-size: 20px;">
+                            🎮
+                        </div>
+                        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">아직 게임이 없어요</div>
+                        <div style="color: #6b7280; font-size: 14px;">첫 번째 게임을 업로드해보세요!</div>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- 게임이 있을 때 -->
+            <tr th:each="game, stat : ${summaryGames}" class="post-row">
+                <!-- 순번 (1-based) -->
+                <td class="post-number" th:text="${stat.count}">1</td>
+
+                <!-- 게임명 + 아이콘 + 링크 -->
+                <td class="post-title-cell">
+                    <div class="game-title-cell">
+                        <span class="game-icon">🎮</span>
+                        <a class="post-title-link"
+                           th:text="${game.gameName}"
+                           th:href="@{/board/{boardId}/game/{gameId}/view (boardId=${game.boardId}, gameId=${game.gameId})}">
+                            게임 이름
+                        </a>
+                    </div>
+                </td>
+
+                <!-- 개발팀 -->
+                <td class="post-author">
+                    <span class="team-name" th:text="${game.teamName}">개발팀</span>
+                </td>
+
+                <!-- 승인일 -->
+                <td class="post-date">
+                    <span th:if="${game.approvedAt != null}"
+                          th:text="${#temporals.format(game.approvedAt, 'yyyy-MM-dd')}">
+                        2025-01-01
+                    </span>
+                    <span th:if="${game.approvedAt == null}"
+                          style="color: #f59e0b; font-weight: 600;">
+                        승인 대기
+                    </span>
+                </td>
+
+                <!-- 상태 -->
+                <td class="post-views">
+                    <span class="game-status-active">플레이 가능</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 게임 업로드 버튼 (글쓰기 버튼과 동일한 구조) -->
+    <div class="write-button-container">
+        <form action="/games/upload" method="get">
+            <input type="hidden" name="boardId" th:value="${board.boardId}" />
+            <button type="submit" class="write-button" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">
+                🎮 게임 업로드
+            </button>
+        </form>
+    </div>
+
+    <!-- 홈으로 돌아가기 버튼 추가 -->
+    <div class="write-button-container" style="margin-top: 12px;">
+        <a href="/board" class="write-button" style="background: #6b7280; text-decoration: none; display: inline-block; text-align: center;">
+            🏠 게시판 홈으로
+        </a>
+    </div>
+</main>
+
+<script th:src="@{/board-skin/common-skin/post-skin/js/post-list.js}"></script>
+
+<script>
+    // 게임 특화 기능이 필요하다면 여기에 추가
+    document.addEventListener('DOMContentLoaded', function() {
+        // 게임 행에 호버 효과 (선택사항)
+        const gameRows = document.querySelectorAll('.post-row');
+        gameRows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f8fafc';
+            });
+
+            row.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '';
+            });
+        });
+    });
+</script>
+</body>
+</html>

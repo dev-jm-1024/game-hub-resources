@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${result.gameName} + ' - 게임 상세'">게임 상세</title>
+
+    <!-- 전역 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/global.css}">
+    <!-- 헤더 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/header/css/header.css}">
+    <!-- 네비게이션 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/main-contents-skin/nav/css/nav.css}">
+    <!-- 게임 상세 페이지 전용 스타일 -->
+    <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-games-detail.css}">
+
+    <!-- Vue.js 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Lottie Player (애니메이션용) -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- 전역 Vue 인스턴스 설정 -->
+    <script>
+        const GlobalApp = {
+            createApp(options) {
+                const app = Vue.createApp(options);
+                return app;
+            }
+        };
+    </script>
+</head>
+<!-- 🔥 게임 페이지임을 나타내는 클래스 추가 -->
+<body class="game-detail-page">
+<!-- 헤더 영역 -->
+<header th:replace="main-contents/header-frag/header :: header"
+        th:with="isLoggedIn=${isLoggedIn}, nickname=${nickname}, profileImage=${profileImage}, deactivatePath=${deactivatePath}">
+</header>
+
+<!-- 네비게이션 영역 -->
+<nav th:replace="main-contents/nav-frag/nav :: nav"></nav>
+
+<!-- 게임 상세 내용 -->
+<main class="game-detail-container">
+    <!-- 뒤로가기 버튼 -->
+    <a th:href="@{/board/game-board/{boardId}/view (boardId=${result.boardId})}" class="back-button">
+        ← 게임 목록으로 돌아가기
+    </a>
+
+    <!-- 게임 헤더 -->
+    <div class="game-header">
+        <h1 class="game-title" th:text="${result.gameName}">게임 이름</h1>
+        <p class="game-team" th:text="'개발팀: ' + ${result.teamName}">개발팀: 팀명</p>
+    </div>
+
+    <!-- 게임 내용 -->
+    <div class="game-content">
+        <!-- 게임 정보 카드 -->
+        <div class="game-info-card">
+            <h3 style="margin-bottom: 1.5rem; color: #374151; font-size: 1.25rem;">게임 정보</h3>
+
+            <div class="info-row" th:if="${result.gameDescription}">
+                <span class="info-label">설명:</span>
+                <span class="info-value" th:text="${result.gameDescription}">게임 설명</span>
+            </div>
+
+            <div class="info-row" th:if="${result.specs}">
+                <span class="info-label">권장사양:</span>
+                <span class="info-value" th:text="${result.specs}">권장사양</span>
+            </div>
+
+            <div class="info-row" th:if="${result.platform}">
+                <span class="info-label">플랫폼:</span>
+                <span class="info-value" th:text="${result.platform}">플랫폼</span>
+            </div>
+
+            <div class="info-row" th:if="${result.genre}">
+                <span class="info-label">장르:</span>
+                <span class="info-value" th:text="${result.genre}">장르</span>
+            </div>
+
+            <div class="info-row" th:if="${result.gameVersion}">
+                <span class="info-label">버전:</span>
+                <span class="info-value" th:text="${result.gameVersion}">버전</span>
+            </div>
+        </div>
+
+        <!-- 추가 정보 카드 -->
+        <div class="game-info-card">
+            <h3 style="margin-bottom: 1.5rem; color: #374151; font-size: 1.25rem;">배포 정보</h3>
+
+            <div class="info-row" th:if="${result.approvedAt}">
+                <span class="info-label">승인일:</span>
+                <span class="info-value" th:text="${#temporals.format(result.approvedAt, 'yyyy-MM-dd HH:mm')}">승인일</span>
+            </div>
+
+            <div class="info-row" th:if="${result.createdAt}">
+                <span class="info-label">등록일:</span>
+                <span class="info-value" th:text="${#temporals.format(result.createdAt, 'yyyy-MM-dd HH:mm')}">등록일</span>
+            </div>
+
+            <div class="info-row" th:if="${result.originalFilename}">
+                <span class="info-label">파일명:</span>
+                <span class="info-value" th:text="${result.originalFilename}">파일명</span>
+            </div>
+
+            <div class="info-row" th:if="${result.fileSize}">
+                <span class="info-label">파일크기:</span>
+                <span class="info-value" th:text="${#numbers.formatDecimal(result.fileSize / 1024 / 1024, 1, 2)} + ' MB'">파일크기</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 게임 플레이 영역 -->
+    <div class="game-play-area">
+        <h3 style="margin-bottom: 1.5rem; color: #374151; font-size: 1.25rem;">🎮 게임 플레이</h3>
+
+        <div th:if="${result.gameUrl != null and result.gameUrl != ''}">
+            <!-- 오디오 활성화 안내 -->
+            <div id="audioPrompt" class="audio-prompt" style="display: none;">
+                <div class="audio-prompt-content">
+                    <h4>🔊 게임 사운드 활성화</h4>
+                    <p>게임 사운드를 듣기 위해 아무 곳이나 클릭해주세요!</p>
+                    <button id="enableAudioBtn" class="enable-audio-btn">🎵 사운드 활성화</button>
+                </div>
+            </div>
+
+            <!-- 🔥 크기 조정 컨트롤 패널 -->
+            <div class="size-control-panel">
+                <div class="size-control-header">
+                    <span class="size-control-title">📐 게임 크기 조정</span>
+                    <button class="size-control-toggle" id="sizeControlToggle">▼</button>
+                </div>
+                <div class="size-control-content" id="sizeControlContent">
+                    <div class="size-slider-container">
+                        <label for="sizeSlider">크기:</label>
+                        <input type="range"
+                               id="sizeSlider"
+                               class="size-slider"
+                               min="50"
+                               max="200"
+                               value="100"
+                               step="5">
+                        <span class="size-value" id="sizeValue">100%</span>
+                    </div>
+                    <div class="size-control-buttons">
+                        <button class="size-btn-small" id="autoFitBtn">🎯 자동맞춤</button>
+                        <button class="size-btn-small" id="resetSizeBtn">🔄 기본크기</button>
+                        <button class="size-btn-small" id="saveSizeBtn">💾 크기저장</button>
+                    </div>
+                    <div class="size-presets">
+                        <span class="preset-label">빠른 선택:</span>
+                        <button class="preset-btn" data-size="67">67% (전체보기)</button>
+                        <button class="preset-btn" data-size="80">80%</button>
+                        <button class="preset-btn" data-size="100">100%</button>
+                        <button class="preset-btn" data-size="120">120%</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게임 컨테이너 -->
+            <div class="game-container">
+                <iframe class="game-iframe"
+                        th:src="@{/board/game-proxy/{gamePath} (gamePath=${#strings.substringAfter(result.gameUrl, 'game-webgl-bucket-capstone/')})}"
+                        title="게임 플레이 영역"
+                        scrolling="no"
+                        frameborder="0"
+                        allowfullscreen>
+                </iframe>
+
+                <!-- 전체화면 버튼 -->
+                <button class="fullscreen-btn">🔍 전체화면</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/main-contents-skin/global.js}" defer></script>
+<script th:src="@{/main-contents-skin/header/js/header.js}" defer></script>
+<script th:src="@{/main-contents-skin/nav/js/nav.js}" defer></script>
+<script th:src="@{/board-skin/common-skin/post-skin/js/post-games-detail.js}"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 승인 대기 게임들 Fragment -->
+<div th:fragment="pending-games" id="pending-games" class="tab-content">
+  <div th:each="game : ${pendingGames}">
+<!--    <div th:replace="~{game-card-frag :: game-card(${game}, 'badge-warning', ${formatter.formatGameStatus(game.status)}, false, false, false)}"></div>-->
+    <div th:replace="~{prod/upload-status/game-card-frag :: game-card(${game}, 'badge-warning', ${formatter.formatGameStatus(game.status)}, false, false, false)}"></div>
+  </div>
+
+  <div th:if="${#lists.isEmpty(pendingGames)}" class="text-center py-4 text-muted">
+    <i class="fas fa-inbox fa-2x mb-2"></i>
+    <p>승인 대기 중인 게임이 없습니다.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 승인 거부 게임들 Fragment -->
+<div th:fragment="rejected-games" id="rejected-games" class="tab-content" style="display: none;">
+  <div th:each="game : ${rejectedGames}">
+    <div th:replace="~{prod/upload-status/game-card-frag :: game-card(${game}, 'badge-danger', ${formatter.formatGameStatus(game.status)}, false, false, true)}"></div>
+  </div>
+
+  <div th:if="${#lists.isEmpty(rejectedGames)}" class="text-center py-4 text-muted">
+    <i class="fas fa-times-circle fa-2x mb-2"></i>
+    <p>승인 거부된 게임이 없습니다.</p>
+  </div>
+</div>
+</body>
+</html>

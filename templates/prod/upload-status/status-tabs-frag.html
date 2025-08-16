@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 상태별 탭 Fragment -->
+<div th:fragment="status-tabs" class="status-tabs">
+  <button class="status-tab active" onclick="showTab('pending')" id="tab-pending">
+    <i class="fas fa-clock me-2"></i>승인 대기
+    <span class="tab-badge" th:text="${pendingCount}">0</span>
+  </button>
+  <button class="status-tab" onclick="showTab('review')" id="tab-review">
+    <i class="fas fa-search me-2"></i>검토 중
+    <span class="tab-badge" th:text="${underReviewCount}">0</span>
+  </button>
+  <button class="status-tab" onclick="showTab('active')" id="tab-active">
+    <i class="fas fa-check-circle me-2"></i>서비스 중
+    <span class="tab-badge" th:text="${activeCount}">0</span>
+  </button>
+  <button class="status-tab" onclick="showTab('rejected')" id="tab-rejected">
+    <i class="fas fa-times-circle me-2"></i>승인 거부
+    <span class="tab-badge" th:text="${rejectedCount}">0</span>
+  </button>
+  <button class="status-tab" onclick="showTab('others')" id="tab-others">
+    <i class="fas fa-ellipsis-h me-2"></i>기타
+    <span class="tab-badge" th:text="${suspendedCount + deactivatedCount + failedCount}">0</span>
+  </button>
+</div>
+</body>
+</html>

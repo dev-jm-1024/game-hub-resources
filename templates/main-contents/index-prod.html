@@ -7,10 +7,18 @@
 <body>
 <h2>PROD PAGE</h2>
 <button type="button" id="game-upload" name="game-upload">게임 업로드 하기</button>
+<button type="button" id="game-upload-check" name="game-upload-check">게임 업로드 상태 확인 하기</button>
+<!--
+내가 업로드한 게임 볼 수 있게끔 -> 현재 진행상태 파악
+-->
 </body>
 <script>
 document.getElementById("game-upload").addEventListener("click", function () {
     window.location.href = "/game-hub/prod/upload";
+})
+
+document.getElementById("game-upload-check").addEventListener("click", function () {
+    window.location.href = "/game-hub/prod/upload-check";
 })
 </script>
 </html>

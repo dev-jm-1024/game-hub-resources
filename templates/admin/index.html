@@ -6,13 +6,51 @@
     <title>게임 상태 관리</title>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <style>
+
+        .button{
+            width: 100px;
+            height: 70px;
+
+            background-color: #0A84FF;
+            color: #FBF8FB;
+            font-weight: 900;
+        }
+
+    </style>
+
 </head>
 <body>
+<h2>This is Admin Page</h2>
+
 <button type="button">게임 상태 보기</button>
+<button type="button" name="user-status" id="user-status">사용자 관리</button>
+<button type="button"  name="board-status" id="board-status">게시판 관리</button>
+<button type="button"  name="posts-status" id="posts-status">게시물 관리</button>
+<button type="button"  name="notice-status" id="notice-status">공지사항 관리</button>
 <script>
 document.querySelector('button').addEventListener('click', () => {
     window.location.href = '/admin/game-status';
 })
+
+document.getElementById('user-status').addEventListener('click', () => {
+    window.location.href ='/admin/user-status';
+})
+
+document.getElementById('board-status').addEventListener('click', () => {
+    window.location.href = '/admin/board-status';
+})
+
+document.getElementById('posts-status').addEventListener('click', () => {
+    window.location.href ='/admin/board/posts-status';
+})
+
+document.getElementById('notice-status').addEventListener('click', () => {
+    window.location.href = '/admin/board/notice-status';
+})
+
+
 </script>
 </body>
 </html>
