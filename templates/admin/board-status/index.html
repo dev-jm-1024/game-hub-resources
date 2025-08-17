@@ -97,7 +97,11 @@
 </head>
 <body>
 <div class="container">
-    <h2>게시판 상태 관리</h2>
+
+    <div id="header">
+        <h2>게시판 상태 관리</h2>
+        <button type="button" id="create-board" onclick="moveCreateBoard()"> + 게시판 만들기</button>
+    </div>
 
     <div th:if="${boardList != null and !boardList.isEmpty()}">
         <table class="board-table">
@@ -256,6 +260,12 @@
                     alert('오류가 발생했습니다.');
                 });
         }
+    }
+
+    function moveCreateBoard(){
+        document.getElementById('create-board').addEventListener('click', () => {
+            window.location.href ='/admin/board-status/board/create';
+        })
     }
 </script>
 </body>

@@ -1,11 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시판 생성</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <link rel="stylesheet" th:href="@{/admin-skin/css/admin-make-board.css}">
 </head>
 <body>
-<h2>게시판 만드는 페이지</h2>
-<!-- 게시판 이름 -->
+<div class="container">
+    <h2>게시판 만들기</h2>
+
+    <!-- 중복확인 섹션 -->
+    <div class="check-name-section" id="checkNameSection">
+        <div class="section-title">1단계: 게시판 이름 중복확인</div>
+        <form id="checkNameForm">
+            <div class="form-group">
+                <label for="boardNameToCheck">게시판 이름</label>
+                <input type="text"
+                       id="boardNameToCheck"
+                       name="boardName"
+                       placeholder="게시판 이름을 입력하세요 (2-20자)"
+                       maxlength="20"
+                       required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-check" id="checkBoardNameBtn">
+                    이름 중복확인
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 상태 메시지 -->
+    <div id="statusMessage" class="status-message"></div>
+
+    <!-- 게시판 생성 섹션 -->
+    <div class="create-board-section" id="createBoardSection">
+        <div class="section-title">2단계: 게시판 생성</div>
+        <div class="confirmed-name" id="confirmedNameDisplay"></div>
+
+        <form method="post" action="/admin/api/v1/board/create" id="createBoardForm">
+            <input type="hidden" name="boardName" id="confirmedBoardName">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-submit" id="submitBtn" disabled>
+                    게시판 생성
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/admin-skin/js/admin-make-board.js}"></script>
 </body>
 </html>
