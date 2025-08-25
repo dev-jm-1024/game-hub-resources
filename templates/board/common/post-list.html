@@ -65,12 +65,21 @@
     </div>
 
     <!-- 글쓰기 버튼 -->
+<!--    <div class="write-button-container">-->
+<!--        <form th:action="@{'/board' + ${board.boardId} + /new}" method="get">-->
+<!--            <button type="submit" class="write-button">글쓰기</button>-->
+<!--        </form>-->
+<!--    </div>-->
     <div class="write-button-container">
-        <form action="/board/new" method="get">
-            <input type="hidden" name="boardId" th:value="${board.boardId}" />
-            <button type="submit" class="write-button">글쓰기</button>
-        </form>
+        <a th:href="@{'/board/' + ${board.boardId} + '/new'}">
+            <button type="button" class="write-button">
+                📝 글쓰기
+            </button>
+        </a>
     </div>
+
+
+
 </main>
 
 <script th:src="@{/board-skin/common-skin/post-skin/js/post-list.js}"></script>

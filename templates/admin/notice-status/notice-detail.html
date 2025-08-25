@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        #import-btn{
+            background-color: red;
+            color: white;
+        }
+
+        #header-btn{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+
+        .header-btn-group{
+            margin-left: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>공지사항 상세보기</h1>
+
+<div style="display: flex" id="header-btn">
+    <a th:href="@{'/admin/board/notice/' + ${notice.postId} + '/edit'}">
+        <button class="header-btn-group">수정하기</button>
+    </a>
+
+    <a href="/admin/board/notice/create">
+        <button class="header-btn-group">공지사항 작성하기</button>
+    </a>
+
+    <form th:action="@{'/admin/api/v1/notice/' + ${notice.postId} + '/delete'}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit" class="header-btn-group">삭제하기</button>
+    </form>
+
+    <form th:action="@{'/admin/api/v1/notice/' + ${notice.postId} + '/important'}" th:if="${notice.importantAct == 0}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit" class="header-btn-group">중요 공지로 변경</button>
+    </form>
+
+    <form th:action="@{'/admin/api/v1/notice/' + ${notice.postId} + '/unimportant'}" th:if="${notice.importantAct == 1}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit" class="header-btn-group">중요 공지 해제</button>
+    </form>
+
+</div>
+
+<h2 th:text="${notice.postTitle}">제목</h2>
+<h4 th:utext="${notice.postContent}">내용</h4>
+
+<!-- 중요도 1일때 -->
+<button th:if="${notice.importantAct == 1}" id="import-btn">중요</button>
+
+<!--postFiles 받음-->
+<div style="display: flex" th:if="${postFilesList != null}" th:each="pf : ${postFilesList}">
+    <img th:src="${pf.fileUrl}" style="max-width: 500px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+</div>
+
+<button class="btn-group" id="back-button">이전 페이지</button>
+
+<script>
+    // public/js/notice-detail.js
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            const action = form.action || '';
+            if (!action.includes('/notice/')) return;
+            if (!['/delete', '/important', '/unimportant'].some(path => action.endsWith(path))) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const method = (form.method || 'post').toUpperCase();
+                const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('input[type="submit"]');
+                const actionUrl = form.action;
+
+                const confirmMessage =
+                    actionUrl.endsWith('/delete') ? '정말 삭제하시겠습니까?' :
+                        actionUrl.endsWith('/important') ? "'중요 공지'로 지정하시겠습니까?" :
+                            actionUrl.endsWith('/unimportant') ? "'중요 공지'를 해제하시겠습니까?" :
+                                null;
+
+                if (confirmMessage && !confirm(confirmMessage)) return;
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.dataset.text = submitBtn.textContent;
+                    submitBtn.textContent = '처리 중...';
+                }
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(actionUrl, {
+                        method,
+                        body: formData,
+                        credentials: 'same-origin'
+                    });
+
+                    const resultText = await response.text();
+
+                    if (response.ok) {
+                        alert(resultText || '요청이 성공적으로 처리되었습니다.');
+                        location.replace(location.href); // 현재 페이지 새로고침
+                    } else {
+                        alert(resultText || '요청 처리 중 오류가 발생했습니다.');
+                    }
+
+                } catch (err) {
+                    alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error(err);
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = submitBtn.dataset.text || '제출';
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

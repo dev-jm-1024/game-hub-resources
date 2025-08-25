@@ -5,6 +5,28 @@
     <title>Title</title>
 </head>
 <body>
+<h2>Posts Status Page</h2>
+
+<button class="statusBtn" id="comments-status">댓글 보기</button>
+<button class="statusBtn" id="post-files-status">미디어파일 확인하기</button>
+
+
+<div id="boardGroup" style="display: flex; align-items: center;">
+    <th:block th:each="board, iterStat : ${boardList}">
+        <th:block th:if="${board.boardAct == 1} ">
+            <a th:href="@{'/admin/board/' + ${board.boardId} + '/post-status'}"
+               class="statusBtn"
+               style="text-decoration: none; color: #333; padding: 10px 15px;"
+               th:text="|${board.boardName} 게시물 확인하기|">게시판명</a>
+            <span th:unless="${iterStat.last}" style="color: #ccc; margin: 0 10px;">|</span>
+
+
+        </th:block>
+    </th:block>
+</div>
+
+
+
 
 </body>
 </html>

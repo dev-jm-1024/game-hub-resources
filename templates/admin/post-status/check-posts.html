@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2 th:text="${board.boardName}">게시판 이름</h2>
+
+<div th:each="post : ${postsList}"  style="border-bottom: 1px solid #eee; padding: 15px 0;">
+    <!-- 게시물 제목 -->
+    <h4 th:text="${post.postTitle}" style="margin: 0 0 10px 0;">게시물 제목</h4>
+
+    <!-- 메타 정보 -->
+    <div style="display: flex; gap: 15px; color: #666; font-size: 0.9em; margin-bottom: 10px;">
+        <span>작성자: <span th:text="${post.user.mbNickname}">저자</span></span>
+        <span>작성일: <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">작성날짜</span></span>
+        <span>조회수: 0</span>
+        <span>신고횟수: <span th:text="${post.reactionCount.reportCount}">신고 횟수</span></span>
+        <span th:if="${post.postAct == 1}">
+            활성화 중
+        </span>
+
+        <span th:if="${post.postAct == 0}">
+            비활성화 중
+        </span>
+    </div>
+
+    <!-- 상세보기 버튼 -->
+    <a th:href="@{'/admin/board/'+${post.board.boardId}+'/post-status/'+${post.postId}+'/detail'}"
+       style="text-decoration: none;"
+       th:if="${post.postAct == 1}"
+    >
+        <button style="padding: 5px 10px; cursor: pointer;">상세보기</button>
+    </a>
+
+    <form th:action="@{'/admin/api/v1/posts/' + ${post.postId} + '/deactivate'}"
+          method="post"
+          th:if="${post.postAct == 1}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" th:value="${post.postId}">
+        <button type="submit">게시물 삭제</button>
+    </form>
+</div>
+<script th:src="@{/admin-skin/js/check-posts.js}" defer></script>
+</body>
+</html>

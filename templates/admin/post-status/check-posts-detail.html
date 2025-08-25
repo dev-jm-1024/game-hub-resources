@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>게시물 상세보기</h2>
+
+<h4 th:text="${posts.postTitle}">이름</h4>
+<div style="display: flex">
+    <p th:text="${posts.board.boardName}">소속 게시판</p>
+    <p th:text="${posts.user.mbNickname}">저자</p>
+<!--    <p th:text="${posts.user.userLoginInfo.get(0).ipAddress}">ip 주소</p>-->
+    <p th:text="${posts.createdAt}">작성날짜</p>
+</div>
+
+<div>
+    <h5 th:text="${posts.postContent}">게시물 내용</h5>
+</div>
+
+<div th:if="${not #lists.isEmpty(files)}">
+    <h4>첨부 파일</h4>
+    <div th:each="file : ${files}" style="margin: 10px 0;">
+        <img th:src="${file.fileUrl}"
+             style="max-width: 500px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+    </div>
+</div>
+
+<div style="display: flex">
+    <p th:text="${posts.reactionCount.likeCount}">좋아요수</p>
+    <p th:text="${posts.reactionCount.dislikeCount}">싫어요수</p>
+    <p th:text="${posts.reactionCount.reportCount}">신고 수</p>
+</div>
+</body>
+</html>
