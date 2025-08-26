@@ -1,7 +1,7 @@
 <!-- templates/fragments/comment-view.html -->
 <div th:fragment="commentListFragment">
     <div id="comment-list">
-        <div th:each="comment : ${commentsList}"
+        <div th:each="comment : ${postDetail.commentsList}"
              class="comment-item"
              style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
 
@@ -19,20 +19,20 @@
             <div class="comment-reaction-buttons" style="margin: 8px 0;">
                 <button type="button"
                         class="comment-like-button"
-                        th:classappend="${userCommentReactionMap[comment.commentId]?.name() == 'LIKE'} ? 'liked' : ''"
+                        th:classappend="${postDetail.userCommentReactionMap[comment.commentId]?.name() == 'LIKE'} ? 'liked' : ''"
                         th:data-comment-id="${comment.commentId}">
                     👍 좋아요
                     <span class="like-count"
-                          th:text="${commentReactionMap[comment.commentId]?.likeCount}">0</span>
+                          th:text="${postDetail.commentReactionMap[comment.commentId]?.likeCount}">0</span>
                 </button>
 
                 <button type="button"
                         class="comment-dislike-button"
-                        th:classappend="${userCommentReactionMap[comment.commentId]?.name() == 'DISLIKE'} ? 'disliked' : ''"
+                        th:classappend="${postDetail.userCommentReactionMap[comment.commentId]?.name() == 'DISLIKE'} ? 'disliked' : ''"
                         th:data-comment-id="${comment.commentId}">
                     👎 싫어요
                     <span class="dislike-count"
-                          th:text="${commentReactionMap[comment.commentId]?.dislikeCount}">0</span>
+                          th:text="${postDetail.commentReactionMap[comment.commentId]?.dislikeCount}">0</span>
                 </button>
             </div>
 

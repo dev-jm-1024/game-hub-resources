@@ -15,20 +15,38 @@
   <form id="postForm" class="post-edit-form">
     <div class="form-group">
       <label for="title" class="form-label">제목</label>
-      <input type="text" id="title" name="postTitle" class="form-input" th:value="${postData.postTitle}" required>
+      <input type="text" id="title" name="postTitle" class="form-input" th:value="${vm.posts.postTitle}" required>
     </div>
-    
+
     <div class="form-group">
       <label for="content" class="form-label">내용</label>
-      <textarea id="content" name="postContent" rows="10" class="form-textarea" th:text="${postData.postContent}" required></textarea>
+      <textarea id="content" name="postContent" rows="10" class="form-textarea" th:text="${vm.posts.postContent}" required></textarea>
     </div>
-    
+
     <div class="form-group">
-      <input type="hidden" name="postId" th:value="${postData.postId}">
+      <input type="hidden" name="postId" th:value="${vm.posts.postId}">
       <label class="form-label">게시판</label>
-      <input type="text" name="boardId" class="form-input readonly" th:value="${postData.board.boardId}" readonly>
+      <input type="text" name="boardId" class="form-input readonly" th:value="${vm.boardId}" readonly>
     </div>
-    
+
+    <!-- 기존 첨부파일 표시 -->
+    <div class="form-group" th:if="${vm.hasPostFile}">
+      <label class="form-label">기존 첨부파일</label>
+      <div class="existing-files">
+        <div th:each="postFile : ${vm.postFilesList}" class="existing-file-item">
+          <img th:src="@{${postFile.fileUrl}}" alt="기존 첨부 이미지" class="existing-file-preview">
+          <input type="checkbox" th:value="${postFile.fileUrl}" name="oldFileUrl" checked>
+          <label>유지</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 새 파일 업로드 -->
+    <div class="form-group">
+      <label for="newFiles" class="form-label">새 파일 업로드</label>
+      <input type="file" id="newFiles" name="files" multiple accept="image/*" class="form-input">
+    </div>
+
     <div class="form-actions">
       <button type="submit" class="submit-button">수정 완료</button>
       <button type="button" class="cancel-button" onclick="history.back()">취소</button>

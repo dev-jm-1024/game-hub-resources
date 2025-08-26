@@ -75,42 +75,18 @@
                         </h1>
                     </div>
                     <p class="text-white/90 text-lg max-w-2xl mx-auto font-medium">
-                        다양한 게임 정보와 팁을 공유하고, 게이머들과 소통해보세요 🎮
+                        다양한 게임 정보와 팁을 공유하고, 게이머들과 소통해보세요
                     </p>
                 </div>
             </div>
 
-            <!-- Stats Cards - Toss Style -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="stats-card p-6 text-center animate-bounce-in" style="animation-delay: 0.1s">
-                    <div class="text-3xl font-bold text-gray-900 mb-2" th:text="${totalPosts ?: '0'}">0</div>
-                    <div class="text-gray-600 font-medium">이 게시글</div>
-                    <div class="mt-3">
-                        <i class="bi bi-file-text text-toss-blue text-xl"></i>
-                    </div>
-                </div>
-                <div class="stats-card p-6 text-center animate-bounce-in" style="animation-delay: 0.2s">
-                    <div class="text-3xl font-bold text-gray-900 mb-2" th:text="${totalBoards ?: '0'}">0</div>
-                    <div class="text-gray-600 font-medium">활성 게시판</div>
-                    <div class="mt-3">
-                        <i class="bi bi-folder text-apple-blue text-xl"></i>
-                    </div>
-                </div>
-                <div class="stats-card p-6 text-center animate-bounce-in" style="animation-delay: 0.3s">
-                    <div class="text-3xl font-bold text-gray-900 mb-2" th:text="${todayPosts ?: '0'}">0</div>
-                    <div class="text-gray-600 font-medium">오늘 작성</div>
-                    <div class="mt-3">
-                        <i class="bi bi-calendar-check text-apple-green text-xl"></i>
-                    </div>
-                </div>
-            </div>
         </header>
 
         <!-- Board Sections -->
         <main class="space-y-8">
             <!-- 일반 게시판 Card -->
             <div class="board-card p-8 animate-slide-up"
-                 th:each="entry, iterStat : ${postsByBoard}"
+                 th:each="entry, iterStat : ${vm.postTop5}"
                  th:style="'animation-delay: ' + ${iterStat.index * 0.1} + 's'">
 
                 <!-- Board Header -->
@@ -121,7 +97,7 @@
                         </div>
                         <div>
                             <h2 class="text-2xl font-bold text-gray-900 mb-1" th:text="${entry.key.boardName}">게시판 이름</h2>
-                            <p class="text-gray-500 text-sm font-medium">최신 게시글 5개 📝</p>
+                            <p class="text-gray-500 text-sm font-medium">최신 게시글 5개</p>
                         </div>
                     </div>
 
@@ -151,7 +127,9 @@
 
                             <div class="flex items-center justify-between">
                                 <div class="flex-1 min-w-0">
-                                    <h3 class="text-gray-900 font-semibold text-lg mb-3 truncate" th:text="${post.postTitle}">게시글 제목</h3>
+                                    <a th:href="@{'/board/' + ${entry.key.boardId} + '/' +${post.postId} + '/view'}">
+                                        <h3 class="text-gray-900 font-semibold text-lg mb-3 truncate" th:text="${post.postTitle}">게시글 제목</h3>
+                                    </a>
                                     <div class="flex items-center space-x-6 text-gray-500 text-sm">
                                         <div class="flex items-center">
                                             <div class="w-6 h-6 bg-gradient-to-br from-toss-blue to-apple-blue rounded-full flex items-center justify-center mr-2">
@@ -186,7 +164,7 @@
                         <i class="bi bi-file-earmark-text text-4xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">아직 게시글이 없어요</h3>
-                    <p class="text-gray-600 mb-6">첫 번째 게시글을 작성해보세요! ✨</p>
+                    <p class="text-gray-600 mb-6">첫 번째 게시글을 작성해보세요!</p>
                     <a th:href="@{'/board/new?boardId=' + ${entry.key.boardId}}"
                        class="btn-primary">
                         <i class="bi bi-plus-lg"></i>
@@ -195,9 +173,9 @@
                 </div>
             </div>
 
-            <!-- 🎮 게임 게시판 Card (별도 처리) -->
+            <!-- 게임 게시판 Card (별도 처리) -->
             <div class="board-card p-8 animate-slide-up"
-                 th:each="gameEntry, gameIterStat : ${gamesByBoard}"
+                 th:each="gameEntry, gameIterStat : ${vm.gameTop5}"
                  th:style="'animation-delay: ' + ${(gameIterStat.index + 10) * 0.1} + 's'">
 
                 <!-- Game Board Header -->
@@ -210,7 +188,7 @@
                             <a th:href="@{'/board/game-board/' + ${gameEntry.key.boardId} + '/view'}" class="text-decoration-none">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-1 hover:text-purple-600 transition-colors cursor-pointer" th:text="${gameEntry.key.boardName}">게임 게시판</h2>
                             </a>
-                            <p class="text-gray-500 text-sm font-medium">최신 게임 5개 🎮</p>
+                            <p class="text-gray-500 text-sm font-medium">최신 게임 5개</p>
                         </div>
                     </div>
 
@@ -272,7 +250,7 @@
                                 </div>
 
                                 <div class="ml-4 flex items-center space-x-3">
-                                    <!-- 게임 상태 뱃지 -->
+                                    <!-- 게임 상태 배지 -->
                                     <div class="px-3 py-1 rounded-full text-xs font-medium"
                                          th:classappend="${game.status.name() == 'ACTIVE'} ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'"
                                          th:text="${game.status.name() == 'ACTIVE'} ? '플레이 가능' : '승인 대기'">상태</div>
@@ -293,7 +271,7 @@
                         <i class="bi bi-controller text-4xl text-purple-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">아직 게임이 없어요</h3>
-                    <p class="text-gray-600 mb-6">첫 번째 게임을 업로드해보세요! 🎮</p>
+                    <p class="text-gray-600 mb-6">첫 번째 게임을 업로드해보세요!</p>
                     <a th:href="@{'/games/upload'}"
                        class="btn-primary bg-gradient-to-r from-purple-500 to-pink-500">
                         <i class="bi bi-plus-lg"></i>
@@ -303,14 +281,14 @@
             </div>
 
             <!-- No Boards State -->
-            <div th:if="${(postsByBoard == null or postsByBoard.isEmpty()) and (gamesByBoard == null or gamesByBoard.isEmpty())}"
+            <div th:if="${(vm.postTop5 == null or vm.postTop5.isEmpty()) and (vm.gameTop5 == null or vm.gameTop5.isEmpty())}"
                  class="text-center py-20">
                 <div class="card-primary p-12">
                     <div class="empty-state-icon mx-auto mb-8" style="width: 120px; height: 120px;">
                         <i class="bi bi-folder-plus text-5xl"></i>
                     </div>
                     <h2 class="text-3xl font-bold text-gray-900 mb-4">게시판이 준비 중이에요</h2>
-                    <p class="text-gray-600 text-lg">곧 다양한 게시판이 추가될 예정입니다 🚀</p>
+                    <p class="text-gray-600 text-lg">곧 다양한 게시판이 추가될 예정입니다</p>
                 </div>
             </div>
         </main>
@@ -324,49 +302,49 @@
         </button>
     </div>
 
-    <!-- Write Modal (Vue.js Component) -->
-    <div v-if="showWriteModal"
-         class="fixed inset-0 bg-black/20 backdrop-blur-md z-50 flex items-center justify-center p-4"
-         @click.self="closeWriteModal">
-        <div class="card-primary rounded-3xl p-8 max-w-md w-full animate-bounce-in shadow-2xl" @click.stop>
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center">
-                    <div class="w-10 h-10 bg-gradient-to-br from-toss-blue to-apple-blue rounded-xl flex items-center justify-center mr-3">
-                        <i class="bi bi-pencil text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900">글쓰기</h3>
-                </div>
-                <button @click="closeWriteModal"
-                        class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-all">
-                    <i class="bi bi-x text-xl"></i>
-                </button>
-            </div>
-            <div class="space-y-3">
-                <div class="board-option p-4 rounded-xl border border-gray-200 cursor-pointer hover:border-toss-blue hover:bg-toss-blue-ultra-light transition-all"
-                     th:each="entry : ${postsByBoard}"
-                     th:data-board-id="${entry.key.boardId}"
-                     onclick="navigateToWrite(this)">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-gradient-to-br from-toss-blue to-apple-blue rounded-xl flex items-center justify-center mr-4 shadow-sm">
-                            <i class="bi bi-folder text-white"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="text-gray-900 font-semibold text-lg" th:text="${entry.key.boardName}">게시판 이름</div>
-                            <div class="text-gray-500 text-sm">이 게시판에 글쓰기 ✏️</div>
-                        </div>
-                        <div class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
-                            <i class="bi bi-chevron-right text-gray-400 text-xs"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button @click="closeWriteModal"
-                    class="btn-secondary w-full mt-6">
-                <i class="bi bi-x-lg"></i>
-                취소
-            </button>
-        </div>
-    </div>
+<!--    &lt;!&ndash; Write Modal (Vue.js Component) &ndash;&gt;-->
+<!--    <div v-if="showWriteModal"-->
+<!--         class="fixed inset-0 bg-black/20 backdrop-blur-md z-50 flex items-center justify-center p-4"-->
+<!--         @click.self="closeWriteModal">-->
+<!--        <div class="card-primary rounded-3xl p-8 max-w-md w-full animate-bounce-in shadow-2xl" @click.stop>-->
+<!--            <div class="flex items-center justify-between mb-6">-->
+<!--                <div class="flex items-center">-->
+<!--                    <div class="w-10 h-10 bg-gradient-to-br from-toss-blue to-apple-blue rounded-xl flex items-center justify-center mr-3">-->
+<!--                        <i class="bi bi-pencil text-white"></i>-->
+<!--                    </div>-->
+<!--                    <h3 class="text-2xl font-bold text-gray-900">글쓰기</h3>-->
+<!--                </div>-->
+<!--                <button @click="closeWriteModal"-->
+<!--                        class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-all">-->
+<!--                    <i class="bi bi-x text-xl"></i>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="space-y-3">-->
+<!--                <div class="board-option p-4 rounded-xl border border-gray-200 cursor-pointer hover:border-toss-blue hover:bg-toss-blue-ultra-light transition-all"-->
+<!--                     th:each="entry : ${vm.postTop5}"-->
+<!--                     th:data-board-id="${entry.key.boardId}"-->
+<!--                     onclick="navigateToWrite(this)">-->
+<!--                    <div class="flex items-center">-->
+<!--                        <div class="w-12 h-12 bg-gradient-to-br from-toss-blue to-apple-blue rounded-xl flex items-center justify-center mr-4 shadow-sm">-->
+<!--                            <i class="bi bi-folder text-white"></i>-->
+<!--                        </div>-->
+<!--                        <div class="flex-1">-->
+<!--                            <div class="text-gray-900 font-semibold text-lg" th:text="${entry.key.boardName}">게시판 이름</div>-->
+<!--                            <div class="text-gray-500 text-sm">이 게시판에 글쓰기</div>-->
+<!--                        </div>-->
+<!--                        <div class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">-->
+<!--                            <i class="bi bi-chevron-right text-gray-400 text-xs"></i>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <button @click="closeWriteModal"-->
+<!--                    class="btn-secondary w-full mt-6">-->
+<!--                <i class="bi bi-x-lg"></i>-->
+<!--                취소-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
 <!-- Main Board JavaScript -->

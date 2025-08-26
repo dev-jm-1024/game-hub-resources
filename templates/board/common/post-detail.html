@@ -11,20 +11,21 @@
     <script th:inline="javascript">
         // 전역 변수로 서버 데이터 설정
         window.postDetailData = {
-            postId: /*[[${postsData.postId}]]*/ null,
-            reactType: /*[[${reactType}]]*/ 'NONE',
-            likeCount: /*[[${postsReactionCount != null ? postsReactionCount.likeCount : 0}]]*/ 0,
-            dislikeCount: /*[[${postsReactionCount != null ? postsReactionCount.dislikeCount : 0}]]*/ 0,
-            isLoggedIn: /*[[${reactType != null or isAuthUser != null}]]*/ false,
-            isUserReported: /*[[${isUserReported != null ? isUserReported : false}]]*/ false
+            postId: /*[[${postDetail.posts.postId}]]*/ null,
+            reactType: /*[[${postDetail.reactType}]]*/ 'NONE',
+            likeCount: /*[[${postDetail.postsReactionCount != null ? postDetail.postsReactionCount.likeCount : 0}]]*/ 0,
+            dislikeCount: /*[[${postDetail.postsReactionCount != null ? postDetail.postsReactionCount.dislikeCount : 0}]]*/ 0,
+            isLoggedIn: /*[[${postDetail.reactType != null or postDetail.isAuthor != null}]]*/ false,
+            isUserReported: /*[[${postDetail.isUserReported != null ? postDetail.isUserReported : false}]]*/ false
         };
 
         // 댓글 신고 데이터 추가
-        window.userCommentReportMap = /*[[${userCommentReportMap}]]*/ {};
+        window.userCommentReportMap = /*[[${postDetail.userCommentReportMap}]]*/ {};
 
         console.log('서버 데이터 로드됨:', window.postDetailData);
         console.log('댓글 신고 데이터 로드됨:', window.userCommentReportMap);
     </script>
+    <!-- 기존 스타일은 그대로 유지 -->
     <style>
         .like-button, .dislike-button {
             padding: 8px 16px;
@@ -95,100 +96,99 @@
 </head>
 <body class="post-detail-body">
 
-<!-- 기존 HTML 구조는 그대로 유지 -->
 <div class="post-detail-container">
     <div class="post-header">
-        <h1 class="post-title" th:text="${postsData.getPostTitle()}">게시글 제목</h1>
+        <h1 class="post-title" th:text="${postDetail.posts.postTitle}">게시글 제목</h1>
 
         <div class="post-meta">
             <div class="post-meta-item">
                 <strong>작성자:</strong>
-                <span th:text="${postsData.user != null ? postsData.user.mbNickname : '알 수 없음'}">닉네임</span>
+                <span th:text="${postDetail.posts.user != null ? postDetail.posts.user.mbNickname : '알 수 없음'}">닉네임</span>
             </div>
 
             <div class="post-meta-item">
                 <strong>작성일:</strong>
-                <span th:text="${#temporals.format(postsData.createdAt, 'yyyy-MM-dd')}">날짜</span>
+                <span th:text="${#temporals.format(postDetail.posts.createdAt, 'yyyy-MM-dd')}">날짜</span>
             </div>
 
             <div class="post-meta-item">
                 <strong>조회수:</strong>
-                <span th:text="${postsData.viewCount}">0</span>
+                <span th:text="${postDetail.posts.viewCount}">0</span>
             </div>
         </div>
     </div>
 
     <div class="post-content-wrapper">
         <div class="post-content">
-            <p id="post-content" th:text="${postsData.getPostContent}">게시글 내용</p>
+            <p id="post-content" th:text="${postDetail.posts.postContent}">게시글 내용</p>
         </div>
 
-        <div class="post-attachments" th:if="${hasPostFile}">
+        <div class="post-attachments" th:if="${postDetail.hasPostFile}">
             <strong>첨부 이미지:</strong>
-            <div class="attachment-image">
-                <img th:src="@{${postFiles.fileUrl}}" alt="첨부 이미지" class="post-image">
+            <div class="attachment-image" th:each="postFile : ${postDetail.postFilesList}">
+                <img th:src="@{${postFile.fileUrl}}" alt="첨부 이미지" class="post-image">
             </div>
         </div>
-        <div class="post-attachments" th:unless="${hasPostFile}">
+        <div class="post-attachments" th:unless="${postDetail.hasPostFile}">
             <p class="no-attachments">첨부파일이 없습니다.</p>
         </div>
     </div>
 
     <!-- 로그인 사용자용 좋아요/싫어요 섹션 -->
-    <div class="post-reactions" th:if="${reactType != null or isAuthUser != null}">
+    <div class="post-reactions" th:if="${postDetail.reactType != null or postDetail.isAuthor != null}">
         <button id="like-button"
                 class="like-button"
-                th:classappend="${reactType != null and reactType.toString() == 'LIKE'} ? 'liked' : ''"
+                th:classappend="${postDetail.reactType != null and postDetail.reactType.toString() == 'LIKE'} ? 'liked' : ''"
                 aria-label="좋아요 버튼">
             <span id="like-icon"
-                  th:text="${reactType != null and reactType.toString() == 'LIKE'} ? '💔' : '❤️'">❤️</span>
+                  th:text="${postDetail.reactType != null and postDetail.reactType.toString() == 'LIKE'} ? '💔' : '❤️'">❤️</span>
             <span id="like-text"
-                  th:text="${reactType != null and reactType.toString() == 'LIKE'} ? '좋아요 취소' : '좋아요'">좋아요</span>
+                  th:text="${postDetail.reactType != null and postDetail.reactType.toString() == 'LIKE'} ? '좋아요 취소' : '좋아요'">좋아요</span>
             <span id="like-count" class="like-count"
-                  th:text="${postsReactionCount != null ? postsReactionCount.likeCount : 0}">0</span>
+                  th:text="${postDetail.postsReactionCount != null ? postDetail.postsReactionCount.likeCount : 0}">0</span>
         </button>
 
         <button id="dislike-button"
                 class="dislike-button"
-                th:classappend="${reactType != null and reactType.toString() == 'DISLIKE'} ? 'disliked' : ''"
+                th:classappend="${postDetail.reactType != null and postDetail.reactType.toString() == 'DISLIKE'} ? 'disliked' : ''"
                 aria-label="싫어요 버튼">
             <span id="dislike-icon"
-                  th:text="${reactType != null and reactType.toString() == 'DISLIKE'} ? '👍' : '👎'">👎</span>
+                  th:text="${postDetail.reactType != null and postDetail.reactType.toString() == 'DISLIKE'} ? '👍' : '👎'">👎</span>
             <span id="dislike-text"
-                  th:text="${reactType != null and reactType.toString() == 'DISLIKE'} ? '싫어요 취소' : '싫어요'">싫어요</span>
+                  th:text="${postDetail.reactType != null and postDetail.reactType.toString() == 'DISLIKE'} ? '싫어요 취소' : '싫어요'">싫어요</span>
             <span id="dislike-count" class="dislike-count"
-                  th:text="${postsReactionCount != null ? postsReactionCount.dislikeCount : 0}">0</span>
+                  th:text="${postDetail.postsReactionCount != null ? postDetail.postsReactionCount.dislikeCount : 0}">0</span>
         </button>
     </div>
 
     <!-- 비로그인 사용자용 메시지 -->
-    <div class="login-message" th:unless="${reactType != null or isAuthUser != null}">
+    <div class="login-message" th:unless="${postDetail.reactType != null or postDetail.isAuthor != null}">
         <p>좋아요/싫어요를 누르려면 <a href="/login">로그인</a>이 필요합니다.</p>
     </div>
 
     <!-- 전체 반응 통계 -->
-    <div class="reaction-stats" th:if="${postsReactionCount != null}" style="text-align: center; margin: 10px 0; font-size: 14px; color: #666;">
-        총 반응: <span th:text="${postsReactionCount.likeCount + postsReactionCount.dislikeCount}">0</span>개
-        (좋아요 <span th:text="${postsReactionCount.likeCount}">0</span>개,
-        싫어요 <span th:text="${postsReactionCount.dislikeCount}">0</span>개)
+    <div class="reaction-stats" th:if="${postDetail.postsReactionCount != null}" style="text-align: center; margin: 10px 0; font-size: 14px; color: #666;">
+        총 반응: <span th:text="${postDetail.postsReactionCount.likeCount + postDetail.postsReactionCount.dislikeCount}">0</span>개
+        (좋아요 <span th:text="${postDetail.postsReactionCount.likeCount}">0</span>개,
+        싫어요 <span th:text="${postDetail.postsReactionCount.dislikeCount}">0</span>개)
     </div>
 
-    <div class="post-actions" id="memberForm" th:if="${isAuthUser}">
+    <div class="post-actions" id="memberForm" th:if="${postDetail.isAuthor}">
         <form id="updatePosts" method="get" action="/board/posts/edit" class="action-form">
-            <input type="hidden" name="postId" th:value="${postsData.getPostId}">
-            <input type="hidden" name="boardId" th:value="${postsData.getBoard().boardId}">
+            <input type="hidden" name="postId" th:value="${postDetail.posts.postId}">
+            <input type="hidden" name="boardId" th:value="${postDetail.posts.board.boardId}">
             <button type="submit" class="edit-button">수정하기</button>
         </form>
 
         <form id="deletePosts" class="action-form">
-            <input type="hidden" name="postId" th:value="${postsData.getPostId}">
-            <input type="hidden" name="boardId" th:value="${postsData.getBoard().boardId}">
+            <input type="hidden" name="postId" th:value="${postDetail.posts.postId}">
+            <input type="hidden" name="boardId" th:value="${postDetail.posts.board.boardId}">
             <button type="submit" class="delete-button">삭제하기</button>
         </form>
     </div>
 
     <div class="navigation-actions">
-        <a th:href="@{'/board/' + ${postsData.getBoard().getBoardId} + '/view'}" class="back-button">목록으로 돌아가기</a>
+        <a th:href="@{'/board/' + ${postDetail.posts.board.boardId} + '/view'}" class="back-button">목록으로 돌아가기</a>
     </div>
 
     <!-- 댓글 입력폼 포함 -->

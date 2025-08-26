@@ -2,13 +2,13 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${board.boardName} + ' - 게시글 목록'">게시판 이름 - 게시글 목록</title>
+    <title th:text="${vm.board.boardName} + ' - 게시글 목록'">게시판 이름 - 게시글 목록</title>
     <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-list.css}">
 </head>
 <body class="post-list-body">
 <main class="post-list-container">
     <!-- 게시판 이름 -->
-    <h1 class="post-list-title" th:text="${board.boardName}">
+    <h1 class="post-list-title" th:text="${vm.board.boardName}">
         게시판 이름
     </h1>
 
@@ -26,12 +26,12 @@
             </thead>
             <tbody>
             <!-- 게시글이 없을 때 -->
-            <tr th:if="${#lists.isEmpty(summaryPosts)}" class="empty-row">
+            <tr th:if="${vm.summaryPostDto == null || vm.summaryPostDto.empty}" class="empty-row">
                 <td colspan="5" class="empty-message">게시글이 없습니다.</td>
             </tr>
 
             <!-- 게시글이 있을 때 -->
-            <tr th:each="post, stat : ${summaryPosts}" class="post-row">
+            <tr th:each="post, stat : ${vm.summaryPostDto}" class="post-row">
                 <!-- 순번 (1-based) -->
                 <td class="post-number" th:text="${stat.count}">1</td>
 
@@ -64,21 +64,13 @@
         </table>
     </div>
 
-    <!-- 글쓰기 버튼 -->
-<!--    <div class="write-button-container">-->
-<!--        <form th:action="@{'/board' + ${board.boardId} + /new}" method="get">-->
-<!--            <button type="submit" class="write-button">글쓰기</button>-->
-<!--        </form>-->
-<!--    </div>-->
     <div class="write-button-container">
-        <a th:href="@{'/board/' + ${board.boardId} + '/new'}">
+        <a th:href="@{'/board/' + ${vm.board.boardId} + '/new'}">
             <button type="button" class="write-button">
                 📝 글쓰기
             </button>
         </a>
     </div>
-
-
 
 </main>
 

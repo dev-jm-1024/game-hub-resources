@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${board.boardName} + ' - 게임 목록'">게임 게시판 - 게임 목록</title>
+    <title th:text="${vm.board.boardName} + ' - 게임 목록'">게임 게시판 - 게임 목록</title>
     <link rel="stylesheet" th:href="@{/board-skin/common-skin/post-skin/css/post-list.css}">
 
     <!-- 게임 게시판 전용 스타일 추가 -->
@@ -61,7 +61,7 @@
 <body class="post-list-body">
 <main class="post-list-container">
     <!-- 게시판 이름 -->
-    <h1 class="post-list-title" th:text="${board.boardName}">
+    <h1 class="post-list-title" th:text="${vm.board.boardName}">
         게임 게시판
     </h1>
 
@@ -79,7 +79,7 @@
             </thead>
             <tbody>
             <!-- 게임이 없을 때 -->
-            <tr th:if="${#lists.isEmpty(summaryGames)}" class="empty-row">
+            <tr th:if="${vm.summaryGamesDtoList == null || vm.summaryGamesDtoList.empty}" class="empty-row">
                 <td colspan="5" class="empty-message">
                     <div style="text-align: center; padding: 40px;">
                         <div class="game-icon" style="margin: 0 auto 16px auto; width: 48px; height: 48px; font-size: 20px;">
@@ -92,7 +92,7 @@
             </tr>
 
             <!-- 게임이 있을 때 -->
-            <tr th:each="game, stat : ${summaryGames}" class="post-row">
+            <tr th:each="game, stat : ${vm.summaryGamesDtoList}" class="post-row">
                 <!-- 순번 (1-based) -->
                 <td class="post-number" th:text="${stat.count}">1</td>
 
@@ -137,7 +137,7 @@
     <!-- 게임 업로드 버튼 (글쓰기 버튼과 동일한 구조) -->
     <div class="write-button-container">
         <form action="/games/upload" method="get">
-            <input type="hidden" name="boardId" th:value="${board.boardId}" />
+            <input type="hidden" name="boardId" th:value="${vm.board.boardId}" />
             <button type="submit" class="write-button" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">
                 🎮 게임 업로드
             </button>

@@ -1,0 +1,65 @@
+.like-button, .dislike-button {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.like-button:hover {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.like-button.liked {
+    background-color: #ff6b6b;
+    color: white;
+    border-color: #ff6b6b;
+}
+
+.dislike-button:hover {
+    border-color: #6b6bff;
+    color: #6b6bff;
+}
+
+.dislike-button.disliked {
+    background-color: #6b6bff;
+    color: white;
+    border-color: #6b6bff;
+}
+
+.like-button:disabled, .dislike-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.post-reactions {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.like-count, .dislike-count {
+    margin-left: 8px;
+    font-weight: bold;
+}
+
+.login-message {
+    text-align: center;
+    margin: 20px 0;
+    color: #666;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.login-message a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-message a:hover {
+    text-decoration: underline;
+}
